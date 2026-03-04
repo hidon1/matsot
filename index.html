@@ -6,7 +6,7 @@
   <title>מצות אבהתנא</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;800&family=Heebo:wght@400;500;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
       --bg:#f6efdd;
@@ -25,11 +25,11 @@
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:"Assistant",system-ui,sans-serif;
+      font-family:"Heebo","Assistant",system-ui,sans-serif;
       color:var(--ink);
       background:linear-gradient(180deg,var(--bg),var(--bg2));
     }
-    h1,h2,h3,h4{font-family:"Rubik","Assistant",sans-serif}
+    h1,h2,h3,h4{font-family:"Frank Ruhl Libre","Rubik","Assistant",sans-serif;letter-spacing:.01em}
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1240px;margin:0 auto;padding:0 20px}
 
@@ -75,7 +75,7 @@
 
     .hero{padding:26px 0 20px}
     .heroBrand{padding:14px 0 18px}
-    .eyebrow{font-size:1.15rem;color:#6a5437;font-weight:700;margin:0 0 8px}
+    .eyebrow{font-size:1.15rem;color:#6a5437;font-weight:700;margin:0 0 8px;font-family:"Rubik","Heebo",sans-serif}
     h1{font-size:clamp(2.4rem,4.5vw,4rem);margin:0 0 8px;line-height:1.03}
     .lead{font-size:1.1rem;max-width:72ch;line-height:1.65;color:var(--muted);margin:0}
     .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
@@ -97,16 +97,22 @@
     .galleryItem img{display:block;width:100%;height:220px;object-fit:cover}
     .galleryItem p{padding:10px 12px;margin:0;font-weight:700;color:#443626}
 
-    .productsGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .productsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
     .productCard{
       background:var(--card);border:1px solid rgba(0,0,0,.11);
-      border-radius:18px;padding:10px;box-shadow:0 8px 20px rgba(0,0,0,.08);
-      display:flex;flex-direction:column;gap:8px;
+      border-radius:24px;padding:16px;box-shadow:0 14px 30px rgba(0,0,0,.11);
+      display:flex;flex-direction:column;gap:10px;min-height:100%;
     }
-    .productCard img{width:100%;height:150px;object-fit:cover;border-radius:14px}
-    .productCard h3{margin:0;font-size:1.02rem}
-    .productCard p{margin:0;color:var(--muted);font-size:.94rem}
-    .price{font-family:"Rubik";font-weight:800;color:#613b14}
+    .productCard .productMedia{
+      border-radius:18px;padding:12px;background:#fff;border:1px solid rgba(0,0,0,.07);
+      display:flex;align-items:center;justify-content:center;min-height:230px;
+    }
+    .productCard img{width:100%;height:205px;object-fit:cover;border-radius:14px}
+    .productCard h3{margin:0;font-size:1.25rem;min-height:2.4em;display:flex;align-items:flex-start}
+    .productCard p{margin:0;color:var(--muted);font-size:1.02rem;min-height:3.3em}
+    .productMeta{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+    .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.2rem}
+    .productCard .btn{width:100%;padding:13px 18px}
 
     .aboutText{
       background:rgba(255,255,255,.5);border-radius:18px;padding:16px 18px;border:1px solid var(--line);
@@ -140,7 +146,7 @@
     .sheetNav{display:grid;gap:8px}
     .sheetNav a{padding:10px;border-radius:10px;background:#f5f0e7;font-weight:800}
 
-    @media (max-width:1100px){.productsGrid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:1100px){.productsGrid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:900px){
       .topbar{min-height:100px}.topbarInner{min-height:100px}
       .nav{display:none}.hamb{display:inline-flex}
@@ -215,7 +221,7 @@
     <section id="products">
       <div class="sectionHead">
         <h2>המוצרים שלנו</h2>
-        <p>10 מוצרים נבחרים – כל מוצר עם הסבר קצר, מחיר וכפתור הוספה לסל.</p>
+        <p>10 מוצרים נבחרים בפריסה אחידה, כרטיסים רחבים וכפתור הוספה לסל בעיצוב קבוע.</p>
       </div>
       <div class="productsGrid" id="productsGrid"></div>
     </section>
@@ -294,11 +300,15 @@
     function renderProducts(){
       productsGrid.innerHTML = products.map(p => `
         <article class="productCard">
-          <img src="${p.img}" alt="${p.name}">
+          <div class="productMedia">
+            <img src="${p.img}" alt="${p.name}">
+          </div>
           <h3>${p.name}</h3>
           <p>${p.desc}</p>
-          <div class="price">${p.price} ₪</div>
-          <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
+          <div class="productMeta">
+            <div class="price">${p.price} ₪</div>
+            <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
+          </div>
         </article>
       `).join('');
     }
