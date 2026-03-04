@@ -85,29 +85,43 @@
       margin:0;
       font-size:clamp(1.85rem,3.6vw,2.4rem);
       position:relative;
-      display:inline-flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
+      display:inline-block;
+      padding:0 .5em .38em;
       color:#111;
       font-weight:800;
     }
     .sectionHead h2::after{
       content:"";
-      width:180px;
-      height:16px;
-      border-bottom:5px solid var(--gold);
-      border-radius:0 0 90px 90px;
+      position:absolute;
+      right:0;
+      bottom:0;
+      width:100%;
+      height:14px;
+      border:3px solid var(--gold);
+      border-top:none;
+      border-radius:0 0 18px 18px;
       box-shadow:0 6px 12px rgba(192,143,58,.22);
-      background:radial-gradient(circle at center top,var(--gold-light) 0 22%,transparent 23%);
     }
     .sectionHead p{margin:8px 0 0;color:var(--muted)}
 
-    .galleryGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .galleryWrap{display:flex;align-items:center;gap:12px}
+    .galleryViewport{overflow:hidden;flex:1}
+    .galleryTrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;transition:transform .45s ease}
     .galleryItem{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .32s ease}
     .galleryItem:hover{transform:translateY(-6px) scale(1.02)}
-    .galleryItem img{display:block;width:100%;height:220px;object-fit:cover}
+    .galleryItem img,.galleryItem video{display:block;width:100%;height:220px;object-fit:cover}
     .galleryItem p{padding:10px 12px;margin:0;font-weight:700;color:#443626}
+    .galleryBtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(80,58,30,.28);background:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+
+    .lightbox{position:fixed;inset:0;background:rgba(8,7,5,.9);display:none;z-index:120;align-items:center;justify-content:center;padding:24px}
+    .lightbox.open{display:flex}
+    .lightboxInner{position:relative;width:min(1200px,96vw)}
+    .lightboxMedia{background:#000;border-radius:20px;overflow:hidden;box-shadow:0 24px 52px rgba(0,0,0,.35)}
+    .lightboxMedia img,.lightboxMedia video{width:100%;max-height:85vh;display:block;object-fit:contain}
+    .lightboxClose{position:absolute;top:-18px;left:0;border:none;background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}
+    .lightboxNav{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border:none;border-radius:50%;background:rgba(255,255,255,.92);font-size:1.8rem;cursor:pointer}
+    .lightboxNav.prev{right:-18px}
+    .lightboxNav.next{left:-18px}
 
     .productsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
     .productCard{
@@ -172,10 +186,10 @@
     .reveal{opacity:0;transform:translateY(22px) scale(.98)}
     .reveal.visible{animation:floatIn .7s ease forwards}
 
-    @media (max-width:1100px){.galleryGrid,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:1100px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}}
     @media (max-width:820px){.topbar{position:static}.topbarInner{min-height:auto;padding:12px 0;flex-wrap:wrap}.nav{display:none}.hamb{display:inline-flex}.logoLink{min-width:0;flex:1}.siteName strong{font-size:1.16rem}.siteName span{font-size:.86rem}.hero{padding:16px 0 10px}.sectionHead h2{font-size:1.7rem}}
-    @media (max-width:640px){.galleryGrid,.productsGrid{grid-template-columns:1fr}.aboutFeatures{grid-template-columns:1fr}.actions{display:grid;grid-template-columns:1fr;gap:8px}h1{font-size:clamp(2rem,9vw,2.6rem)}}
+    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:1fr}.aboutFeatures{grid-template-columns:1fr}.actions{display:grid;grid-template-columns:1fr;gap:8px}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryBtn{width:40px;height:40px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}}
   </style>
 </head>
 <body>
@@ -234,10 +248,12 @@
         <h2>הגלריה</h2>
         <p>רגעים מהאפייה, מההכנה ומהמוצרים שמגיעים עד אליכם.</p>
       </div>
-      <div class="galleryGrid">
-        <div class="galleryItem reveal"><img src="2.png" alt="אפיית מצות"><p>אפייה מסורתית מוקפדת</p></div>
-        <div class="galleryItem reveal"><img src="2.png" alt="מצות טריות"><p>טריות שנשמרת לאורך כל הדרך</p></div>
-        <div class="galleryItem reveal"><img src="2.png" alt="אריזת מצות"><p>אריזה נקייה ומכובדת לחג</p></div>
+      <div class="galleryWrap reveal">
+        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">›</button>
+        <div class="galleryViewport">
+          <div class="galleryTrack" id="galleryTrack"></div>
+        </div>
+        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">‹</button>
       </div>
     </section>
 
@@ -303,6 +319,15 @@
     </div>
   </div>
 
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightboxInner">
+      <button class="lightboxClose" type="button" id="lightboxClose">סגור</button>
+      <button class="lightboxNav prev" type="button" id="lightboxPrev" aria-label="הקודם">›</button>
+      <div class="lightboxMedia" id="lightboxMedia"></div>
+      <button class="lightboxNav next" type="button" id="lightboxNext" aria-label="הבא">‹</button>
+    </div>
+  </div>
+
   <script>
     const products = [
       {id:1,name:'מצה רכה קלאסית',sub:'קלאסיקה חגיגית',desc:'מרקם רך ועדין, מתאימה לארוחת חג משפחתית.',price:32,img:'2.png'},
@@ -319,6 +344,24 @@
       {id:12,name:'מצה שיבולת שועל',sub:'ללא גלוטן',desc:'מצות שיבולת שועל רכות באריזת פרימיום.',price:52,img:'2.png'}
     ];
 
+    const galleryItems = [
+      {type:'image',src:'2.png',alt:'אפיית מצות',caption:'אפייה מסורתית מוקפדת'},
+      {type:'image',src:'2.png',alt:'מצות טריות',caption:'טריות שנשמרת לאורך כל הדרך'},
+      {type:'image',src:'2.png',alt:'אריזת מצות',caption:'אריזה נקייה ומכובדת לחג'},
+      {type:'image',src:'2.png',alt:'מארז חגיגי',caption:'מארז פרימיום לאירוח'},
+      {type:'image',src:'2.png',alt:'צוות אפייה',caption:'צוות מקצועי בכל שלב'},
+      {type:'image',src:'2.png',alt:'פס ייצור',caption:'תהליך ייצור מדויק'},
+      {type:'image',src:'2.png',alt:'מגש הגשה',caption:'הגשה אסתטית לשולחן החג'},
+      {type:'image',src:'2.png',alt:'משלוח מצות',caption:'משלוחים מהירים לכל הארץ'},
+      {type:'image',src:'2.png',alt:'מצות כוסמין',caption:'מגוון סוגים בהתאמה אישית'},
+      {type:'image',src:'2.png',alt:'מצות שיבולת שועל',caption:'פתרונות גם ללא גלוטן'},
+      {type:'image',src:'2.png',alt:'אירוע קהילתי',caption:'אספקה לאירועים וקהילות'},
+      {type:'image',src:'2.png',alt:'אריזת שי',caption:'אריזות שי מהודרות'},
+      {type:'image',src:'2.png',alt:'רגע לפני החג',caption:'הכנה מוקדמת לחג'},
+      {type:'image',src:'2.png',alt:'תנור אפייה',caption:'תנורי אפייה מתקדמים'},
+      {type:'video',src:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',alt:'וידאו מהגלריה',caption:'וידאו מהמפעל וההכנה'}
+    ];
+
     const cart = new Map();
     const productsGrid = document.getElementById('productsGrid');
     const cartItems = document.getElementById('cartItems');
@@ -326,6 +369,49 @@
     const cartCount = document.getElementById('cartCount');
     const cartEl = document.getElementById('cart');
     const overlay = document.getElementById('overlay');
+    const galleryTrack = document.getElementById('galleryTrack');
+    const galleryPrev = document.getElementById('galleryPrev');
+    const galleryNext = document.getElementById('galleryNext');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxMedia = document.getElementById('lightboxMedia');
+    let galleryStart = 0;
+    let lightboxIndex = 0;
+    let touchStartX = 0;
+
+    function renderGallery(){
+      galleryTrack.innerHTML = Array.from({length:3}).map((_,slot)=>{
+        const index = (galleryStart + slot) % galleryItems.length;
+        const item = galleryItems[index];
+        const media = item.type === 'video'
+          ? `<video src="${item.src}" muted playsinline></video>`
+          : `<img src="${item.src}" alt="${item.alt}">`;
+        return `<article class="galleryItem" role="button" tabindex="0" data-index="${index}">${media}<p>${item.caption}</p></article>`;
+      }).join('');
+
+      galleryTrack.querySelectorAll('.galleryItem').forEach(card=>{
+        const open = ()=>openLightbox(Number(card.dataset.index));
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', (e)=>{ if(e.key==='Enter') open(); });
+      });
+    }
+
+    function shiftGallery(step){galleryStart = (galleryStart + step + galleryItems.length) % galleryItems.length;renderGallery();}
+
+    function renderLightbox(){
+      const item = galleryItems[lightboxIndex];
+      lightboxMedia.innerHTML = item.type === 'video'
+        ? `<video controls autoplay src="${item.src}"></video>`
+        : `<img src="${item.src}" alt="${item.alt}">`;
+    }
+
+    function openLightbox(index){
+      lightboxIndex = index;
+      renderLightbox();
+      lightbox.classList.add('open');
+    }
+
+    function closeLightbox(){lightbox.classList.remove('open');lightboxMedia.innerHTML='';}
+    function moveLightbox(step){lightboxIndex = (lightboxIndex + step + galleryItems.length) % galleryItems.length;renderLightbox();}
 
     function renderProducts(){
       productsGrid.innerHTML = products.map(p => `
@@ -401,6 +487,26 @@
     document.getElementById('closePayment')?.addEventListener('click', ()=>paymentModal.classList.remove('open'));
     paymentModal?.addEventListener('click', (e)=>{ if(e.target===paymentModal) paymentModal.classList.remove('open'); });
 
+    galleryPrev.addEventListener('click', ()=>shiftGallery(-1));
+    galleryNext.addEventListener('click', ()=>shiftGallery(1));
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(-1));
+    document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(1));
+    lightbox.addEventListener('click',(e)=>{if(e.target===lightbox) closeLightbox();});
+    lightbox.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].clientX;}, {passive:true});
+    lightbox.addEventListener('touchend',e=>{
+      const diff = e.changedTouches[0].clientX - touchStartX;
+      if(Math.abs(diff) < 40) return;
+      moveLightbox(diff > 0 ? -1 : 1);
+    }, {passive:true});
+    document.addEventListener('keydown',(e)=>{
+      if(!lightbox.classList.contains('open')) return;
+      if(e.key==='Escape') closeLightbox();
+      if(e.key==='ArrowRight') moveLightbox(-1);
+      if(e.key==='ArrowLeft') moveLightbox(1);
+    });
+
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
@@ -412,6 +518,7 @@
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
     renderProducts();
+    renderGallery();
     renderCart();
   </script>
 </body>
