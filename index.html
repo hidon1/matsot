@@ -50,6 +50,22 @@
       to{opacity:1;transform:translateY(0) scale(1)}
     }
 
+    @keyframes slideInSide{
+      from{opacity:0;transform:translateX(120px)}
+      to{opacity:1;transform:translateX(0)}
+    }
+
+    @keyframes dropFromTop{
+      from{opacity:0;transform:translateY(-52px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @keyframes cardDropIn{
+      0%{opacity:0;transform:translateY(-140px) scale(.94)}
+      62%{opacity:1;transform:translateY(10px) scale(1.02)}
+      100%{opacity:1;transform:translateY(0) scale(1)}
+    }
+
     .topbar{
       position:sticky;top:0;z-index:99;
       min-height:126px;
@@ -59,11 +75,17 @@
       box-shadow:0 14px 34px rgba(0,0,0,.08);
     }
     .topbarInner{min-height:126px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .logoLink{display:flex;align-items:center;gap:10px;min-width:170px;flex-shrink:0;margin-inline-start:auto}
+    .logoLink{display:flex;align-items:center;gap:10px;min-width:170px;flex-shrink:0;margin-inline-start:auto;opacity:0;animation:slideInSide .95s cubic-bezier(.2,.82,.24,1) .15s forwards}
     .logoImg{height:64px;filter:drop-shadow(0 12px 16px rgba(0,0,0,.35))}
     .siteName{display:flex;flex-direction:column;color:#1f160f}
     .siteName strong{font-size:1.35rem}
     .siteName span{opacity:.9;font-size:.95rem}
+
+    .heroBrand > *{opacity:0;animation:dropFromTop .9s ease forwards}
+    .heroBrand .eyebrow{animation-delay:.2s}
+    .heroBrand h1{animation-delay:.36s}
+    .heroBrand .lead{animation-delay:.52s}
+    .heroBrand .actions{animation-delay:.68s}
 
     .nav{display:flex;gap:6px;flex-wrap:nowrap;justify-content:center;flex:1;white-space:nowrap}
     .nav a,
@@ -119,8 +141,9 @@
     .galleryWrap{display:flex;align-items:center;gap:12px}
     .galleryViewport{overflow:hidden;flex:1}
     .galleryTrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;transition:transform .45s ease}
-    .galleryItem{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .32s ease}
-    .galleryItem:hover{transform:translateY(-6px) scale(1.04)}
+    .galleryItem{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .36s ease}
+    .galleryItem.dropIn{opacity:0;animation:cardDropIn .95s cubic-bezier(.2,.86,.22,1) forwards}
+    .galleryItem:hover{transform:translateY(-10px) scale(1.12)}
     .galleryItem img,.galleryItem video{display:block;width:100%;height:220px;object-fit:cover}
     .galleryItem p{padding:10px 12px;margin:0;font-weight:700;color:#443626}
     .galleryBtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(80,58,30,.28);background:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.12);transition:transform .2s ease,box-shadow .2s ease}
@@ -147,7 +170,7 @@
       flex-direction:column;
       transition:transform .32s ease, box-shadow .32s ease;
     }
-    .productCard:hover{transform:translateY(-10px) scale(1.04);box-shadow:0 26px 52px rgba(56,37,14,.28);border-color:rgba(192,143,58,.65)}
+    .productCard:hover{transform:translateY(-16px) scale(1.12);box-shadow:0 32px 60px rgba(56,37,14,.32);border-color:rgba(192,143,58,.75)}
     .productMedia{position:relative;height:250px}
     .productCard img{width:100%;height:100%;object-fit:cover}
     .productTag{
@@ -280,11 +303,11 @@
         <h2>הגלריה</h2>
       </div>
       <div class="galleryWrap reveal">
-        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">›</button>
+        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
         <div class="galleryViewport">
           <div class="galleryTrack" id="galleryTrack"></div>
         </div>
-        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">‹</button>
+        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
       </div>
     </section>
 
@@ -359,9 +382,9 @@
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lightboxInner">
       <button class="lightboxClose" type="button" id="lightboxClose">סגור</button>
-      <button class="lightboxNav prev" type="button" id="lightboxPrev" aria-label="הקודם">‹</button>
+      <button class="lightboxNav prev" type="button" id="lightboxPrev" aria-label="הקודם">›</button>
       <div class="lightboxMedia" id="lightboxMedia"></div>
-      <button class="lightboxNav next" type="button" id="lightboxNext" aria-label="הבא">›</button>
+      <button class="lightboxNav next" type="button" id="lightboxNext" aria-label="הבא">‹</button>
     </div>
   </div>
 
@@ -422,7 +445,7 @@
         const media = item.type === 'video'
           ? `<video src="${item.src}" muted playsinline></video>`
           : `<img src="${item.src}" alt="${item.alt}">`;
-        return `<article class="galleryItem" role="button" tabindex="0" data-index="${index}">${media}<p>${item.caption}</p></article>`;
+        return `<article class="galleryItem dropIn" style="animation-delay:${slot * 0.28}s" role="button" tabindex="0" data-index="${index}">${media}<p>${item.caption}</p></article>`;
       }).join('');
 
       galleryTrack.querySelectorAll('.galleryItem').forEach(card=>{
@@ -524,24 +547,24 @@
     document.getElementById('closePayment')?.addEventListener('click', ()=>paymentModal.classList.remove('open'));
     paymentModal?.addEventListener('click', (e)=>{ if(e.target===paymentModal) paymentModal.classList.remove('open'); });
 
-    galleryPrev.addEventListener('click', ()=>shiftGallery(1));
-    galleryNext.addEventListener('click', ()=>shiftGallery(-1));
+    galleryPrev.addEventListener('click', ()=>shiftGallery(-1));
+    galleryNext.addEventListener('click', ()=>shiftGallery(1));
 
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-    document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(1));
-    document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(-1));
+    document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(-1));
+    document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(1));
     lightbox.addEventListener('click',(e)=>{if(e.target===lightbox) closeLightbox();});
     lightbox.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].clientX;}, {passive:true});
     lightbox.addEventListener('touchend',e=>{
       const diff = e.changedTouches[0].clientX - touchStartX;
       if(Math.abs(diff) < 40) return;
-      moveLightbox(diff > 0 ? -1 : 1);
+      moveLightbox(diff > 0 ? 1 : -1);
     }, {passive:true});
     document.addEventListener('keydown',(e)=>{
       if(!lightbox.classList.contains('open')) return;
       if(e.key==='Escape') closeLightbox();
-      if(e.key==='ArrowRight') moveLightbox(1);
-      if(e.key==='ArrowLeft') moveLightbox(-1);
+      if(e.key==='ArrowRight') moveLightbox(-1);
+      if(e.key==='ArrowLeft') moveLightbox(1);
     });
 
     const observer = new IntersectionObserver((entries)=>{
