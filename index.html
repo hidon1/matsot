@@ -7,17 +7,17 @@
   <link rel="icon" type="image/png" href="1.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alef:wght@400;700&family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;800&family=Heebo:wght@400;500;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#fbf7ee;
-      --bg2:#f2e7d1;
+      --bg:#ffffff;
+      --bg2:#f7f7f5;
       --ink:#15110b;
       --muted:#5a4c3a;
       --line:rgba(0,0,0,.14);
       --gold:#c08f3a;
       --gold-light:#e6c888;
-      --card:#fffdf8;
+      --card:#ffffff;
       --radius:22px;
       --shadow:0 16px 40px rgba(60,39,15,.16);
     }
@@ -26,11 +26,22 @@
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:"Assistant","Heebo","Alef",system-ui,sans-serif;
+      font-family:"Rubik","Assistant",system-ui,sans-serif;
       color:var(--ink);
       background:linear-gradient(180deg,var(--bg),var(--bg2));
+      position:relative;
+      min-height:100vh;
     }
-    h1,h2,h3,h4{font-family:"Frank Ruhl Libre","Rubik","Alef",sans-serif;letter-spacing:.01em}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:url('2.png') center/900px auto repeat;
+      opacity:.2;
+      pointer-events:none;
+      z-index:-1;
+    }
+    h1,h2,h3,h4{font-family:"Frank Ruhl Libre","Rubik",sans-serif;letter-spacing:.01em}
     a{color:inherit;text-decoration:none}
     .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(14px,3.2vw,24px)}
 
@@ -42,28 +53,27 @@
     .topbar{
       position:sticky;top:0;z-index:99;
       min-height:126px;
-      border-bottom:1px solid rgba(255,255,255,.2);
-      background:
-        linear-gradient(180deg, rgba(20,13,7,.58), rgba(20,13,7,.72)),
-        url('2.png') center/cover no-repeat;
-      box-shadow:0 14px 34px rgba(0,0,0,.22);
+      border-bottom:1px solid rgba(0,0,0,.08);
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(8px);
+      box-shadow:0 14px 34px rgba(0,0,0,.08);
     }
     .topbarInner{min-height:126px;display:flex;align-items:center;justify-content:space-between;gap:14px}
     .logoLink{display:flex;align-items:center;gap:12px;min-width:220px;flex-shrink:0}
     .logoImg{height:64px;filter:drop-shadow(0 12px 16px rgba(0,0,0,.35))}
-    .siteName{display:flex;flex-direction:column;color:#fff}
+    .siteName{display:flex;flex-direction:column;color:#1f160f}
     .siteName strong{font-size:1.35rem}
     .siteName span{opacity:.9;font-size:.95rem}
 
     .nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;flex:1}
     .nav a,
     .cartTrigger{
-      padding:10px 14px;border-radius:12px;color:#fff;font-weight:700;
-      border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);
+      padding:10px 14px;border-radius:12px;color:#2c2117;font-weight:700;
+      border:1px solid rgba(44,33,23,.18);background:rgba(255,255,255,.92);
       backdrop-filter:blur(4px);cursor:pointer;
       transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
     }
-    .nav a:hover,.nav a.active,.cartTrigger:hover{background:rgba(255,255,255,.24);transform:translateY(-2px) scale(1.03);box-shadow:0 10px 22px rgba(0,0,0,.2)}
+    .nav a:hover,.nav a.active,.cartTrigger:hover{background:#fff;transform:translateY(-2px) scale(1.06);box-shadow:0 10px 22px rgba(0,0,0,.16)}
 
     .callPill{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;background:#fff;color:#2b2015;font-weight:800;box-shadow:0 10px 26px rgba(0,0,0,.22);min-width:145px;justify-content:center;white-space:nowrap}
     .hamb{display:none;background:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:800}
@@ -77,7 +87,7 @@
 
     .btn{border:none;cursor:pointer;padding:12px 18px;border-radius:14px;font-weight:800;font-family:inherit;background:#23170d;color:#fff;transition:transform .22s ease, box-shadow .22s ease, filter .22s ease}
     .btn.alt{background:#fff;color:#23170d;border:1px solid var(--line)}
-    .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 26px rgba(0,0,0,.18);filter:saturate(1.08)}
+    .btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 12px 26px rgba(0,0,0,.18);filter:saturate(1.08)}
 
     section{padding:24px 0}
     .sectionHead{margin:0 0 22px;text-align:center}
@@ -89,6 +99,18 @@
       padding:0 .5em .38em;
       color:#111;
       font-weight:800;
+      transition:transform .25s ease,color .25s ease;
+    }
+    .sectionHead h2::before{
+      content:"↖";
+      position:absolute;
+      top:-1.1em;
+      left:50%;
+      transform:translateX(-50%) scale(.6);
+      opacity:0;
+      color:var(--gold);
+      font-size:.8em;
+      transition:opacity .22s ease,transform .22s ease;
     }
     .sectionHead h2::after{
       content:"";
@@ -103,15 +125,18 @@
       box-shadow:0 6px 12px rgba(192,143,58,.22);
     }
     .sectionHead p{margin:8px 0 0;color:var(--muted)}
+    .sectionHead:hover h2{transform:translateY(-4px) scale(1.05);color:#000}
+    .sectionHead:hover h2::before{opacity:1;transform:translateX(-50%) scale(1)}
 
     .galleryWrap{display:flex;align-items:center;gap:12px}
     .galleryViewport{overflow:hidden;flex:1}
     .galleryTrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;transition:transform .45s ease}
     .galleryItem{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .32s ease}
-    .galleryItem:hover{transform:translateY(-6px) scale(1.02)}
+    .galleryItem:hover{transform:translateY(-6px) scale(1.04)}
     .galleryItem img,.galleryItem video{display:block;width:100%;height:220px;object-fit:cover}
     .galleryItem p{padding:10px 12px;margin:0;font-weight:700;color:#443626}
-    .galleryBtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(80,58,30,.28);background:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+    .galleryBtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(80,58,30,.28);background:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.12);transition:transform .2s ease,box-shadow .2s ease}
+    .galleryBtn:hover{transform:scale(1.12);box-shadow:0 10px 24px rgba(0,0,0,.2)}
 
     .lightbox{position:fixed;inset:0;background:rgba(8,7,5,.9);display:none;z-index:120;align-items:center;justify-content:center;padding:24px}
     .lightbox.open{display:flex}
@@ -134,7 +159,7 @@
       flex-direction:column;
       transition:transform .32s ease, box-shadow .32s ease;
     }
-    .productCard:hover{transform:translateY(-8px);box-shadow:0 22px 44px rgba(56,37,14,.22)}
+    .productCard:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 22px 44px rgba(56,37,14,.22)}
     .productMedia{position:relative;height:250px}
     .productCard img{width:100%;height:100%;object-fit:cover}
     .productTag{
@@ -168,6 +193,7 @@
     .cartItem{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
     .qty{display:flex;gap:8px;align-items:center;margin-top:8px}
     .qty button{width:30px;height:30px;border:none;border-radius:8px;background:#eee;cursor:pointer}
+    .cartCheckout{margin-top:14px;width:100%}
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:180}
     .overlay.open{display:block}
 
@@ -226,6 +252,7 @@
     </div>
     <div id="cartItems"></div>
     <p><strong>סה״כ:</strong> <span id="cartTotal">0</span> ₪</p>
+    <button class="btn cartCheckout" type="button" id="openPaymentInCart">מעבר לרכישה עכשיו</button>
   </aside>
   <div class="overlay" id="overlay"></div>
 
@@ -249,11 +276,11 @@
         <p>רגעים מהאפייה, מההכנה ומהמוצרים שמגיעים עד אליכם.</p>
       </div>
       <div class="galleryWrap reveal">
-        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">›</button>
+        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
         <div class="galleryViewport">
           <div class="galleryTrack" id="galleryTrack"></div>
         </div>
-        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">‹</button>
+        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
       </div>
     </section>
 
@@ -263,10 +290,6 @@
         <p>12 מוצרים יפים ואיכותיים, 3 בכל שורה, עם תמונה גדולה ותיאור ברור.</p>
       </div>
       <div class="productsGrid" id="productsGrid"></div>
-      <div class="purchaseStrip reveal">
-        <p>רוצים לבצע רכישה מהירה? לחצו כאן לפתיחת אזור תשלום ייעודי.</p>
-        <button class="btn" type="button" id="openPayment">מעבר לרכישה עכשיו</button>
-      </div>
     </section>
 
     <section id="about">
@@ -483,16 +506,16 @@
     sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>sheet.classList.remove('open')));
 
     const paymentModal = document.getElementById('paymentModal');
-    document.getElementById('openPayment')?.addEventListener('click', ()=>paymentModal.classList.add('open'));
+    document.getElementById('openPaymentInCart')?.addEventListener('click', ()=>{paymentModal.classList.add('open');closeCart();});
     document.getElementById('closePayment')?.addEventListener('click', ()=>paymentModal.classList.remove('open'));
     paymentModal?.addEventListener('click', (e)=>{ if(e.target===paymentModal) paymentModal.classList.remove('open'); });
 
-    galleryPrev.addEventListener('click', ()=>shiftGallery(-1));
-    galleryNext.addEventListener('click', ()=>shiftGallery(1));
+    galleryPrev.addEventListener('click', ()=>shiftGallery(1));
+    galleryNext.addEventListener('click', ()=>shiftGallery(-1));
 
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-    document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(-1));
-    document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(1));
+    document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(1));
+    document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(-1));
     lightbox.addEventListener('click',(e)=>{if(e.target===lightbox) closeLightbox();});
     lightbox.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].clientX;}, {passive:true});
     lightbox.addEventListener('touchend',e=>{
@@ -503,8 +526,8 @@
     document.addEventListener('keydown',(e)=>{
       if(!lightbox.classList.contains('open')) return;
       if(e.key==='Escape') closeLightbox();
-      if(e.key==='ArrowRight') moveLightbox(-1);
-      if(e.key==='ArrowLeft') moveLightbox(1);
+      if(e.key==='ArrowRight') moveLightbox(1);
+      if(e.key==='ArrowLeft') moveLightbox(-1);
     });
 
     const observer = new IntersectionObserver((entries)=>{
