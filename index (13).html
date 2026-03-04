@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>מצות אבהתנא</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6efdd;
+      --bg2:#efe5cd;
+      --ink:#17140f;
+      --muted:#5b5143;
+      --line:rgba(0,0,0,.14);
+      --accent:#8f5518;
+      --accent-soft:#dba96b;
+      --card:rgba(255,255,255,.58);
+      --radius:22px;
+      --shadow:0 16px 40px rgba(0,0,0,.12);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Assistant",system-ui,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,var(--bg),var(--bg2));
+    }
+    h1,h2,h3,h4{font-family:"Rubik","Assistant",sans-serif}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+
+    .topbar{
+      position:sticky;top:0;z-index:99;
+      min-height:140px;
+      border-bottom:1px solid rgba(255,255,255,.2);
+      background:
+        linear-gradient(180deg, rgba(15,10,5,.56), rgba(15,10,5,.66)),
+        url('2.png') center/cover no-repeat;
+      box-shadow:0 14px 34px rgba(0,0,0,.22);
+    }
+    .topbarInner{
+      min-height:140px;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;
+    }
+    .logoLink{display:flex;align-items:center;gap:12px;min-width:220px}
+    .logoImg{height:64px;filter:drop-shadow(0 12px 16px rgba(0,0,0,.35))}
+    .siteName{display:flex;flex-direction:column;color:#fff}
+    .siteName strong{font-size:1.35rem}
+    .siteName span{opacity:.86;font-size:.95rem}
+
+    .nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .nav a{
+      padding:10px 14px;border-radius:12px;
+      color:#fff;font-weight:700;
+      border:1px solid rgba(255,255,255,.28);
+      background:rgba(255,255,255,.12);
+      backdrop-filter:blur(4px);
+    }
+    .nav a:hover,.nav a.active{background:rgba(255,255,255,.22)}
+
+    .callPill{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 16px;border-radius:999px;
+      background:#fff;color:#2b2015;font-weight:800;
+      box-shadow:0 10px 26px rgba(0,0,0,.22);
+      min-width:145px;justify-content:center;
+    }
+
+    .hamb{display:none;background:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:800}
+
+    .hero{padding:26px 0 20px}
+    .heroBrand{padding:14px 0 18px}
+    .eyebrow{font-size:1.15rem;color:#6a5437;font-weight:700;margin:0 0 8px}
+    h1{font-size:clamp(2.4rem,4.5vw,4rem);margin:0 0 8px;line-height:1.03}
+    .lead{font-size:1.1rem;max-width:72ch;line-height:1.65;color:var(--muted);margin:0}
+    .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+
+    .btn{
+      border:none;cursor:pointer;
+      padding:12px 18px;border-radius:14px;font-weight:800;font-family:inherit;
+      background:#23170d;color:#fff;
+    }
+    .btn.alt{background:#fff;color:#23170d;border:1px solid var(--line)}
+
+    section{padding:20px 0}
+    .sectionHead{margin-bottom:14px}
+    .sectionHead h2{margin:0 0 4px;font-size:1.8rem}
+    .sectionHead p{margin:0;color:var(--muted)}
+
+    .galleryGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .galleryItem{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff}
+    .galleryItem img{display:block;width:100%;height:220px;object-fit:cover}
+    .galleryItem p{padding:10px 12px;margin:0;font-weight:700;color:#443626}
+
+    .productsGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .productCard{
+      background:var(--card);border:1px solid rgba(0,0,0,.11);
+      border-radius:18px;padding:10px;box-shadow:0 8px 20px rgba(0,0,0,.08);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .productCard img{width:100%;height:150px;object-fit:cover;border-radius:14px}
+    .productCard h3{margin:0;font-size:1.02rem}
+    .productCard p{margin:0;color:var(--muted);font-size:.94rem}
+    .price{font-family:"Rubik";font-weight:800;color:#613b14}
+
+    .aboutText{
+      background:rgba(255,255,255,.5);border-radius:18px;padding:16px 18px;border:1px solid var(--line);
+      line-height:1.9;color:#413527;font-size:1.05rem;
+    }
+
+    .contactGrid{display:grid;grid-template-columns:1fr 1.4fr;gap:14px}
+    .card{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:16px;padding:14px}
+    label{display:block;margin-bottom:6px;font-weight:700}
+    input,textarea{
+      width:100%;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,.2);
+      font-family:inherit;margin-bottom:10px;background:#fff;
+    }
+    textarea{min-height:130px;resize:vertical}
+
+    .cart{
+      position:fixed;top:0;left:-370px;height:100vh;width:350px;z-index:200;
+      background:#fff;border-right:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.2);
+      transition:left .25s ease;padding:14px;overflow:auto;
+    }
+    .cart.open{left:0}
+    .cartHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .cartItem{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
+    .qty{display:flex;gap:8px;align-items:center;margin-top:8px}
+    .qty button{width:30px;height:30px;border:none;border-radius:8px;background:#eee;cursor:pointer}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:180}
+    .overlay.open{display:block}
+
+    .sheet{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150}
+    .sheetPanel{position:absolute;top:10px;right:10px;left:10px;background:#fff;border-radius:14px;padding:10px}
+    .sheetNav{display:grid;gap:8px}
+    .sheetNav a{padding:10px;border-radius:10px;background:#f5f0e7;font-weight:800}
+
+    @media (max-width:1100px){.productsGrid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:900px){
+      .topbar{min-height:100px}.topbarInner{min-height:100px}
+      .nav{display:none}.hamb{display:inline-flex}
+      .galleryGrid,.productsGrid,.contactGrid{grid-template-columns:1fr}
+      .logoImg{height:52px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbarInner">
+        <a class="logoLink" href="#home" aria-label="לוגו">
+          <img class="logoImg" src="1.png" alt="לוגו מצות אבהתנא">
+          <div class="siteName">
+            <strong>מצות אבהתנא</strong>
+            <span>איכות של מסורת, טעם של חג</span>
+          </div>
+        </a>
+
+        <nav class="nav" aria-label="תפריט ראשי">
+          <a class="active" href="#home">דף הבית</a>
+          <a href="#gallery">הגלריה</a>
+          <a href="#products">המוצרים שלנו</a>
+          <a href="#about">מי אנחנו</a>
+          <a href="#contact">צור קשר</a>
+        </nav>
+
+        <button class="hamb" id="openMenu" type="button">תפריט</button>
+
+        <a class="callPill" href="tel:0500000000">דברו איתנו</a>
+      </div>
+    </div>
+  </header>
+
+  <aside class="cart" id="cart">
+    <div class="cartHead">
+      <h3>הסל שלך</h3>
+      <button class="btn alt" id="closeCart" type="button">סגור</button>
+    </div>
+    <div id="cartItems"></div>
+    <p><strong>סה״כ:</strong> <span id="cartTotal">0</span> ₪</p>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <main class="wrap" id="home">
+    <section class="hero">
+      <div class="heroBrand">
+        <p class="eyebrow">כל המצות רכות, טעימות ומדויקות לאכילת כזית בשמחה</p>
+        <h1>מצות אבהתנא</h1>
+        <p class="lead">כאן לא מדובר רק במצה – אלא בחוויה של מסורת, איכות ואפייה מוקפדת. אנחנו אופים באהבה גדולה, משקיעים בכל שלב בתהליך, ודואגים שכל מארז שמגיע אליכם יהיה טרי, מכובד, מרשים וטעים במיוחד.</p>
+        <div class="actions">
+          <a class="btn" href="#gallery">הגלריה</a>
+          <a class="btn alt" href="#products">למוצרים שלנו</a>
+          <a class="btn alt" href="#contact">צור קשר</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="sectionHead">
+        <h2>הגלריה</h2>
+        <p>רגעים מהאפייה, מההכנה ומהמוצרים שמגיעים עד אליכם.</p>
+      </div>
+      <div class="galleryGrid">
+        <div class="galleryItem"><img src="2.png" alt="אפיית מצות"><p>אפייה מסורתית מוקפדת</p></div>
+        <div class="galleryItem"><img src="2.png" alt="מצות טריות"><p>טריות שנשמרת לאורך כל הדרך</p></div>
+        <div class="galleryItem"><img src="2.png" alt="אריזת מצות"><p>אריזה נקייה ומכובדת לחג</p></div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="sectionHead">
+        <h2>המוצרים שלנו</h2>
+        <p>10 מוצרים נבחרים – כל מוצר עם הסבר קצר, מחיר וכפתור הוספה לסל.</p>
+      </div>
+      <div class="productsGrid" id="productsGrid"></div>
+    </section>
+
+    <section id="about">
+      <div class="sectionHead">
+        <h2>מי אנחנו</h2>
+      </div>
+      <div class="aboutText">
+        אנחנו מאמינים שמצה טובה מתחילה ביראת כבוד למסורת וממשיכה בסטנדרט גבוה של עשייה. במשך השנים בנינו שיטה שמחברת בין תשומת לב לפרטים הקטנים לבין שירות אישי וחם לכל לקוח. אצלנו תמצאו לא רק מוצר איכותי, אלא גם יחס משפחתי, זמינות מלאה, והתחייבות לתת לכם חוויית רכישה נעימה, אמינה ומסודרת. אנחנו מלווים משפחות, קהילות ובתי עסק בכל רחבי הארץ, ודואגים שכל הזמנה תגיע בזמן, באיכות גבוהה ועם חיוך גדול. המטרה שלנו פשוטה: לשמח את שולחן החג שלכם עם מצות רכות, טעימות ומכובדות.
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="sectionHead">
+        <h2>צור קשר</h2>
+        <p>השאירו פרטים והודעה – בהמשך ניתן לחבר ל-Google Apps Script לשליחה אוטומטית במייל.</p>
+      </div>
+      <div class="contactGrid">
+        <div class="card">
+          <h3>פרטים ישירים</h3>
+          <p><strong>טלפון:</strong> <a href="tel:0500000000">050-000-0000</a></p>
+          <p><strong>מייל:</strong> <a href="mailto:info@example.com">info@example.com</a></p>
+          <p>נשמח לענות במהירות לכל שאלה, הזמנה מיוחדת או בקשה מותאמת אישית.</p>
+        </div>
+        <form class="card" id="contactForm">
+          <label for="name">שם</label>
+          <input id="name" name="name" required>
+          <label for="email">אימייל</label>
+          <input id="email" name="email" type="email" required>
+          <label for="message">תוכן הפנייה</label>
+          <textarea id="message" name="message" required></textarea>
+          <button class="btn" type="submit">שליחה</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div class="sheet" id="sheet" aria-hidden="true">
+    <div class="sheetPanel" role="dialog" aria-modal="true" aria-label="תפריט">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong>תפריט</strong>
+        <button class="btn alt" id="closeMenu" type="button">סגור</button>
+      </div>
+      <div class="sheetNav">
+        <a href="#home">דף הבית</a>
+        <a href="#gallery">הגלריה</a>
+        <a href="#products">המוצרים שלנו</a>
+        <a href="#about">מי אנחנו</a>
+        <a href="#contact">צור קשר</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      {id:1,name:'מצה רכה קלאסית',desc:'מרקם רך ועדין, מתאימה לארוחת חג משפחתית.',price:32,img:'2.png'},
+      {id:2,name:'מצה עבודת יד',desc:'אפייה ידנית באיכות גבוהה במיוחד.',price:38,img:'2.png'},
+      {id:3,name:'מצה דקה פרימיום',desc:'דקה, פריכה וטעימה עם איזון מושלם.',price:30,img:'2.png'},
+      {id:4,name:'מארז משפחתי',desc:'מארז גדול ומשתלם לשולחן מלא אורחים.',price:79,img:'2.png'},
+      {id:5,name:'מארז מהודר לחג',desc:'אריזה מהודרת, מתנה מושלמת לפסח.',price:95,img:'2.png'},
+      {id:6,name:'מצה מלאה',desc:'טעם עשיר יותר עם מרקם ייחודי.',price:35,img:'2.png'},
+      {id:7,name:'מצה דלת מלח',desc:'אפשרות עדינה יותר בטעמים.',price:33,img:'2.png'},
+      {id:8,name:'מיני מצות אישיות',desc:'פתרון מצוין לאירוח והגשה נוחה.',price:28,img:'2.png'},
+      {id:9,name:'מצה עבה רכה',desc:'ביס עשיר ורך במיוחד.',price:36,img:'2.png'},
+      {id:10,name:'מארז קהילתי',desc:'כמות גדולה במחיר משתלם לקבוצות.',price:120,img:'2.png'}
+    ];
+
+    const cart = new Map();
+    const productsGrid = document.getElementById('productsGrid');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartEl = document.getElementById('cart');
+    const overlay = document.getElementById('overlay');
+
+    function renderProducts(){
+      productsGrid.innerHTML = products.map(p => `
+        <article class="productCard">
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+          <div class="price">${p.price} ₪</div>
+          <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
+        </article>
+      `).join('');
+    }
+
+    function openCart(){cartEl.classList.add('open');overlay.classList.add('open');}
+    function closeCart(){cartEl.classList.remove('open');overlay.classList.remove('open');}
+
+    function addToCart(id){
+      cart.set(id,(cart.get(id)||0)+1);
+      renderCart();
+      openCart();
+    }
+
+    function changeQty(id,delta){
+      const next = (cart.get(id)||0)+delta;
+      if(next<=0) cart.delete(id); else cart.set(id,next);
+      renderCart();
+    }
+
+    function renderCart(){
+      let total = 0;
+      cartItems.innerHTML = [...cart.entries()].map(([id,qty])=>{
+        const product = products.find(p=>p.id===id);
+        const sum = product.price * qty;
+        total += sum;
+        return `
+          <div class="cartItem">
+            <strong>${product.name}</strong>
+            <div>${product.price} ₪ × ${qty} = ${sum} ₪</div>
+            <div class="qty">
+              <button type="button" onclick="changeQty(${id},1)">+</button>
+              <button type="button" onclick="changeQty(${id},-1)">-</button>
+            </div>
+          </div>
+        `;
+      }).join('') || '<p>הסל עדיין ריק.</p>';
+      cartTotal.textContent = total;
+    }
+
+    const GOOGLE_SCRIPT_URL = '';
+    document.getElementById('contactForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+      if(!GOOGLE_SCRIPT_URL){
+        alert('יש להוסיף את כתובת Google Apps Script בקוד כדי לאפשר שליחה אוטומטית.');
+        return;
+      }
+      await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(formData)});
+      alert('ההודעה נשלחה בהצלחה.');
+      e.target.reset();
+    });
+
+    document.getElementById('closeCart').addEventListener('click', closeCart);
+    overlay.addEventListener('click', closeCart);
+
+    const sheet = document.getElementById('sheet');
+    document.getElementById('openMenu')?.addEventListener('click', ()=>sheet.classList.add('open'));
+    document.getElementById('closeMenu')?.addEventListener('click', ()=>sheet.classList.remove('open'));
+    sheet?.addEventListener('click', (e)=>{ if(e.target===sheet) sheet.classList.remove('open'); });
+    sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>sheet.classList.remove('open')));
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>
