@@ -153,6 +153,28 @@
     }
     .certCard:hover img{transform:scale(1.19) translateX(-8px)}
 
+    .certCard.certCardInfo{position:relative;min-height:195px}
+    .certCard.certCardInfo .certInfoText{
+      margin:0;
+      opacity:0;
+      transform:translateY(12px);
+      transition:opacity .4s ease,transform .4s ease;
+      font-size:.94rem;
+      line-height:1.55;
+      color:#3f2f1d;
+      padding:10px 6px 6px;
+    }
+    .certCard.certCardInfo:hover img{
+      width:72px;
+      height:72px;
+      transform:none;
+      object-fit:contain;
+      position:absolute;
+      top:10px;
+      right:10px;
+    }
+    .certCard.certCardInfo:hover .certInfoText{opacity:1;transform:translateY(0);padding-top:88px}
+
     .btn{border:none;cursor:pointer;padding:12px 18px;border-radius:14px;font-weight:800;font-family:inherit;background:#23170d;color:#fff;transition:transform .4s ease, box-shadow .4s ease, filter .4s ease}
     .btn.alt{background:#fff;color:#23170d;border:1px solid var(--line)}
     .btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 12px 26px rgba(0,0,0,.18);filter:saturate(1.08)}
@@ -394,7 +416,10 @@
         <div class="certGrid" aria-label="תעודות הכשר">
           <div class="certCard"><img src="הכשר/כשרות-הרב-שבתי-לוי-בני-ברק.webp" alt="כשרות הרב שבתי לוי בני ברק"></div>
           <div class="certCard"><img src="הכשר/כשרות-בדץ-יביע-אומר.webp" alt="כשרות בדץ יביע אומר"></div>
-          <div class="certCard"><img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="פיקוח והשגחת בדץ העדה החרדית הספרדית"></div>
+          <div class="certCard certCardInfo">
+            <img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="פיקוח והשגחת בדץ העדה החרדית הספרדית">
+            <p class="certInfoText">ה&quot;בדץ העדה החרדית הספרדית&quot; הוא גוף כשרות מוכר וידוע בישראל, המפקח על ייצור ושיווק של מוצרים כשרים למהדרין. המוצרים הנמצאים בפיקוח הבד&quot;ץ נושאים את חותמת הכשרות של הבד&quot;ץ, המעידה על כך שהם עומדים בכל הדרישות ההלכתיות המחמירות.</p>
+          </div>
           <div class="certCard"><img src="הכשר/כשרות-מהדרין-רבנות-הראשית-פתח-תקווה.webp" alt="כשרות מהדרין רבנות הראשית פתח תקווה"></div>
         </div>
       </div>
