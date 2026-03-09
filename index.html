@@ -116,6 +116,7 @@
     .btn{border:none;cursor:pointer;padding:12px 18px;border-radius:14px;font-weight:800;font-family:inherit;background:#23170d;color:#fff;transition:transform .4s ease, box-shadow .4s ease, filter .4s ease}
     .btn.alt{background:#fff;color:#23170d;border:1px solid var(--line)}
     .btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 12px 26px rgba(0,0,0,.18);filter:saturate(1.08)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none;filter:none}
 
     section{padding:24px 0}
     .sectionHead{margin:0 0 22px;text-align:center}
@@ -253,7 +254,17 @@
     .deliveryFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
     .deliveryFields[hidden]{display:none}
     .termsConfirm{margin-top:12px;padding:10px 12px;border-radius:12px;background:#f7f3ea;border:1px solid rgba(97,59,20,.2)}
-    .termsConfirm label{display:flex;align-items:flex-start;gap:8px;margin:0;font-weight:600;line-height:1.6}
+    .termsConfirm label{display:flex;align-items:center;gap:8px;margin:0;font-weight:600;line-height:1.4;white-space:nowrap}
+    .termsConfirm input[type='checkbox']{margin:0;flex-shrink:0}
+    .termsLink{color:#5e3b11;text-decoration:underline;font-weight:800}
+
+    .termsModal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;z-index:230;padding:16px}
+    .termsModal.open{display:flex}
+    .termsCard{position:relative;width:min(880px,95vw);max-height:86vh;overflow:auto;background:#fff;border-radius:18px;padding:20px;border:1px solid rgba(0,0,0,.16);box-shadow:0 20px 44px rgba(0,0,0,.35)}
+    .termsClose{position:absolute;top:10px;left:10px;width:34px;height:34px;border:none;border-radius:999px;background:#f1ece2;cursor:pointer;font-size:1.1rem;font-weight:800}
+    .termsCard h2{margin:0 0 12px}
+    .termsCard h3{margin:16px 0 8px}
+    .termsCard p{margin:0 0 10px;line-height:1.7;color:#2f2418}
     .summaryLine{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.2);font-weight:700;color:#3d2e1d}
 
     .reveal{opacity:0;transform:translateY(22px) scale(.98)}
@@ -375,7 +386,7 @@
     <div class="wrap footerInner">
       <h3 class="footerTitle">מידע חשוב ושירות</h3>
       <div class="footerLinks">
-        <a href="terms.html">תנאי שימוש</a>
+        <a href="#" class="openTerms" role="button">תקנון האתר</a>
       </div>
       <p class="footerNote"><strong>כתובתנו:</strong> סמטת התבור 3, פתח תקווה</p>
       <p class="footerNote">כל הזכויות שמורות למצות אבהתנא.</p>
@@ -436,13 +447,32 @@
         <div class="termsConfirm">
           <label for="termsApprove">
             <input id="termsApprove" name="termsApprove" type="checkbox" required>
-            קראתי את <a href="terms.html" target="_blank" rel="noopener">תקנון האתר</a> ואני מאשר/ת אותו.
+            קרתי את <a href="#" class="termsLink openTerms" role="button">תקנון האתר</a> ואני מאשר אותו.
           </label>
         </div>
         <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
-        <button class="btn" type="submit">המשך למערכת הסליקה</button>
+        <button class="btn" type="submit">המשך לרכישה</button>
       </form>
       <iframe class="paymentFrame" id="paymentFrame" title="מערכת סליקה" hidden srcdoc="<!doctype html><html lang='he' dir='rtl'><head><meta charset='utf-8'><style>body{margin:0;font-family:Assistant,Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);display:grid;place-items:center;height:100vh;color:#3b2d1c}div{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:24px;max-width:540px;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:0;line-height:1.7}</style></head><body><div><h2>מערכת סליקה בבנייה</h2><p>כאן יופיע בהמשך אייפרם של מערכת הסליקה שלכם. כרגע ניתן להשאיר את התוכן הזה כמצב זמני.</p></div></body></html>"></iframe>
+    </div>
+  </div>
+
+
+  <div class="termsModal" id="termsModal" aria-hidden="true">
+    <div class="termsCard" role="dialog" aria-modal="true" aria-label="תקנון האתר">
+      <button class="termsClose" type="button" id="closeTerms" aria-label="סגירת התקנון">✕</button>
+      <h2>תקנון האתר</h2>
+      <h3>תנאי שימוש</h3>
+      <p>השימוש באתר מצות אבהתנא כפוף לתנאים המפורטים בעמוד זה. שימוש באתר, בגלישה או ביצוע הזמנה מעידים על הסכמה לתנאי השימוש כפי שיעודכנו מעת לעת.</p>
+      <p>תכני האתר, העיצוב, התמונות והמידע מוצגים לצורך שירות הלקוחות והזמנות בלבד, ואין לעשות בהם שימוש מסחרי ללא אישור מראש.</p>
+      <h3>מדיניות פרטיות</h3>
+      <p>בעת יצירת קשר או הזמנה באתר, ייתכן שייאספו פרטים כגון שם, טלפון, דוא״ל ותוכן הפנייה לצורך מתן שירות, חזרה ללקוח וטיפול בהזמנות.</p>
+      <p>המידע נשמר באופן סביר ומוגן, ולא יועבר לצד שלישי אלא אם נדרש לצורך השלמת השירות או לפי דין.</p>
+      <h3>מדיניות ביטולים והחזרות</h3>
+      <p><strong>1. ביטול הזמנה לפני משלוח:</strong> ניתן לבטל הזמנה כל עוד ההזמנה טרם נשלחה ללקוח. בקשה לביטול יש להעביר בהקדם האפשרי באמצעות פרטי יצירת הקשר המופיעים באתר.</p>
+      <p><strong>2. מוצרים שנשלחו או נמסרו ללקוח:</strong> מאחר ומדובר במוצרי מזון, מטעמי בריאות, בטיחות והיגיינה לא ניתן להחזיר מוצרים לאחר שנמסרו ללקוח. לפיכך, לא יתאפשר זיכוי או החזר כספי לאחר קבלת המוצר.</p>
+      <p><strong>3. מוצר פגום או טעות בהזמנה:</strong> במקרה של מוצר פגום, מוצר שניזוק במהלך המשלוח או טעות במשלוח, יש ליצור קשר עם שירות הלקוחות של האתר בהקדם האפשרי ולכל המאוחר בתוך 24 שעות ממועד קבלת המשלוח. לאחר בדיקה, יינתן פתרון מתאים בהתאם לנסיבות המקרה.</p>
+      <p><strong>4. דרכי יצירת קשר:</strong> לצורך ביטול הזמנה או פנייה בנושא החזרות ניתן ליצור קשר באמצעות טופס יצירת הקשר באתר או באמצעי הקשר המפורטים בעמוד "צור קשר".</p>
     </div>
   </div>
 
@@ -627,6 +657,8 @@
     sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>sheet.classList.remove('open')));
 
     const paymentModal = document.getElementById('paymentModal');
+    const termsModal = document.getElementById('termsModal');
+    const termsApprove = document.getElementById('termsApprove');
     document.getElementById('openPaymentInCart')?.addEventListener('click', ()=>{
       paymentModal.classList.add('open');
       paymentFrame.hidden = true;
@@ -642,6 +674,24 @@
       paymentFrame.hidden = false;
       checkoutForm.hidden = true;
     });
+
+
+    document.querySelectorAll('.openTerms').forEach(link=>{
+      link.addEventListener('click',(e)=>{
+        e.preventDefault();
+        termsModal.classList.add('open');
+      });
+    });
+    document.getElementById('closeTerms')?.addEventListener('click', ()=>termsModal.classList.remove('open'));
+    termsModal?.addEventListener('click', (e)=>{ if(e.target===termsModal) termsModal.classList.remove('open'); });
+
+    const checkoutSubmitBtn = checkoutForm?.querySelector('button[type="submit"]');
+    function updateCheckoutSubmitState(){
+      if(!checkoutSubmitBtn || !termsApprove) return;
+      checkoutSubmitBtn.disabled = !termsApprove.checked;
+    }
+    termsApprove?.addEventListener('change', updateCheckoutSubmitState);
+    updateCheckoutSubmitState();
 
     galleryPrev.addEventListener('click', ()=>shiftGallery(-1));
     galleryNext.addEventListener('click', ()=>shiftGallery(1));
