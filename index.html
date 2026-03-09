@@ -60,6 +60,42 @@
       to{opacity:1;transform:translateY(0)}
     }
 
+    @keyframes softSlideInRight{
+      from{opacity:0;transform:translateX(90px) scale(.97)}
+      to{opacity:1;transform:translateX(0) scale(1)}
+    }
+
+    @keyframes softSlideInLeft{
+      from{opacity:0;transform:translateX(-90px) scale(.97)}
+      to{opacity:1;transform:translateX(0) scale(1)}
+    }
+
+    @keyframes introFadeOut{
+      0%,70%{opacity:1;visibility:visible}
+      100%{opacity:0;visibility:hidden}
+    }
+
+    @keyframes introGlow{
+      0%{transform:translateY(10px) scale(.96);opacity:0;filter:drop-shadow(0 0 0 rgba(192,143,58,.2))}
+      100%{transform:translateY(0) scale(1);opacity:1;filter:drop-shadow(0 20px 32px rgba(192,143,58,.38))}
+    }
+
+    .introSplash{
+      position:fixed;
+      inset:0;
+      z-index:999;
+      display:grid;
+      place-items:center;
+      background:radial-gradient(circle at center,#fffef9,#f6f0e4 68%,#ead9b5);
+      animation:introFadeOut 2.6s ease forwards;
+      pointer-events:none;
+    }
+    .introSplash img{
+      width:min(220px,42vw);
+      opacity:0;
+      animation:introGlow 1s cubic-bezier(.24,.72,.21,1) .15s forwards;
+    }
+
     @keyframes cardDropIn{
       0%{opacity:0;transform:translateY(-140px) scale(.94)}
       62%{opacity:1;transform:translateY(10px) scale(1.02)}
@@ -121,6 +157,9 @@
       overflow:hidden;
       transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s ease,border-color .55s ease;
     }
+    .certGrid .certCard{opacity:0}
+    .certGrid .certCard:nth-child(odd){animation:softSlideInRight .95s cubic-bezier(.2,.8,.21,1) .45s forwards}
+    .certGrid .certCard:nth-child(even){animation:softSlideInLeft .95s cubic-bezier(.2,.8,.21,1) .6s forwards}
     .certCard img{width:100%;height:180px;object-fit:contain;display:block}
     .certCard:hover{
       transform:translateY(-10px) translateX(-6px) scale(1.12) rotate(-1deg);
@@ -294,6 +333,10 @@
 
     .reveal{opacity:0;transform:translateY(22px) scale(.98)}
     .reveal.visible{animation:floatIn 1.05s ease forwards}
+    .reveal.from-right{transform:translateX(70px) scale(.98)}
+    .reveal.from-left{transform:translateX(-70px) scale(.98)}
+    .reveal.from-right.visible{animation:softSlideInRight 1s cubic-bezier(.2,.8,.21,1) forwards}
+    .reveal.from-left.visible{animation:softSlideInLeft 1s cubic-bezier(.2,.8,.21,1) forwards}
 
     @media (max-width:1100px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}}
@@ -304,6 +347,9 @@
   </style>
 </head>
 <body>
+  <div class="introSplash" aria-hidden="true">
+    <img src="1.png" alt="">
+  </div>
   <header class="topbar">
     <div class="wrap">
       <div class="topbarInner">
@@ -518,17 +564,20 @@
   <script>
     const products = [
       {id:1,name:'10',price:100,img:'em/10-300x300.png'},
-      {id:2,name:'8',price:100,img:'em/8-300x300.png'},
-      {id:3,name:'9',price:100,img:'em/9-300x300.png'},
-      {id:4,name:'מצה שמורה עבודת יד לאפה מארז 1 קילו 5 7 מצות 100 קמח מלא',price:100,img:'em/מצה-שמורה-עבודת-יד-לאפה-מארז-1-קילו-5-7-מצות-100_-קמח-מלא-300x300.webp'},
-      {id:5,name:'מצות אבהתנא 1',price:100,img:'em/מצות-אבהתנא-1-300x300.webp'},
-      {id:6,name:'מצות מכונה שמורה משעת קצירה מארז 2 קילו',price:100,img:'em/מצות-מכונה-שמורה-משעת-קצירה-מארז-2-קילו-300x300.webp'},
-      {id:7,name:'מצות עבודת יד רכות לאפות קטנות אישיות מחולקות לכזיתות אריזת 1 קילו כ 28 יחידות במארז 100 קמח מלא',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-1-קילו-כ-28-יחידות-במארז-100_-קמח-מלא-300x300.webp'},
-      {id:8,name:'מצות עבודת יד רכות מקמח שיבולת שועל במפעל נקי מאבקת קמח מארז כ 550 גרם מעל 3 מצות באריזה',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-300x300.webp'},
-      {id:9,name:'מצות רכות עבודת יד מארז 1 קילו כ 5 מצות באריזה',price:100,img:'em/מצות-רכות-עבודת-יד-מארז-1-קילו-כ-5-מצות-באריזה-300x300.webp'},
-      {id:10,name:'סט 3 מצות עבודת יד לאפה מארז לתושבי חול 454 גרם 1 פאונד',price:100,img:'em/סט-3-מצות-עבודת-יד-לאפה-מארז-לתושבי-חול-454-גרם-1-פאונד-300x300.webp'}
+      {id:2,name:'10',price:100,img:'em/10-768x768.png'},
+      {id:3,name:'8',price:100,img:'em/8-300x300.png'},
+      {id:4,name:'9',price:100,img:'em/9-300x300.png'},
+      {id:5,name:'קמח מצה שמורה מארז 500 גרם',price:100,img:'em/קמח-מצה-שמורה-מארז-500-גרם-768x768.webp'},
+      {id:6,name:'מצה שמורה עבודת יד לאפה מארז 1 קילו 5 7 מצות 100 קמח מלא',price:100,img:'em/מצה-שמורה-עבודת-יד-לאפה-מארז-1-קילו-5-7-מצות-100_-קמח-מלא-300x300.webp'},
+      {id:7,name:'מצות אבהתנא 1',price:100,img:'em/מצות-אבהתנא-1-300x300.webp'},
+      {id:8,name:'מצות מכונה שמורה משעת קצירה מארז 2 קילו',price:100,img:'em/מצות-מכונה-שמורה-משעת-קצירה-מארז-2-קילו-300x300.webp'},
+      {id:9,name:'מצות עבודת יד רכות לאפות קטנות אישיות מחולקות לכזיתות אריזת 1 קילו כ 28 יחידות במארז 100 קמח מלא',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-1-קילו-כ-28-יחידות-במארז-100_-קמח-מלא-300x300.webp'},
+      {id:10,name:'מצות עבודת יד רכות לאפות קטנות אישיות מחולקות לכזיתות אריזת 500 גרם כ 14 יחידות במארז 100 קמח כוסמין מלא',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-500-גרם-כ-14-יחידות-במארז-100_-קמח-כוסמין-מלא-768x768.webp'},
+      {id:11,name:'מצות עבודת יד רכות מקמח שיבולת שועל במפעל נקי מאבקת קמח מארז כ 550 גרם מעל 3 מצות באריזה',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-300x300.webp'},
+      {id:12,name:'מצות עבודת יד רכות מקמח שיבולת שועל במפעל נקי מאבקת קמח מארז כ 550 גרם מעל 3 מצות באריזה',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-768x768.webp'},
+      {id:13,name:'מצות רכות עבודת יד מארז 1 קילו כ 5 מצות באריזה',price:100,img:'em/מצות-רכות-עבודת-יד-מארז-1-קילו-כ-5-מצות-באריזה-300x300.webp'},
+      {id:14,name:'סט 3 מצות עבודת יד לאפה מארז לתושבי חול 454 גרם 1 פאונד',price:100,img:'em/סט-3-מצות-עבודת-יד-לאפה-מארז-לתושבי-חול-454-גרם-1-פאונד-300x300.webp'}
     ];
-
     const galleryItems = [
       {type:'image',src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1',caption:'מצות אבהתנא'},
       {type:'image',src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2',caption:'איכות של מסורת'},
@@ -581,7 +630,7 @@
         const media = item.type === 'video'
           ? `<video src="${item.src}" muted playsinline></video>`
           : `<img src="${item.src}" alt="${item.alt}">`;
-        return `<article class="galleryItem dropIn" style="animation-delay:${slot * 0.28}s" role="button" tabindex="0" data-index="${index}">${media}<p>${item.caption}</p></article>`;
+        return `<article class="galleryItem" style="animation:${slot % 2 === 0 ? 'softSlideInRight' : 'softSlideInLeft'} 0.95s cubic-bezier(.2,.8,.21,1) ${slot * 0.18}s both" role="button" tabindex="0" data-index="${index}">${media}<p>${item.caption}</p></article>`;
       }).join('');
 
       galleryTrack.querySelectorAll('.galleryItem').forEach(card=>{
@@ -610,8 +659,8 @@
     function moveLightbox(step){lightboxIndex = (lightboxIndex + step + galleryItems.length) % galleryItems.length;renderLightbox();}
 
     function renderCustomers(){
-      customersGrid.innerHTML = customerLogos.map((store) => `
-        <article class="customerCard reveal">
+      customersGrid.innerHTML = customerLogos.map((store, index) => `
+        <article class="customerCard reveal ${index % 2 === 0 ? 'from-right' : 'from-left'}">
           <img src="${store.src}" alt="${store.alt}">
         </article>
       `).join('');
@@ -620,7 +669,7 @@
 
     function renderProducts(){
       productsGrid.innerHTML = products.map(p => `
-        <article class="productCard reveal">
+        <article class="productCard reveal ${p.id % 2 === 0 ? 'from-left' : 'from-right'}">
           <div class="productMedia">
             <img src="${p.img}" alt="${p.name}">
           </div>
