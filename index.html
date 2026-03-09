@@ -331,19 +331,6 @@
       </div>
     </section>
 
-    <section id="gallery">
-      <div class="sectionHead reveal">
-        <h2>הגלריה</h2>
-      </div>
-      <div class="galleryWrap reveal">
-        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
-        <div class="galleryViewport">
-          <div class="galleryTrack" id="galleryTrack"></div>
-        </div>
-        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
-      </div>
-    </section>
-
     <section id="products">
       <div class="sectionHead reveal">
         <h2>המוצרים שלנו</h2>
@@ -359,6 +346,19 @@
         <article class="aboutFeature reveal"><h3>טעם ואיכות</h3><p>הייצור נעשה ממגוון קמחים מלאים מחמשת מיני דגן, כולל כוסמין ושיבולת שועל, לקבלת מצות פריכות וטעימות.</p></article>
         <article class="aboutFeature reveal"><h3>מסורת מבית אבא</h3><p>מצות אבהתנא מיוצרות לפי מתכון מסורתי שעובר מדור לדור ומשלב טעם אותנטי עם איכות מודרנית.</p></article>
         <article class="aboutFeature reveal"><h3>מגוון לכל בית</h3><p>המוצרים מגיעים במגוון גדלים וטעמים, כך שכל משפחה מוצאת את המצה המתאימה לצרכים שלה.</p></article>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="sectionHead reveal">
+        <h2>הגלריה</h2>
+      </div>
+      <div class="galleryWrap reveal">
+        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
+        <div class="galleryViewport">
+          <div class="galleryTrack" id="galleryTrack"></div>
+        </div>
+        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
       </div>
     </section>
 
@@ -489,15 +489,16 @@
 
   <script>
     const products = [
-      {id:1,name:'כל סוגי המצות',price:100,img:'em/כל-סוגי-המצות-300x300.webp'},
-      {id:2,name:'מצות מכונה שמורה',price:100,img:'em/מצות-מכונה-שמורה-משעת-קצירה-מארז-2-קילו-300x300.webp'},
-      {id:3,name:'מצות רכות אישיות מחולקות לכזיתות',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-1-קילו-כ-28-יחידות-במארז-100_-קמח-מלא-300x300.webp'},
-      {id:4,name:'מארז מצות 9',price:100,img:'em/9-300x300.png'},
-      {id:5,name:'מארז מצות 10',price:100,img:'em/10-300x300.png'},
-      {id:6,name:'מצה שמורה עבודת יד לאפה',price:100,img:'em/מצה-שמורה-עבודת-יד-לאפה-מארז-1-קילו-5-7-מצות-100_-קמח-מלא-300x300.webp'},
-      {id:7,name:'מצות רכות עבודת יד',price:100,img:'em/מצות-רכות-עבודת-יד-מארז-1-קילו-כ-5-מצות-באריזה-300x300.webp'},
-      {id:8,name:'מצות שיבולת שועל',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-300x300.webp'},
-      {id:9,name:'מארז מצות 8',price:100,img:'em/8-300x300.png'}
+      {id:1,name:'10',price:100,img:'em/10-300x300.png'},
+      {id:2,name:'8',price:100,img:'em/8-300x300.png'},
+      {id:3,name:'9',price:100,img:'em/9-300x300.png'},
+      {id:4,name:'מצה שמורה עבודת יד לאפה מארז 1 קילו 5 7 מצות 100 קמח מלא',price:100,img:'em/מצה-שמורה-עבודת-יד-לאפה-מארז-1-קילו-5-7-מצות-100_-קמח-מלא-300x300.webp'},
+      {id:5,name:'מצות אבהתנא 1',price:100,img:'em/מצות-אבהתנא-1-300x300.webp'},
+      {id:6,name:'מצות מכונה שמורה משעת קצירה מארז 2 קילו',price:100,img:'em/מצות-מכונה-שמורה-משעת-קצירה-מארז-2-קילו-300x300.webp'},
+      {id:7,name:'מצות עבודת יד רכות לאפות קטנות אישיות מחולקות לכזיתות אריזת 1 קילו כ 28 יחידות במארז 100 קמח מלא',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-1-קילו-כ-28-יחידות-במארז-100_-קמח-מלא-300x300.webp'},
+      {id:8,name:'מצות עבודת יד רכות מקמח שיבולת שועל במפעל נקי מאבקת קמח מארז כ 550 גרם מעל 3 מצות באריזה',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-300x300.webp'},
+      {id:9,name:'מצות רכות עבודת יד מארז 1 קילו כ 5 מצות באריזה',price:100,img:'em/מצות-רכות-עבודת-יד-מארז-1-קילו-כ-5-מצות-באריזה-300x300.webp'},
+      {id:10,name:'סט 3 מצות עבודת יד לאפה מארז לתושבי חול 454 גרם 1 פאונד',price:100,img:'em/סט-3-מצות-עבודת-יד-לאפה-מארז-לתושבי-חול-454-גרם-1-פאונד-300x300.webp'}
     ];
 
     const galleryItems = [
