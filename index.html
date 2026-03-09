@@ -147,8 +147,8 @@
     .certCard:nth-child(3){animation-delay:.85s}
     .certCard:nth-child(4){animation-delay:1s}
     .certCard:hover{
-      transform:translateX(-6px) translateY(-5px) scale(1.04);
-      box-shadow:0 20px 40px rgba(56,37,14,.24);
+      transform:translateX(-14px) translateY(-7px) scale(1.09);
+      box-shadow:0 28px 52px rgba(56,37,14,.3);
       border-color:rgba(192,143,58,.78);
     }
 
@@ -229,14 +229,19 @@
       flex-direction:column;
       transition:transform .42s cubic-bezier(.22,.61,.36,1), box-shadow .42s ease, border-color .42s ease;
     }
-    .productCard:hover{transform:translateX(-4px) translateY(-5px) scale(1.03);box-shadow:0 24px 44px rgba(56,37,14,.24);border-color:rgba(192,143,58,.7)}
+    .productCard:hover{transform:translateX(-10px) translateY(-10px) scale(1.07);box-shadow:0 30px 56px rgba(56,37,14,.3);border-color:rgba(192,143,58,.78)}
     .productMedia{position:relative;height:360px;background:#fff}
-    .productCard img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block}
+    .productCard img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block;transition:transform .44s cubic-bezier(.22,.61,.36,1)}
+    .productCard:hover img{transform:scale(1.08)}
     .productBody{padding:15px 16px 16px;display:flex;justify-content:center;align-items:center}
     .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
     .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
 
+    .aboutIntro{display:grid;grid-template-columns:minmax(180px,.45fr) minmax(0,1fr) minmax(180px,.45fr);gap:14px;align-items:stretch}
     .aboutText{background:#fff;border-radius:18px;padding:16px 18px;border:1px solid var(--line);line-height:2;color:#3f2f1d;font-size:1.08rem;font-family:"Assistant","Noto Sans Hebrew","Rubik",sans-serif;letter-spacing:.01em}
+    .aboutSideImage{background:#fff;border:1px solid rgba(97,59,20,.24);border-radius:18px;padding:10px;box-shadow:0 12px 24px rgba(56,37,14,.14);display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s ease}
+    .aboutSideImage img{width:100%;height:100%;max-height:420px;object-fit:contain;display:block}
+    .aboutSideImage:hover{transform:translateY(-8px) scale(1.04);box-shadow:0 24px 44px rgba(56,37,14,.24)}
     .aboutHighlight{display:block;font-size:1.55rem;font-weight:800;color:#6f3f12;margin:10px 0 6px}
     .aboutFeatures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
     .aboutFeature{background:#fff;border:1px solid rgba(0,0,0,.11);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px;font-family:"Assistant","Noto Sans Hebrew","Rubik",sans-serif}
@@ -246,7 +251,7 @@
     .customersGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
     .customerCard{background:#fff;border:1px solid rgba(97,59,20,.24);border-radius:18px;padding:10px;box-shadow:0 12px 24px rgba(56,37,14,.14);overflow:hidden;transition:transform .46s cubic-bezier(.22,.61,.36,1),box-shadow .46s ease,border-color .46s ease}
     .customerCard img{width:100%;height:180px;object-fit:contain;display:block}
-    .customerCard:hover{transform:translateX(-6px) translateY(-5px) scale(1.04);box-shadow:0 20px 40px rgba(56,37,14,.24);border-color:rgba(192,143,58,.76)}
+    .customerCard:hover{transform:translateX(-14px) translateY(-7px) scale(1.09);box-shadow:0 28px 52px rgba(56,37,14,.3);border-color:rgba(192,143,58,.76)}
 
     .purchaseStrip{margin-top:16px;padding:14px;border-radius:16px;background:#fff;border:1px dashed rgba(97,59,20,.4);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .purchaseStrip p{margin:0;color:#4e3d2a;font-weight:700}
@@ -325,10 +330,10 @@
     .reveal.from-left.visible{animation:softSlideInLeft 1s cubic-bezier(.2,.8,.21,1) forwards}
 
     @media (max-width:1100px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}.heroTop{grid-template-columns:1fr}}
+    @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}.heroTop{grid-template-columns:1fr}.aboutIntro{grid-template-columns:1fr}}
     @media (max-width:820px){.topbar{position:static}.topbarInner{min-height:auto;padding:12px 0;flex-wrap:wrap}.nav{display:none}.hamb{display:inline-flex}.logoLink{min-width:0;flex:1}.topActions{width:100%;order:3;justify-content:space-between}.siteName strong{font-size:1.16rem}.siteName span{font-size:.86rem}.hero{padding:16px 0 10px}.sectionHead h2{font-size:1.7rem}}
     @media (max-width:980px){.certGrid,.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:1fr}.aboutFeatures{grid-template-columns:1fr}.certGrid,.customersGrid{grid-template-columns:1fr}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryBtn{width:40px;height:40px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:300px}.termsConfirm label{align-items:flex-start}}
+    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:1fr}.aboutFeatures{grid-template-columns:1fr}.certGrid,.customersGrid{grid-template-columns:1fr}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryBtn{width:40px;height:40px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:300px}.termsConfirm label{align-items:flex-start}.aboutSideImage img{max-height:280px}}
     @media (max-width:480px){.topbarInner{gap:8px}.cartTrigger{font-size:.92rem;padding:8px 10px}.productBody{padding:12px}.productMeta{flex-direction:column;align-items:stretch}.price{text-align:center}.productMeta .btn{width:100%}}
   </style>
 </head>
@@ -400,7 +405,15 @@
 
     <section id="about">
       <div class="sectionHead reveal"><h2>מי אנחנו</h2></div>
-      <div class="aboutText reveal">מצות אבהתנא מיוצרות מחומרים איכותיים בלבד, על כל כללי ההלכה וכן על כללי הכשרות.<br>המצות רכות וטעימות, וקלות מאד לאכילת הכזיתות, ומגיעות באריזות של קילו וחצי קילו, מצות מכוסמין, באריזות של 550 גרם,<br>כזיתות מחולקות ומוכנות באריזות של 1 ק״ג, וחצי ק״ג<br>ומצות משיבולת שועל ללא גלוטן באריזות של חצי ק״ג. עם מצות אבהתנא, אתם יכולים להיות בטוחים במצה המהודרת ביותר עם הטעם הנפלא ביותר.<br>הזמינו עוד היום את מצות אבהתנא ותיהנו מטעם של פסח אמיתי וזאת המצה ״די אכלו אבהתנא בארעא דמצרים״.<br><br><span class="aboutHighlight">למה לבחור במצות אבהתנא?</span>מסורת של איכות: אנו ממשיכים את דרכם של אבותינו, תוך שימוש בידע ובניסיון שצברנו לאורך דורות.<br>חומרי גלם משובחים: אנו משתמשים אך ורק בקמח מצה שמורה, ומי באר זכים לחומרה כמובא בשולחן ערוך.<br>תהליך ייצור קפדני: כל מצה עוברת תהליך ייצור קפדני תחת השגחה הדוקה.<br>כשרות מהודרת: כל מוצרינו מיוצרים תחת השגחת ומקבלים את כל האישורים הנדרשים.</div>
+      <div class="aboutIntro reveal">
+        <div class="aboutSideImage">
+          <img src="2.png" alt="לוגו מצות אבהתנא">
+        </div>
+        <div class="aboutText">מצות אבהתנא מיוצרות מחומרים איכותיים בלבד, על כל כללי ההלכה וכן על כללי הכשרות.<br>המצות רכות וטעימות, וקלות מאד לאכילת הכזיתות, ומגיעות באריזות של קילו וחצי קילו, מצות מכוסמין, באריזות של 550 גרם,<br>כזיתות מחולקות ומוכנות באריזות של 1 ק״ג, וחצי ק״ג<br>ומצות משיבולת שועל ללא גלוטן באריזות של חצי ק״ג. עם מצות אבהתנא, אתם יכולים להיות בטוחים במצה המהודרת ביותר עם הטעם הנפלא ביותר.<br>הזמינו עוד היום את מצות אבהתנא ותיהנו מטעם של פסח אמיתי וזאת המצה ״די אכלו אבהתנא בארעא דמצרים״.<br><br><span class="aboutHighlight">למה לבחור במצות אבהתנא?</span>מסורת של איכות: אנו ממשיכים את דרכם של אבותינו, תוך שימוש בידע ובניסיון שצברנו לאורך דורות.<br>חומרי גלם משובחים: אנו משתמשים אך ורק בקמח מצה שמורה, ומי באר זכים לחומרה כמובא בשולחן ערוך.<br>תהליך ייצור קפדני: כל מצה עוברת תהליך ייצור קפדני תחת השגחה הדוקה.<br>כשרות מהודרת: כל מוצרינו מיוצרים תחת השגחת ומקבלים את כל האישורים הנדרשים.</div>
+        <div class="aboutSideImage">
+          <img src="הרב יגאל.webp" alt="הרב יגאל">
+        </div>
+      </div>
       <div class="aboutFeatures">
         <article class="aboutFeature reveal"><h3>כשרות מהודרת</h3><p>מצות אבהתנא ידועות כמחמירות על כל פרט ופרט בדקדוקי ההלכה, תוך הקפדה על כל שלב בתהליך.</p></article>
         <article class="aboutFeature reveal"><h3>טעם ואיכות</h3><p>הייצור נעשה ממגוון קמחים מלאים מחמשת מיני דגן, כולל כוסמין ושיבולת שועל, לקבלת מצות פריכות וטעימות.</p></article>
