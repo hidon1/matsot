@@ -163,11 +163,13 @@
     .galleryWrap{display:flex;align-items:center;gap:12px}
     .galleryViewport{overflow:hidden;flex:1}
     .galleryTrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;transition:transform .85s ease}
-    .galleryItem{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .6s ease, box-shadow .6s ease, filter .6s ease}
+    .galleryItem{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .6s ease, box-shadow .6s ease, filter .6s ease}
+    .galleryItem::after{content:"";position:absolute;inset:auto 0 0 0;height:52%;background:linear-gradient(180deg,rgba(17,11,5,0),rgba(17,11,5,.82));pointer-events:none}
     .galleryItem.dropIn{opacity:0;animation:cardDropIn 1.35s cubic-bezier(.2,.86,.22,1) forwards}
-    .galleryItem:hover{transform:translateY(-12px) scale(1.09);box-shadow:0 34px 62px rgba(41,29,13,.26);filter:saturate(1.07)}
-    .galleryItem img,.galleryItem video{display:block;width:100%;height:220px;object-fit:cover}
-    .galleryItem p{padding:10px 12px;margin:0;font-weight:700;color:#443626}
+    .galleryItem:hover{transform:translateY(-12px) scale(1.09) rotate(-1deg);box-shadow:0 34px 62px rgba(41,29,13,.26);filter:saturate(1.1)}
+    .galleryItem:nth-child(2):hover{transform:translateY(-12px) scale(1.09) rotate(1deg)}
+    .galleryItem img,.galleryItem video{display:block;width:100%;height:240px;object-fit:cover}
+    .galleryItem p{position:absolute;right:0;left:0;bottom:0;padding:14px 12px;margin:0;font-weight:800;color:#fff;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.45)}
     .galleryBtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(80,58,30,.28);background:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.12);transition:transform .4s ease,box-shadow .4s ease}
     .galleryBtn:hover{transform:scale(1.12);box-shadow:0 10px 24px rgba(0,0,0,.2)}
 
@@ -213,6 +215,13 @@
     .aboutText{background:#fff;border-radius:18px;padding:16px 18px;border:1px solid var(--line);line-height:1.9;color:#413527;font-size:1.05rem}
     .aboutFeatures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
     .aboutFeature{background:#fff;border:1px solid rgba(0,0,0,.11);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px}
+    .subSectionTitle{margin:24px 0 14px;text-align:center}
+    .subSectionTitle span{display:inline-block;font-size:1.3rem;font-weight:800;color:#68431a;position:relative;padding:0 .4em .5em}
+    .subSectionTitle span::after{content:"";position:absolute;right:0;bottom:0;width:100%;height:4px;background:linear-gradient(90deg,var(--gold-light),var(--gold));border-radius:999px;box-shadow:0 4px 10px rgba(192,143,58,.3)}
+    .customersGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .customerCard{background:#fff;border:1px solid rgba(97,59,20,.24);border-radius:18px;padding:10px;box-shadow:0 12px 24px rgba(56,37,14,.14);overflow:hidden;transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s ease,border-color .55s ease}
+    .customerCard img{width:100%;height:180px;object-fit:contain;display:block}
+    .customerCard:hover{transform:translateY(-10px) translateX(-6px) scale(1.12) rotate(-1deg);box-shadow:0 28px 52px rgba(56,37,14,.3);border-color:rgba(192,143,58,.78)}
 
     .purchaseStrip{margin-top:16px;padding:14px;border-radius:16px;background:#fff;border:1px dashed rgba(97,59,20,.4);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .purchaseStrip p{margin:0;color:#4e3d2a;font-weight:700}
@@ -289,8 +298,8 @@
     @media (max-width:1100px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}}
     @media (max-width:820px){.topbar{position:static}.topbarInner{min-height:auto;padding:12px 0;flex-wrap:wrap}.nav{display:none}.hamb{display:inline-flex}.logoLink{min-width:0;flex:1}.topActions{width:100%;order:3;justify-content:space-between}.siteName strong{font-size:1.16rem}.siteName span{font-size:.86rem}.hero{padding:16px 0 10px}.sectionHead h2{font-size:1.7rem}}
-    @media (max-width:980px){.certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:1fr}.aboutFeatures{grid-template-columns:1fr}.certGrid{grid-template-columns:1fr}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryBtn{width:40px;height:40px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:300px}.termsConfirm label{align-items:flex-start}}
+    @media (max-width:980px){.certGrid,.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:1fr}.aboutFeatures{grid-template-columns:1fr}.certGrid,.customersGrid{grid-template-columns:1fr}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryBtn{width:40px;height:40px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:300px}.termsConfirm label{align-items:flex-start}}
     @media (max-width:480px){.topbarInner{gap:8px}.cartTrigger{font-size:.92rem;padding:8px 10px}.productBody{padding:12px}.productMeta{flex-direction:column;align-items:stretch}.price{text-align:center}.productMeta .btn{width:100%}}
   </style>
 </head>
@@ -364,6 +373,8 @@
         <article class="aboutFeature reveal"><h3>מסורת מבית אבא</h3><p>מצות אבהתנא מיוצרות לפי מתכון מסורתי שעובר מדור לדור ומשלב טעם אותנטי עם איכות מודרנית.</p></article>
         <article class="aboutFeature reveal"><h3>מגוון לכל בית</h3><p>המוצרים מגיעים במגוון גדלים וטעמים, כך שכל משפחה מוצאת את המצה המתאימה לצרכים שלה.</p></article>
       </div>
+      <div class="subSectionTitle reveal"><span>ניתן להשיג בחנויות</span></div>
+      <div class="customersGrid" id="customersGrid"></div>
     </section>
 
     <section id="gallery">
@@ -519,21 +530,20 @@
     ];
 
     const galleryItems = [
-      {type:'image',src:'2.png',alt:'אפיית מצות',caption:'אפייה מסורתית מוקפדת'},
-      {type:'image',src:'2.png',alt:'מצות טריות',caption:'טריות שנשמרת לאורך כל הדרך'},
-      {type:'image',src:'2.png',alt:'אריזת מצות',caption:'אריזה נקייה ומכובדת לחג'},
-      {type:'image',src:'2.png',alt:'מארז חגיגי',caption:'מארז פרימיום לאירוח'},
-      {type:'image',src:'2.png',alt:'צוות אפייה',caption:'צוות מקצועי בכל שלב'},
-      {type:'image',src:'2.png',alt:'פס ייצור',caption:'תהליך ייצור מדויק'},
-      {type:'image',src:'2.png',alt:'מגש הגשה',caption:'הגשה אסתטית לשולחן החג'},
-      {type:'image',src:'2.png',alt:'משלוח מצות',caption:'משלוחים מהירים לכל הארץ'},
-      {type:'image',src:'2.png',alt:'מצות כוסמין',caption:'מגוון סוגים בהתאמה אישית'},
-      {type:'image',src:'2.png',alt:'מצות שיבולת שועל',caption:'פתרונות גם ללא גלוטן'},
-      {type:'image',src:'2.png',alt:'אירוע קהילתי',caption:'אספקה לאירועים וקהילות'},
-      {type:'image',src:'2.png',alt:'אריזת שי',caption:'אריזות שי מהודרות'},
-      {type:'image',src:'2.png',alt:'רגע לפני החג',caption:'הכנה מוקדמת לחג'},
-      {type:'image',src:'2.png',alt:'תנור אפייה',caption:'תנורי אפייה מתקדמים'},
-      {type:'video',src:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',alt:'וידאו מהגלריה',caption:'וידאו מהמפעל וההכנה'}
+      {type:'image',src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1',caption:'מצות אבהתנא'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2',caption:'איכות של מסורת'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0074-225x300.webp',alt:'תמונת גלריה 3',caption:'אפייה מוקפדת'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0076-300x169.webp',alt:'תמונת גלריה 4',caption:'טריות בכל משלוח'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת גלריה 5',caption:'טעם של חג'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת גלריה 6',caption:'השקעה בכל פרט'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0079-225x300.webp',alt:'תמונת גלריה 7',caption:'מסורת משפחתית'},
+      {type:'image',src:'גלריה/IMG-20240301-WA0080-225x300.webp',alt:'תמונת גלריה 8',caption:'מבחר עשיר לפסח'},
+      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_35457738-300x225.webp',alt:'תמונת גלריה 9',caption:'אריזות מהודרות'},
+      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_ee1166dc-225x300.webp',alt:'תמונת גלריה 10',caption:'ייצור נקי ומבוקר'},
+      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.27_21b4b558-300x225.webp',alt:'תמונת גלריה 11',caption:'התאמה לכל בית'},
+      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.27_7bfc424d-300x225.webp',alt:'תמונת גלריה 12',caption:'חוויה אותנטית'},
+      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.27_bebb67c6-300x169.webp',alt:'תמונת גלריה 13',caption:'טעם של פעם'},
+      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-02-בשעה-21.54.51_0d147c2e-225x300.webp',alt:'תמונת גלריה 14',caption:'זמינות מהירה לחג'}
     ];
 
     const cart = new Map();
@@ -546,6 +556,13 @@
     const galleryTrack = document.getElementById('galleryTrack');
     const galleryPrev = document.getElementById('galleryPrev');
     const galleryNext = document.getElementById('galleryNext');
+    const customersGrid = document.getElementById('customersGrid');
+    const customerLogos = [
+      {src:'לקוחות/אושר עד.webp',alt:'אושר עד'},
+      {src:'לקוחות/אשפר-300x300.webp',alt:'אשפר'},
+      {src:'לקוחות/יש-חסד-300x300.webp',alt:'יש חסד'},
+      {src:'לקוחות/אושר עד.webp',alt:'רשת שיווק נוספת'}
+    ];
     const lightbox = document.getElementById('lightbox');
     const lightboxMedia = document.getElementById('lightboxMedia');
     const checkoutForm = document.getElementById('checkoutForm');
@@ -591,6 +608,15 @@
 
     function closeLightbox(){lightbox.classList.remove('open');lightboxMedia.innerHTML='';}
     function moveLightbox(step){lightboxIndex = (lightboxIndex + step + galleryItems.length) % galleryItems.length;renderLightbox();}
+
+    function renderCustomers(){
+      customersGrid.innerHTML = customerLogos.map((store) => `
+        <article class="customerCard reveal">
+          <img src="${store.src}" alt="${store.alt}">
+        </article>
+      `).join('');
+      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    }
 
     function renderProducts(){
       productsGrid.innerHTML = products.map(p => `
@@ -750,6 +776,7 @@
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
     renderProducts();
+    renderCustomers();
     renderGallery();
     renderCart();
   </script>
