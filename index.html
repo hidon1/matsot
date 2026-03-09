@@ -97,7 +97,6 @@
     }
     .nav a:hover,.nav a.active,.cartTrigger:hover{background:#fff;transform:translateY(-2px) scale(1.06);box-shadow:0 10px 22px rgba(0,0,0,.16)}
 
-    .callPill{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;background:#fff;color:#2b2015;font-weight:800;box-shadow:0 10px 26px rgba(0,0,0,.22);min-width:145px;justify-content:center;white-space:nowrap}
     .hamb{display:none;background:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:800}
 
     .hero{padding:28px 0 20px}
@@ -189,18 +188,10 @@
       transition:transform .58s ease, box-shadow .58s ease, border-color .58s ease;
     }
     .productCard:hover{transform:translateY(-14px) translateX(-4px) scale(1.1);box-shadow:0 32px 60px rgba(56,37,14,.32);border-color:rgba(192,143,58,.75)}
-    .productMedia{position:relative;height:250px}
-    .productCard img{width:100%;height:100%;object-fit:cover}
-    .productTag{
-      position:absolute;top:12px;right:12px;
-      background:rgba(17,13,8,.76);color:#fff;
-      padding:8px 12px;border-radius:999px;font-weight:700;font-size:.95rem;
-      border:1px solid rgba(255,255,255,.38);
-    }
-    .productBody{padding:15px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
-    .productBody h3{margin:0;font-size:1.28rem}
-    .productBody p{margin:0;color:var(--muted);line-height:1.6;min-height:3.1em}
-    .productMeta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .productMedia{position:relative;height:360px;background:#fff}
+    .productCard img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block}
+    .productBody{padding:15px 16px 16px;display:flex;justify-content:center;align-items:center}
+    .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
     .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
 
     .aboutText{background:#fff;border-radius:18px;padding:16px 18px;border:1px solid var(--line);line-height:1.9;color:#413527;font-size:1.05rem}
@@ -259,6 +250,10 @@
     .checkoutGrid .full{grid-column:1 / -1}
     .radioRow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
     .radioRow label{display:inline-flex;align-items:center;gap:6px;margin:0;font-weight:600}
+    .deliveryFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .deliveryFields[hidden]{display:none}
+    .termsConfirm{margin-top:12px;padding:10px 12px;border-radius:12px;background:#f7f3ea;border:1px solid rgba(97,59,20,.2)}
+    .termsConfirm label{display:flex;align-items:flex-start;gap:8px;margin:0;font-weight:600;line-height:1.6}
     .summaryLine{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.2);font-weight:700;color:#3d2e1d}
 
     .reveal{opacity:0;transform:translateY(22px) scale(.98)}
@@ -291,7 +286,6 @@
         </nav>
 
         <div class="topActions">
-          <a class="callPill" href="tel:0500000000">דברו איתנו</a>
           <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
           <button class="hamb" id="openMenu" type="button">תפריט</button>
         </div>
@@ -414,16 +408,36 @@
             <input id="customerEmail" name="customerEmail" type="email" required>
           </div>
           <div class="full">
-            <label id="addressLabel" for="customerAddress">כתובת</label>
-            <input id="customerAddress" name="customerAddress" required>
-          </div>
-          <div class="full">
             <label>אופן קבלת ההזמנה</label>
             <div class="radioRow">
               <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (ללא עלות)</label>
               <label><input type="radio" name="deliveryType" value="delivery"> משלוח (+30 ₪)</label>
             </div>
           </div>
+          <div class="full deliveryFields" id="deliveryFields" hidden>
+            <div>
+              <label for="deliveryCity">עיר למשלוח</label>
+              <input id="deliveryCity" name="deliveryCity">
+            </div>
+            <div>
+              <label for="deliveryStreet">רחוב למשלוח</label>
+              <input id="deliveryStreet" name="deliveryStreet">
+            </div>
+            <div>
+              <label for="deliveryHouseNumber">מספר בית</label>
+              <input id="deliveryHouseNumber" name="deliveryHouseNumber" inputmode="numeric">
+            </div>
+            <div>
+              <label for="deliveryPhone">טלפון למשלוח</label>
+              <input id="deliveryPhone" name="deliveryPhone" type="tel" inputmode="tel" pattern="[0-9\-+ ]{9,}">
+            </div>
+          </div>
+        </div>
+        <div class="termsConfirm">
+          <label for="termsApprove">
+            <input id="termsApprove" name="termsApprove" type="checkbox" required>
+            קראתי את <a href="terms.html" target="_blank" rel="noopener">תקנון האתר</a> ואני מאשר/ת אותו.
+          </label>
         </div>
         <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
         <button class="btn" type="submit">המשך למערכת הסליקה</button>
@@ -443,9 +457,9 @@
 
   <script>
     const products = [
-      {id:1,name:'מוצר 1',sub:'תמונה מקורית מהגלריה',desc:'מוצר למכירה במחיר אחיד.',price:100,img:'8-300x300.png'},
-      {id:2,name:'מוצר 2',sub:'תמונה מקורית מהגלריה',desc:'מוצר למכירה במחיר אחיד.',price:100,img:'9-300x300.png'},
-      {id:3,name:'מוצר 3',sub:'תמונה מקורית מהגלריה',desc:'מוצר למכירה במחיר אחיד.',price:100,img:'10-300x300.png'}
+      {id:1,name:'מארז מצות שמורות',price:100,img:'8-300x300.png'},
+      {id:2,name:'מארז מצות עבודת יד',price:100,img:'9-300x300.png'},
+      {id:3,name:'מארז מצות פרימיום',price:100,img:'10-300x300.png'}
     ];
 
     const galleryItems = [
@@ -481,7 +495,7 @@
     const checkoutForm = document.getElementById('checkoutForm');
     const paymentFrame = document.getElementById('paymentFrame');
     const checkoutSummary = document.getElementById('checkoutSummary');
-    const addressLabel = document.getElementById('addressLabel');
+    const deliveryFields = document.getElementById('deliveryFields');
     const DELIVERY_FEE = 30;
     let galleryStart = 0;
     let lightboxIndex = 0;
@@ -527,11 +541,8 @@
         <article class="productCard reveal">
           <div class="productMedia">
             <img src="${p.img}" alt="${p.name}">
-            <span class="productTag">${p.name}</span>
           </div>
           <div class="productBody">
-            <h3>${p.sub}</h3>
-            <p>${p.desc}</p>
             <div class="productMeta">
               <div class="price">${p.price} ₪</div>
               <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
@@ -582,8 +593,13 @@
     function updateCheckoutSummary(){
       const productsTotal = getCartTotal();
       const shipping = isDeliverySelected() ? DELIVERY_FEE : 0;
+      const deliverySelected = isDeliverySelected();
       checkoutSummary.textContent = `סה״כ לתשלום: ${productsTotal + shipping} ₪ (מוצרים: ${productsTotal} ₪, משלוח: ${shipping} ₪)`;
-      addressLabel.textContent = isDeliverySelected() ? 'כתובת למשלוח' : 'כתובת';
+      deliveryFields.hidden = !deliverySelected;
+      ['deliveryCity','deliveryStreet','deliveryHouseNumber','deliveryPhone'].forEach((fieldId)=>{
+        const field = document.getElementById(fieldId);
+        if(field) field.required = deliverySelected;
+      });
     }
 
     const GOOGLE_SCRIPT_URL = '';
