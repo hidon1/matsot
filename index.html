@@ -141,39 +141,39 @@
       animation:certEntrance .9s cubic-bezier(.2,.8,.21,1) forwards;
       transition:transform .46s cubic-bezier(.22,.61,.36,1),box-shadow .46s ease,border-color .46s ease;
     }
-    .certCard img{width:100%;height:175px;object-fit:contain;display:block;transition:transform .52s cubic-bezier(.22,.61,.36,1)}
+    .certCard img{width:100%;height:145px;object-fit:contain;display:block;transition:transform .42s cubic-bezier(.22,.61,.36,1)}
     .certCard:nth-child(1){animation-delay:.55s}
     .certCard:nth-child(2){animation-delay:.7s}
     .certCard:nth-child(3){animation-delay:.85s}
     .certCard:nth-child(4){animation-delay:1s}
     .certCard:hover{
-      transform:translateX(-22px) translateY(-9px) scale(1.27);
-      box-shadow:0 28px 52px rgba(56,37,14,.3);
+      transform:translateX(-8px) translateY(-4px) scale(1.08);
+      box-shadow:0 20px 36px rgba(56,37,14,.24);
       border-color:rgba(192,143,58,.78);
     }
-    .certCard:hover img{transform:scale(1.19) translateX(-8px)}
+    .certCard:hover img{transform:scale(1.07) translateX(-4px)}
 
-    .certCard.certCardInfo{position:relative;min-height:195px}
+    .certCard.certCardInfo{position:relative;min-height:158px}
     .certCard.certCardInfo .certInfoText{
       margin:0;
       opacity:0;
       transform:translateY(12px);
       transition:opacity .4s ease,transform .4s ease;
-      font-size:.94rem;
-      line-height:1.55;
+      font-size:.84rem;
+      line-height:1.45;
       color:#3f2f1d;
       padding:10px 6px 6px;
     }
     .certCard.certCardInfo:hover img{
-      width:72px;
-      height:72px;
+      width:58px;
+      height:58px;
       transform:none;
       object-fit:contain;
       position:absolute;
       top:10px;
       right:10px;
     }
-    .certCard.certCardInfo:hover .certInfoText{opacity:1;transform:translateY(0);padding-top:88px}
+    .certCard.certCardInfo:hover .certInfoText{opacity:1;transform:translateY(0);padding-top:72px}
 
     .btn{border:none;cursor:pointer;padding:12px 18px;border-radius:14px;font-weight:800;font-family:inherit;background:#23170d;color:#fff;transition:transform .4s ease, box-shadow .4s ease, filter .4s ease}
     .btn.alt{background:#fff;color:#23170d;border:1px solid var(--line)}
@@ -358,7 +358,7 @@
     @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}.heroTop{grid-template-columns:1fr}.aboutText{grid-template-columns:1fr}}
     @media (max-width:820px){.topbar{position:static;min-height:auto}.topbarInner{min-height:auto;padding:10px 0 12px;display:grid;grid-template-columns:auto 1fr;grid-template-areas:'logo spacer' 'nav nav';align-items:start;gap:8px}.logoLink{grid-area:logo;min-width:0;margin-inline-start:0;gap:0}.logoImg{height:38px}.siteName{display:none}.nav{grid-area:nav;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;white-space:normal}.nav a,.nav .cartTrigger{display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 6px;min-height:40px;font-size:.88rem}.topActions{display:none}.nav .navCart{display:flex;font-size:1.05rem;font-weight:800}.nav .navCart span{display:none}.hamb{display:none}.hero{padding:16px 0 10px}.sectionHead h2{font-size:1.7rem}}
     @media (max-width:980px){.certGrid,.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.aboutFeatures{grid-template-columns:1fr}.certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryViewport{padding:0 4px}.galleryBtn{width:40px;height:40px;position:absolute;top:50%;transform:translateY(-50%);z-index:2}.galleryBtn:hover{transform:translateY(-50%) scale(1.1)}#galleryNext{right:-8px}#galleryPrev{left:-8px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:205px}.termsConfirm label{align-items:flex-start}.aboutInlineImage img{max-height:420px}.certCard img{height:150px}.paymentModal{align-items:flex-start;padding:8px}.checkoutFormCard{max-height:calc(100vh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}}
+    @media (max-width:640px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.aboutFeatures{grid-template-columns:1fr}.certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryViewport{padding:0 4px}.galleryBtn{width:28px;height:28px;border:none;background:transparent;box-shadow:none;position:absolute;top:50%;transform:translateY(-50%);z-index:2;font-size:1.7rem;line-height:1;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.75)}.galleryBtn:hover{transform:translateY(-50%) scale(1.08);box-shadow:none}.galleryBtn:focus-visible{outline:2px solid #fff;outline-offset:2px}#galleryNext{right:2px}#galleryPrev{left:2px}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:205px}.termsConfirm label{align-items:flex-start}.aboutInlineImage img{max-height:420px}.certCard{padding:8px}.certCard img{height:118px}.certCard.certCardInfo{min-height:auto}.certCard.certCardInfo .certInfoText{display:none}.certCard.certCardInfo:hover img{position:static;width:100%;height:118px}.paymentModal{align-items:flex-start;padding:8px}.checkoutFormCard{max-height:calc(100vh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}}
     @media (max-width:480px){.topbarInner{gap:6px}.nav a,.nav .cartTrigger{font-size:.82rem;min-height:36px;padding:7px 4px}.nav .navCart{font-size:.96rem}.cartTrigger{font-size:.92rem;padding:8px 10px}.productBody{padding:12px}.productMeta{flex-direction:column;align-items:stretch}.price{text-align:center}.productMeta .btn{width:100%}}
   </style>
 </head>
@@ -422,7 +422,7 @@
             <img src="הכשר/כשרות-בדץ-יביע-אומר.webp" alt="כשרות בדץ יביע אומר">
             <p class="certInfoText">&quot;בד&quot;ץ יביע אומר&quot; הוא גוף כשרות מוכר וידוע בישראל, המפקח על ייצור ושיווק של מוצרים כשרים למהדרין. המוצרים הנמצאים בפיקוח הבד&quot;ץ נושאים את חותמת הכשרות שלו, המעידה על הקפדה מלאה בכל הדרישות ההלכתיות המחמירות – בהכשר יביע אומר.</p>
           </div>
-          <div class="certCard"><img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="פיקוח והשגחת בדץ העדה החרדית הספרדית"></div>
+          <div class="certCard certCardInfo"><img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="פיקוח והשגחת בדץ העדה החרדית הספרדית"><p class="certInfoText">בפיקוח והשגחת בד״ץ העדה החרדית הספרדית. ה"בדץ העדה החרדית הספרדית" הוא גוף כשרות מוכר וידוע בישראל, המפקח על ייצור ושיווק של מוצרים כשרים למהדרין. המוצרים הנמצאים בפיקוח הבד"ץ נושאים את חותמת הכשרות של הבד"ץ, המעידה על כך שהם עומדים בכל הדרישות ההלכתיות המחמירות.</p></div>
           <div class="certCard certCardInfo">
             <img src="הכשר/כשרות-מהדרין-רבנות-הראשית-פתח-תקווה.webp" alt="כשרות מהדרין רבנות הראשית פתח תקווה">
             <p class="certInfoText">&quot;הרבנות הראשית פתח תקווה&quot; היא הגוף האחראי על הכשרות בעיר פתח תקווה, ומציעה רמות כשרות שונות ובהן &quot;כשרות מהדרין&quot;. כשרות זו מוצגת בהכשר של הרב מיכה לוי, בדומה להכשר הרב אשכנזי.</p>
