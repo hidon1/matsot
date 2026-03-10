@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="1.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Rubik:wght@400;500;700;800&family=Rubik+Bubbles&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -220,6 +220,44 @@
       grid-template-columns:1.2fr .85fr;
       gap:28px;
       align-items:center;
+    }
+
+    .heroCopy{
+      position:relative;
+      padding-inline-end:120px;
+    }
+
+    .heroBlinkBadge{
+      position:absolute;
+      top:8px;
+      inset-inline-end:0;
+      width:108px;
+      aspect-ratio:1;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:radial-gradient(circle at 30% 30%,#ffe9a6 0%,#ffd45f 38%,#d8a432 72%,#ac7606 100%);
+      color:#111;
+      font-family:"Rubik Bubbles","Rubik",system-ui,sans-serif;
+      font-size:1.02rem;
+      text-align:center;
+      line-height:1.15;
+      padding:12px;
+      font-weight:700;
+      border:2px solid rgba(0,0,0,.2);
+      box-shadow:0 0 0 2px rgba(255,223,120,.4),0 16px 24px rgba(79,50,4,.36);
+      animation:goldBlink 1.2s ease-in-out infinite;
+      z-index:3;
+      transition:transform .22s ease;
+    }
+
+    .heroBlinkBadge:hover{
+      transform:scale(1.06);
+    }
+
+    @keyframes goldBlink{
+      0%,100%{opacity:1; filter:brightness(1)}
+      50%{opacity:.72; filter:brightness(1.2)}
     }
 
     .heroEyebrow{
@@ -557,7 +595,7 @@
     .productPack,
     .productTagline{
       margin:0;
-      font-size:.84rem;
+      font-size:1rem;
       color:#4b3720;
       font-weight:700;
       text-align:center;
@@ -567,7 +605,8 @@
       margin:0;
       text-align:center;
       color:#5a4225;
-      font-size:.86rem;
+      font-size:1.02rem;
+      font-weight:700;
     }
 
     .productMeta{
@@ -1242,6 +1281,9 @@
     @media (max-width:980px){
       .heroTop{grid-template-columns:1fr}
       .heroMedia{min-height:auto}
+      .heroCopy{padding-inline-end:0;padding-top:108px}
+      .heroBlinkBadge{top:0;inset-inline-start:50%;inset-inline-end:auto;transform:translateX(-50%)}
+      .heroBlinkBadge:hover{transform:translateX(-50%) scale(1.06)}
       .aboutText{grid-template-columns:1fr}
       .contactGrid{grid-template-columns:1fr}
       .customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1292,6 +1334,8 @@
       .heroFrame{height:340px}
       .productMedia{height:250px}
       .aboutFeatures{grid-template-columns:1fr}
+      .heroCopy{padding-top:96px}
+      .heroBlinkBadge{width:96px;font-size:.95rem}
     }
   </style>
 </head>
@@ -1335,7 +1379,8 @@
     <section class="hero reveal">
       <div class="heroShell">
         <div class="heroTop">
-          <div>
+          <div class="heroCopy">
+            <a class="heroBlinkBadge" href="#products" aria-label="הזמינו עכשיו ועברו למוצרים">הזמינו עכשיו</a>
             <p class="heroEyebrow">מצות רכות, מהודרות וטעימות לאכילת כזית בשמחה</p>
             <h1 class="heroTitle">מצות אבהתנא</h1>
             <p class="heroLead">
