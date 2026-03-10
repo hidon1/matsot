@@ -140,10 +140,10 @@
 
     .hero{padding:28px 0 20px}
     .heroBrand{padding:14px 0 18px}
-    .heroTop{display:grid;grid-template-columns:1.35fr .95fr;gap:24px;align-items:center}
+    .heroTop{display:grid;grid-template-columns:1.45fr .8fr;gap:24px;align-items:center}
     .heroRabbiBanner{
-      width:100%;
-      height:clamp(320px,46vw,540px);
+      width:min(100%,430px);
+      height:clamp(250px,35vw,420px);
       border-radius:18px;
       box-shadow:0 18px 36px rgba(56,37,14,.2);
       background:#fff;
@@ -152,6 +152,8 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
+      justify-self:end;
+      margin-inline-start:auto;
     }
     .heroRabbiImg{
       width:100%;
@@ -176,6 +178,14 @@
       letter-spacing:.03em;
     }
     .lead{font-size:1.08rem;max-width:72ch;line-height:1.7;color:var(--muted);margin:0}
+    .certHeading{
+      margin:18px 0 0;
+      font-size:clamp(1.4rem,3.4vw,2rem);
+      font-weight:800;
+      color:#7b551f;
+      text-shadow:0 2px 8px rgba(123,85,31,.16);
+      letter-spacing:.02em;
+    }
     .certGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px;justify-items:center;align-items:start}
     .certCard{
       background:#fff;
@@ -451,10 +461,6 @@
       <div class="topbarInner">
         <a class="logoLink" href="#home" aria-label="לוגו">
           <img class="logoImg" src="1.png" alt="לוגו מצות אבהתנא">
-          <div class="siteName">
-            <strong>מצות אבהתנא</strong>
-            <span>איכות של מסורת, טעם של חג</span>
-          </div>
         </a>
 
         <nav class="nav" aria-label="תפריט ראשי">
@@ -493,6 +499,7 @@
             <p class="eyebrow">כל המצות רכות, טעימות ומדויקות לאכילת כזית בשמחה</p>
             <h1>מצות אבהתנא</h1>
             <p class="lead">כאן לא מדובר רק במצה – אלא במסורת, איכות ואפייה מוקפדת. אנחנו משקיעים בכל שלב בתהליך, ודואגים שכל מארז שמגיע אליכם יהיה טרי, מכובד וטעים במיוחד. הזמינו עוד היום את מצות אבהתנא ותיהנו מטעם של פסח אמיתי וזאת המצה ״די אכלו אבהתנא בארעא דמצרים״.</p>
+            <h2 class="certHeading">בכשרויות המהודרות:</h2>
           </div>
           <div class="heroRabbiBanner">
             <img class="heroRabbiImg" id="heroRabbiImg" src="הרב1.jpg" alt="הרב1.jpg">
