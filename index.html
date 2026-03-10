@@ -33,7 +33,7 @@
       font-family:"Rubik",system-ui,sans-serif;
       color:var(--ink);
       background:
-        linear-gradient(180deg,rgba(245,234,210,.84),rgba(224,201,156,.86)),
+        linear-gradient(180deg,rgba(245,234,210,.62),rgba(224,201,156,.64)),
         url("ChatGPT Image Mar 11, 2026, 12_00_05 AM.png") center top / cover fixed no-repeat;
       min-height:100vh;
       position:relative;
@@ -82,6 +82,19 @@
       100%{transform:translateY(0)}
     }
 
+    @keyframes heroEntryFloat{
+      0%{
+        opacity:0;
+        transform:translateY(38px) scale(.97);
+        filter:blur(4px);
+      }
+      100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+      }
+    }
+
     .reveal{
       opacity:0;
       transform:translateY(22px);
@@ -97,7 +110,7 @@
       position:sticky;
       top:0;
       z-index:100;
-      background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.8)),rgba(199,154,60,.2);
+      background:linear-gradient(180deg,rgba(241,220,178,.62),rgba(223,190,126,.52));
       backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(0,0,0,.07);
       box-shadow:0 12px 28px rgba(0,0,0,.08);
@@ -214,22 +227,29 @@
       color:#7a5a2e;
       font-weight:800;
       font-size:1rem;
+      animation:heroEntryFloat 1.7s ease-out both;
     }
 
     .heroTitle{
       margin:0 0 12px;
       line-height:1.02;
-      font-size:clamp(2.5rem,5vw,4.4rem);
+      font-size:clamp(2.8rem,5.4vw,4.9rem);
+      font-weight:900;
+      letter-spacing:.02em;
       color:#24170e;
-      text-shadow:0 6px 16px rgba(0,0,0,.10);
+      text-shadow:0 6px 16px rgba(0,0,0,.14);
+      animation:heroEntryFloat 1.85s ease-out both;
     }
 
     .heroLead{
       margin:0 0 18px;
-      color:var(--muted);
+      color:#342515;
       line-height:1.85;
-      font-size:1.05rem;
+      font-size:clamp(1.1rem,1.55vw,1.25rem);
+      font-weight:700;
+      text-shadow:0 2px 9px rgba(255,255,255,.4);
       max-width:68ch;
+      animation:heroEntryFloat 2s ease-out both;
     }
 
     .heroActions{
@@ -355,7 +375,7 @@
       align-items:center;
       justify-content:center;
       text-align:center;
-      background:linear-gradient(180deg,#fff8ea,#f0dcc0);
+      background:linear-gradient(180deg,#fffaf0,#ead2a4);
       font-weight:700;
       line-height:1.8;
       color:#4e3518;
@@ -574,6 +594,12 @@
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
       gap:14px;
+      transition:transform .7s ease,opacity .7s ease;
+    }
+
+    .galleryTrack.is-sliding{
+      transform:translateX(-22px);
+      opacity:.76;
     }
 
     .galleryControl{
@@ -613,12 +639,40 @@
       object-fit:cover;
     }
 
-    .galleryItem p{
-      margin:0;
-      padding:10px 12px 14px;
-      color:#3a2918;
-      font-weight:800;
-      text-align:center;
+    .miniShowcase{
+      overflow:hidden;
+      border-radius:24px;
+      border:1px solid rgba(122,84,28,.17);
+      box-shadow:0 14px 34px rgba(76,53,20,.14);
+      background:linear-gradient(180deg,rgba(255,250,241,.95),rgba(244,226,190,.88));
+      padding:16px;
+    }
+
+    .miniShowcaseTrack{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+      transition:transform .7s ease,opacity .7s ease;
+    }
+
+    .miniShowcaseTrack.is-sliding{
+      transform:translateX(-26px);
+      opacity:.74;
+    }
+
+    .miniShowcaseItem{
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(145,107,50,.24);
+      box-shadow:0 10px 22px rgba(73,49,18,.11);
+      background:#fff;
+    }
+
+    .miniShowcaseItem img{
+      display:block;
+      width:100%;
+      aspect-ratio:16/11;
+      object-fit:cover;
     }
 
     .lightbox{
@@ -1182,6 +1236,7 @@
       .trustStrip{grid-template-columns:repeat(2,minmax(0,1fr))}
       .certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .galleryTrack{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .miniShowcaseTrack{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
 
     @media (max-width:980px){
@@ -1223,6 +1278,7 @@
       .productsGrid{grid-template-columns:1fr;gap:12px}
       .galleryWrap{padding:0}
       .galleryTrack{grid-template-columns:1fr}
+      .miniShowcaseTrack{grid-template-columns:1fr}
       .galleryControl{display:none}
       .lightboxNav{
         width:42px;
@@ -1392,6 +1448,12 @@
         <button class="galleryControl prev" type="button" id="galleryPrev" aria-label="הקודם">›</button>
         <div class="galleryTrack" id="galleryTrack"></div>
         <button class="galleryControl next" type="button" id="galleryNext" aria-label="הבא">‹</button>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="miniShowcase" aria-label="תמונות מתחלפות">
+        <div class="miniShowcaseTrack" id="miniShowcaseTrack"></div>
       </div>
     </section>
 
@@ -1761,15 +1823,15 @@
     ];
 
     const galleryItems = [
-      {src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1',caption:'מצות אבהתנא'},
-      {src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2',caption:'איכות של מסורת'},
-      {src:'גלריה/IMG-20240301-WA0074-225x300.webp',alt:'תמונת גלריה 3',caption:'אפייה מוקפדת'},
-      {src:'גלריה/IMG-20240301-WA0076-300x169.webp',alt:'תמונת גלריה 4',caption:'טריות בכל משלוח'},
-      {src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת גלריה 5',caption:'טעם של חג'},
-      {src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת גלריה 6',caption:'השקעה בכל פרט'},
-      {src:'גלריה/IMG-20240301-WA0079-225x300.webp',alt:'תמונת גלריה 7',caption:'מסורת משפחתית'},
-      {src:'גלריה/IMG-20240301-WA0080-225x300.webp',alt:'תמונת גלריה 8',caption:'מבחר עשיר לפסח'},
-      {src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_35457738-300x225.webp',alt:'תמונת גלריה 9',caption:'אריזות מהודרות'}
+      {src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1'},
+      {src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2'},
+      {src:'גלריה/IMG-20240301-WA0074-225x300.webp',alt:'תמונת גלריה 3'},
+      {src:'גלריה/IMG-20240301-WA0076-300x169.webp',alt:'תמונת גלריה 4'},
+      {src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת גלריה 5'},
+      {src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת גלריה 6'},
+      {src:'גלריה/IMG-20240301-WA0079-225x300.webp',alt:'תמונת גלריה 7'},
+      {src:'גלריה/IMG-20240301-WA0080-225x300.webp',alt:'תמונת גלריה 8'},
+      {src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_35457738-300x225.webp',alt:'תמונת גלריה 9'}
     ];
 
     const customerLogos = [
@@ -1785,11 +1847,18 @@
       {src:'הרב3.jpg',alt:'הרב 3'}
     ];
 
+    const miniShowcaseItems = [
+      {src:'לאפה.webp',alt:'לאפה'},
+      {src:'הרב1שקוף.png',alt:'הרב 1 שקוף'},
+      {src:'2.png',alt:'לוגו מצות אבהתנא'}
+    ];
+
     const DELIVERY_FEE = 30;
 
     const productsGrid = document.getElementById('productsGrid');
     const galleryTrack = document.getElementById('galleryTrack');
     const customersGrid = document.getElementById('customersGrid');
+    const miniShowcaseTrack = document.getElementById('miniShowcaseTrack');
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
     const cartCount = document.getElementById('cartCount');
@@ -1810,6 +1879,8 @@
     let lightboxIndex = 0;
     let galleryStartIndex = 0;
     let galleryAutoSlide;
+    let miniShowcaseStartIndex = 0;
+    let miniShowcaseAutoSlide;
 
 
     function renderProducts(){
@@ -1854,14 +1925,17 @@
       galleryTrack.innerHTML = visibleItems.map(({item,index})=>`
         <article class="galleryItem" onclick="openLightbox(${index})">
           <img src="${item.src}" alt="${item.alt}" loading="lazy">
-          <p>${item.caption}</p>
         </article>
       `).join('');
     }
 
     function moveGallery(step = 1){
-      galleryStartIndex = (galleryStartIndex + step + galleryItems.length) % galleryItems.length;
-      renderGallery();
+      galleryTrack.classList.add('is-sliding');
+      setTimeout(()=>{
+        galleryStartIndex = (galleryStartIndex + step + galleryItems.length) % galleryItems.length;
+        renderGallery();
+        galleryTrack.classList.remove('is-sliding');
+      },280);
     }
 
     function setupGallery(){
@@ -1873,6 +1947,34 @@
 
       if(galleryAutoSlide) clearInterval(galleryAutoSlide);
       galleryAutoSlide = setInterval(()=>moveGallery(1),4000);
+    }
+
+    function renderMiniShowcase(){
+      const visibleItems = Array.from({length:3},(_,offset)=>{
+        const index = (miniShowcaseStartIndex + offset) % miniShowcaseItems.length;
+        return miniShowcaseItems[index];
+      });
+
+      miniShowcaseTrack.innerHTML = visibleItems.map(item=>`
+        <article class="miniShowcaseItem">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy">
+        </article>
+      `).join('');
+    }
+
+    function moveMiniShowcase(step = 1){
+      miniShowcaseTrack.classList.add('is-sliding');
+      setTimeout(()=>{
+        miniShowcaseStartIndex = (miniShowcaseStartIndex + step + miniShowcaseItems.length) % miniShowcaseItems.length;
+        renderMiniShowcase();
+        miniShowcaseTrack.classList.remove('is-sliding');
+      },280);
+    }
+
+    function setupMiniShowcase(){
+      renderMiniShowcase();
+      if(miniShowcaseAutoSlide) clearInterval(miniShowcaseAutoSlide);
+      miniShowcaseAutoSlide = setInterval(()=>moveMiniShowcase(1),3000);
     }
 
     function openLightbox(index){
@@ -2130,6 +2232,7 @@
     renderCustomers();
     renderGallery();
     setupGallery();
+    setupMiniShowcase();
     renderCart();
     startHeroSlideshow();
     setupTerms();
