@@ -145,7 +145,7 @@
       border-radius:18px;
       box-shadow:0 18px 36px rgba(56,37,14,.2);
       background:#fff;
-      padding:10px;
+      padding:5px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -157,6 +157,15 @@
       object-fit:contain;
       border-radius:12px;
       display:block;
+      opacity:1;
+      transform:scale(1);
+      transition:opacity 1.4s ease,transform 1.4s ease,filter 1.4s ease;
+      filter:blur(0);
+    }
+    .heroRabbiImg.is-fading{
+      opacity:0;
+      transform:scale(1.012);
+      filter:blur(1px);
     }
     .eyebrow{font-size:1.1rem;color:#6a5437;font-weight:700;margin:0 0 8px}
     h1{
@@ -716,7 +725,6 @@
       {src:'הרב2.jpg',alt:'הרב2.jpg'},
       {src:'הרב3.jpg',alt:'הרב3.jpg'}
     ];
-    const heroSlideAnimations = ['heroEnterRight','heroEnterLeft','heroEnterTop','heroEnterPop'];
     const lightbox = document.getElementById('lightbox');
     const lightboxMedia = document.getElementById('lightboxMedia');
     const checkoutForm = document.getElementById('checkoutForm');
@@ -755,7 +763,7 @@
     function startHeroSlideshow(){
       if(!heroRabbiImg) return;
       let heroSlideIndex = 0;
-      let heroAnimationIndex = 0;
+      let isTransitioning = false;
 
       heroSlides.forEach((slide)=>{
         const preloadedImage = new Image();
@@ -763,16 +771,18 @@
       });
 
       setInterval(()=>{
+        if(isTransitioning) return;
+        isTransitioning = true;
         heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
         const nextSlide = heroSlides[heroSlideIndex];
-        const nextAnimation = heroSlideAnimations[heroAnimationIndex % heroSlideAnimations.length];
-        heroAnimationIndex += 1;
 
-        heroRabbiImg.src = nextSlide.src;
-        heroRabbiImg.alt = nextSlide.alt;
-        heroRabbiImg.style.animation = 'none';
-        heroRabbiImg.offsetHeight;
-        heroRabbiImg.style.animation = `${nextAnimation} 1s cubic-bezier(.2,.82,.24,1)`;
+        heroRabbiImg.classList.add('is-fading');
+        setTimeout(()=>{
+          heroRabbiImg.src = nextSlide.src;
+          heroRabbiImg.alt = nextSlide.alt;
+          heroRabbiImg.classList.remove('is-fading');
+          isTransitioning = false;
+        },1200);
       },5000);
     }
 
