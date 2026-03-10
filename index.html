@@ -129,23 +129,26 @@
     .nav{display:flex;gap:12px;flex-wrap:nowrap;justify-content:center;flex:1;white-space:nowrap}
     .nav a,
     .cartTrigger{
-      padding:10px 2px;border-radius:0;color:#144246;font-weight:700;white-space:nowrap;
+      padding:10px 8px;border-radius:0;color:#144246;font-weight:700;white-space:nowrap;
       border:none;background:transparent;
       backdrop-filter:none;cursor:pointer;
       transition:transform .35s ease,color .35s ease;
       position:relative;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .nav a::after,
     .cartTrigger::after{
       content:"";
       position:absolute;
-      right:0;
-      left:0;
+      right:8px;
+      left:8px;
       bottom:2px;
-      height:2px;
+      height:3px;
       background:linear-gradient(90deg,#26d3c8,#76e0ff,#f6e6a3);
       transform:scaleX(0);
-      transform-origin:center;
+      transform-origin:right center;
       transition:transform .35s ease;
       border-radius:999px;
     }
@@ -308,11 +311,23 @@
 
     .galleryWrap{position:relative}
     .galleryTrack{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .galleryItem{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .6s ease, box-shadow .6s ease, filter .6s ease}
+    @keyframes galleryFloatOrbit{
+      0%,100%{transform:translateY(0) rotate(0deg)}
+      40%{transform:translateY(-10px) rotate(.7deg)}
+      70%{transform:translateY(-4px) rotate(-.45deg)}
+    }
+    @keyframes galleryTiltIn{
+      0%{opacity:0;transform:perspective(900px) rotateY(22deg) rotateX(10deg) translateY(90px) scale(.78)}
+      70%{opacity:1;transform:perspective(900px) rotateY(-5deg) rotateX(-1deg) translateY(-8px) scale(1.04)}
+      100%{opacity:1;transform:perspective(900px) rotateY(0) rotateX(0) translateY(0) scale(1)}
+    }
+    .galleryItem{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .6s cubic-bezier(.22,.61,.36,1), box-shadow .6s ease, filter .6s ease;transform-style:preserve-3d;will-change:transform;animation:galleryFloatOrbit 7.5s ease-in-out infinite}
     .galleryItem::after{content:"";position:absolute;inset:auto 0 0 0;height:52%;background:linear-gradient(180deg,rgba(17,11,5,0),rgba(17,11,5,.82));pointer-events:none}
-    .galleryItem.dropIn{opacity:0;animation:cardDropIn 1.35s cubic-bezier(.2,.86,.22,1) forwards}
-    .galleryItem:hover{transform:translateY(-12px) scale(1.09) rotate(-1deg);box-shadow:0 34px 62px rgba(41,29,13,.26);filter:saturate(1.1)}
-    .galleryItem:nth-child(2):hover{transform:translateY(-12px) scale(1.09) rotate(1deg)}
+    .galleryItem.dropIn{opacity:0;animation:galleryTiltIn 1.2s cubic-bezier(.2,.86,.22,1) forwards, galleryFloatOrbit 7.5s ease-in-out 1.2s infinite}
+    .galleryItem:hover{transform:translateY(-16px) scale(1.07) rotate(-1.2deg) perspective(1000px) rotateX(5deg) rotateY(-4deg);box-shadow:0 34px 62px rgba(41,29,13,.26);filter:saturate(1.2)}
+    .galleryItem:nth-child(2n):hover{transform:translateY(-16px) scale(1.07) rotate(1.2deg) perspective(1000px) rotateX(5deg) rotateY(4deg)}
+    .galleryItem:nth-child(3n){animation-delay:.4s}
+    .galleryItem:nth-child(4n){animation-delay:.9s}
     .galleryItem img,.galleryItem video{display:block;width:100%;aspect-ratio:4/5;height:auto;object-fit:cover}
     .galleryItem p{position:absolute;right:0;left:0;bottom:0;padding:14px 12px;margin:0;font-weight:800;color:#fff;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.45)}
     .galleryBtn{display:none}
@@ -474,11 +489,6 @@
 
 
     /* ===== Bold redesign override ===== */
-    @keyframes auroraMove{
-      0%{background-position:0% 50%,100% 20%,50% 100%}
-      50%{background-position:100% 40%,0% 80%,20% 0%}
-      100%{background-position:0% 50%,100% 20%,50% 100%}
-    }
     @keyframes productLaunch{
       0%{opacity:0;transform:translateY(130px) scale(.8) rotateX(20deg)}
       65%{opacity:1;transform:translateY(-12px) scale(1.04) rotateX(0deg)}
@@ -495,8 +505,8 @@
       100%{opacity:1;transform:translateX(0) skewX(0) scale(1)}
     }
     :root{
-      --bg:#d8fcf8;
-      --bg2:#d8ecff;
+      --bg:#bff4ee;
+      --bg2:#d5f7f3;
       --ink:#0e2f37;
       --muted:#2f646f;
       --line:rgba(8,72,84,.2);
@@ -507,15 +517,13 @@
     }
     body{
       background:
-        radial-gradient(circle at 10% 10%,rgba(63,224,206,.36),transparent 35%),
-        radial-gradient(circle at 90% 20%,rgba(121,226,255,.34),transparent 33%),
-        radial-gradient(circle at 60% 90%,rgba(252,230,161,.28),transparent 40%),
-        linear-gradient(130deg,#b8f7ef,#d7f9ff 35%,#d6ecff 60%,#c6f7f4);
-      background-size:140% 140%,140% 140%,160% 160%,100% 100%;
-      animation:auroraMove 18s ease-in-out infinite;
+        radial-gradient(circle at 12% 15%,rgba(123,245,231,.24),transparent 38%),
+        radial-gradient(circle at 88% 12%,rgba(132,239,255,.21),transparent 34%),
+        linear-gradient(135deg,#b8f5ef,#c8f7f2 42%,#d2f8f5 72%,#b6efe8);
+      background-attachment:fixed;
       color:var(--ink);
     }
-    body::before{opacity:.06;mix-blend-mode:screen}
+    body::before{opacity:.12;mix-blend-mode:soft-light}
     .topbar{background:rgba(239,255,255,.78);border-bottom:1px solid rgba(35,143,155,.2);box-shadow:0 12px 30px rgba(7,98,110,.16)}
     .heroRabbiBanner,.certCard,.aboutText,.aboutFeature,.card,.customerCard,.productCard,.galleryItem,.termsCard,.checkoutFormCard,.paymentCard,.cart{background:linear-gradient(160deg,rgba(255,255,255,.86),rgba(255,255,255,.66));border-color:rgba(108,197,208,.34);box-shadow:var(--shadow);backdrop-filter:blur(8px)}
     .eyebrow,.lead,.sectionHead p,.aboutText,.productName,.productTagline,.productPack,.productFlour,.footerNote{color:#22525e}
