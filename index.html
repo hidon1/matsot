@@ -330,6 +330,7 @@
     .productBrand{margin:0;text-align:center;font-size:1.52rem;line-height:1.16;color:#b8862f;font-weight:800;font-family:"Frank Ruhl Libre","Secular One","Rubik",sans-serif;text-shadow:0 2px 8px rgba(87,57,18,.16)}
     .productName{margin:0;text-align:center;font-size:1.01rem;line-height:1.45;color:#2b1f13;font-weight:700}
     .productTagline,.productPack,.productFlour{margin:0;text-align:center;color:#4b3720;font-size:.94rem;font-weight:600;line-height:1.35}
+    .productPackGold{color:#b8862f;font-weight:700}
     .productTagline{font-size:.92rem;color:#5b4327}
     .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
     .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
@@ -693,6 +694,24 @@
       'כזיתות חיטה קמח חיטה מלא חצי ק״ג': 'כזיתות חיטה קמח חיטה מלאה, חצי ק"ג'
     };
 
+    const productCardOverrides = {
+      75: {
+        displayBrand: 'מצות אבהתנא',
+        name: 'כזיתות חיטה, מצות מחולקות לכזיתות (כ-14 מצות)',
+        packageLine: 'מאחז ח"ג',
+        tagline: '● מצה שמורה',
+        flourLine: '100% קמח מלא'
+      },
+      139: {
+        displayBrand: 'מצות אבהתנא',
+        name: 'כזיתות חיטה, מצות מחולקות לכזיתות (כ-28 יחידות במארז)',
+        packageLine: 'מארז 1 קילוגרם',
+        packageClass: 'productPack productPackGold',
+        tagline: '● מצה שמורה',
+        flourLine: '100% קמח מלא'
+      }
+    };
+
     function parseProductDetails(name){
       const isGeulatenu = /גאולת/i.test(name);
       const isLafa = /לאפה|רכות/i.test(name);
@@ -718,7 +737,8 @@
         .replace(/\s+/g,' ')
         .trim();
       const name = productNameOverrides[rawName] || rawName;
-      return {id:index+1,name,price,img:path,...parseProductDetails(name)};
+      const baseProduct = {id:index+1,name,price,img:path,...parseProductDetails(name),packageClass:'productPack'};
+      return {...baseProduct,...(productCardOverrides[price] || {})};
     }
 
     const products = productImageFiles.map(parseProductFromFilename);
@@ -856,8 +876,8 @@
           <div class="productBody">
             <p class="productBrand">${p.displayBrand}</p>
             <p class="productName">${p.name}</p>
+            <p class="${p.packageClass || 'productPack'}">${p.packageLine}</p>
             <p class="productTagline">${p.tagline}</p>
-            <p class="productPack">${p.packageLine}</p>
             <p class="productFlour">${p.flourLine}</p>
             <div class="productMeta">
               <div class="price">${p.price} ₪</div>
