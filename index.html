@@ -44,9 +44,20 @@
       position:fixed;
       inset:0;
       background:radial-gradient(circle at center,rgba(255,255,255,.45),rgba(255,255,255,.05) 55%,transparent 80%);
-      opacity:.9;
+      opacity:.65;
       pointer-events:none;
       z-index:-1;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:url("2.png") center 40% / min(52vw,560px) no-repeat;
+      opacity:.16;
+      pointer-events:none;
+      z-index:-1;
+      filter:drop-shadow(0 10px 22px rgba(0,0,0,.18));
     }
 
     h1,h2,h3,h4{
@@ -86,7 +97,7 @@
       position:sticky;
       top:0;
       z-index:100;
-      background:rgba(255,255,255,.48);
+      background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.8)),rgba(199,154,60,.2);
       backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(0,0,0,.07);
       box-shadow:0 12px 28px rgba(0,0,0,.08);
@@ -456,6 +467,9 @@
       flex-direction:column;
       gap:10px;
       flex:1;
+      background:rgba(255,255,255,.96);
+      position:relative;
+      z-index:2;
     }
 
     .productBrand{
@@ -532,11 +546,35 @@
       font-size:1.28rem;
     }
 
+    .galleryWrap{
+      position:relative;
+      padding:0 56px;
+    }
+
     .galleryTrack{
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
+      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:14px;
     }
+
+    .galleryControl{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:50%;
+      font-size:1.45rem;
+      font-weight:800;
+      background:rgba(255,255,255,.92);
+      box-shadow:0 10px 18px rgba(0,0,0,.14);
+      cursor:pointer;
+      z-index:4;
+    }
+
+    .galleryControl.prev{right:0}
+    .galleryControl.next{left:0}
 
     .galleryItem{
       display:flex;
@@ -626,6 +664,9 @@
       border:1px solid rgba(125,87,31,.14);
       line-height:2;
       color:#3f2f1d;
+      font-size:1.16rem;
+      font-weight:600;
+      font-family:"Frank Ruhl Libre","Rubik",serif;
       display:grid;
       grid-template-columns:minmax(0,1fr) minmax(280px,.54fr);
       gap:18px;
@@ -635,10 +676,21 @@
 
     .aboutHighlight{
       display:block;
-      font-size:1.45rem;
-      font-weight:800;
+      font-size:1.7rem;
+      font-weight:900;
       color:#6f3f12;
       margin:10px 0 8px;
+    }
+
+    .revealLong{
+      opacity:0;
+      transform:translateY(30px);
+      transition:opacity 1.5s ease,transform 1.5s ease;
+    }
+
+    .revealLong.visible{
+      opacity:1;
+      transform:translateY(0);
     }
 
     .aboutInlineImage{
@@ -730,13 +782,16 @@
     .aboutFeature h3{
       margin:0 0 8px;
       color:#6b451a;
-      font-size:1.18rem;
+      font-size:1.32rem;
+      font-weight:900;
     }
 
     .aboutFeature p{
       margin:0;
       color:#4d3821;
       line-height:1.8;
+      font-weight:700;
+      font-size:1.03rem;
     }
 
     .aboutRibbon{
@@ -774,7 +829,7 @@
 
     .subSectionTitle span{
       display:inline-block;
-      font-size:1.25rem;
+      font-size:1.38rem;
       font-weight:800;
       color:#68431a;
       position:relative;
@@ -805,65 +860,18 @@
       padding:10px;
       box-shadow:0 12px 24px rgba(56,37,14,.10);
       overflow:hidden;
-      transition:transform .22s ease;
+      transition:transform .28s ease, box-shadow .28s ease;
     }
 
-    .customerCard:hover{transform:translateY(-4px)}
+    .customerCard:hover{
+      transform:translate(-6px,-10px) scale(1.06);
+      box-shadow:0 22px 36px rgba(56,37,14,.2);
+    }
     .customerCard img{
       width:100%;
       aspect-ratio:1/1;
       object-fit:contain;
       display:block;
-    }
-
-    .faqGrid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:12px;
-    }
-
-    .faqItem{
-      background:#fff;
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:18px;
-      box-shadow:0 12px 22px rgba(0,0,0,.05);
-      overflow:hidden;
-    }
-
-    .faqQuestion{
-      width:100%;
-      border:none;
-      background:#fff;
-      text-align:right;
-      font:inherit;
-      font-weight:800;
-      color:#2f2012;
-      padding:16px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-
-    .faqQuestion span:last-child{
-      font-size:1.4rem;
-      line-height:1;
-      color:#9a6a24;
-    }
-
-    .faqAnswer{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height .28s ease;
-      padding:0 16px;
-      color:#4b3720;
-      line-height:1.8;
-    }
-
-    .faqItem.open .faqAnswer{
-      max-height:260px;
-      padding:0 16px 16px;
     }
 
     .contactGrid{
@@ -1170,7 +1178,6 @@
       .heroMedia{min-height:auto}
       .aboutText{grid-template-columns:1fr}
       .contactGrid{grid-template-columns:1fr}
-      .faqGrid{grid-template-columns:1fr}
       .customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .aboutRibbon{grid-template-columns:1fr}
     }
@@ -1203,7 +1210,9 @@
 
     @media (max-width:640px){
       .productsGrid{grid-template-columns:1fr;gap:12px}
+      .galleryWrap{padding:0}
       .galleryTrack{grid-template-columns:1fr}
+      .galleryControl{display:none}
       .lightboxNav{
         width:42px;
         height:42px;
@@ -1233,7 +1242,6 @@
           <a href="#products">המוצרים שלנו</a>
           <a href="#gallery">הגלריה</a>
           <a href="#about">מי אנחנו</a>
-          <a href="#faq">שאלות נפוצות</a>
           <a href="#contact">צור קשר</a>
         </nav>
 
@@ -1366,7 +1374,11 @@
         <p>מבט מקרוב על האפייה, האריזות והאיכות</p>
       </div>
 
-      <div class="galleryTrack" id="galleryTrack"></div>
+      <div class="galleryWrap">
+        <button class="galleryControl prev" type="button" id="galleryPrev" aria-label="הקודם">›</button>
+        <div class="galleryTrack" id="galleryTrack"></div>
+        <button class="galleryControl next" type="button" id="galleryNext" aria-label="הבא">‹</button>
+      </div>
     </section>
 
     <section id="about" class="reveal">
@@ -1374,7 +1386,7 @@
         <h2>מי אנחנו</h2>
       </div>
 
-      <div class="aboutText">
+      <div class="aboutText revealLong">
         <div>
           מצות אבהתנא מיוצרות מחומרים איכותיים בלבד, על כל כללי ההלכה וכן על כללי הכשרות.
           המצות רכות וטעימות, קלות לאכילת הכזיתות, ומגיעות באריזות מגוונות – חצי קילו, קילו,
@@ -1436,7 +1448,7 @@
         </article>
       </div>
 
-      <div class="aboutRibbon reveal">
+      <div class="aboutRibbon revealLong">
         <div class="aboutRibbonItem">
           <strong>אפייה מוקפדת</strong>
           <span>ייצור עם תשומת לב לכל שלב</span>
@@ -1451,57 +1463,8 @@
         </div>
       </div>
 
-      <div class="subSectionTitle"><span>ניתן להשיג גם בחנויות</span></div>
+      <div class="subSectionTitle revealLong"><span>ניתן להשיג גם בחנויות</span></div>
       <div class="customersGrid" id="customersGrid"></div>
-    </section>
-
-    <section id="faq" class="reveal">
-      <div class="sectionHead">
-        <h2>שאלות נפוצות</h2>
-        <p>תשובות מהירות לדברים שלקוחות שואלים בדרך כלל</p>
-      </div>
-
-      <div class="faqGrid">
-        <article class="faqItem">
-          <button class="faqQuestion" type="button">
-            <span>האם אפשר לבצע איסוף עצמי?</span>
-            <span>+</span>
-          </button>
-          <div class="faqAnswer">
-            כן. ניתן לבחור באיסוף עצמי במהלך הרכישה מהמקום: סמטת התבור 3, פתח תקווה.
-          </div>
-        </article>
-
-        <article class="faqItem">
-          <button class="faqQuestion" type="button">
-            <span>האם יש אפשרות למשלוח?</span>
-            <span>+</span>
-          </button>
-          <div class="faqAnswer">
-            כן. ניתן לבחור משלוח בתוספת 30 ₪ ולמלא את פרטי הכתובת במסך הרכישה.
-          </div>
-        </article>
-
-        <article class="faqItem">
-          <button class="faqQuestion" type="button">
-            <span>האם יש מצות ללא גלוטן?</span>
-            <span>+</span>
-          </button>
-          <div class="faqAnswer">
-            כן. קיימות מצות שיבולת שועל ללא גלוטן, בהתאם למה שמוצג ברשימת המוצרים.
-          </div>
-        </article>
-
-        <article class="faqItem">
-          <button class="faqQuestion" type="button">
-            <span>האם ניתן ליצור קשר להזמנה מיוחדת?</span>
-            <span>+</span>
-          </button>
-          <div class="faqAnswer">
-            כן. אפשר לפנות דרך טופס יצירת הקשר או דרך פרטי ההתקשרות המופיעים באתר.
-          </div>
-        </article>
-      </div>
     </section>
 
     <section id="contact" class="reveal">
@@ -1828,6 +1791,8 @@
 
     const cart = new Map();
     let lightboxIndex = 0;
+    let galleryStartIndex = 0;
+    let galleryAutoSlide;
 
 
     function renderProducts(){
@@ -1869,12 +1834,33 @@
     }
 
     function renderGallery(){
-      galleryTrack.innerHTML = galleryItems.map((item,index)=>`
+      const visibleItems = Array.from({length:3},(_,offset)=>{
+        const index = (galleryStartIndex + offset) % galleryItems.length;
+        return {item:galleryItems[index],index};
+      });
+
+      galleryTrack.innerHTML = visibleItems.map(({item,index})=>`
         <article class="galleryItem" onclick="openLightbox(${index})">
           <img src="${item.src}" alt="${item.alt}" loading="lazy">
           <p>${item.caption}</p>
         </article>
       `).join('');
+    }
+
+    function moveGallery(step = 1){
+      galleryStartIndex = (galleryStartIndex + step + galleryItems.length) % galleryItems.length;
+      renderGallery();
+    }
+
+    function setupGallery(){
+      const prevBtn = document.getElementById('galleryPrev');
+      const nextBtn = document.getElementById('galleryNext');
+
+      prevBtn.addEventListener('click',()=>moveGallery(-1));
+      nextBtn.addEventListener('click',()=>moveGallery(1));
+
+      if(galleryAutoSlide) clearInterval(galleryAutoSlide);
+      galleryAutoSlide = setInterval(()=>moveGallery(1),4000);
     }
 
     function openLightbox(index){
@@ -1995,16 +1981,6 @@
       },4500);
     }
 
-    function setupFAQ(){
-      document.querySelectorAll('.faqQuestion').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          const item = btn.closest('.faqItem');
-          item.classList.toggle('open');
-          btn.querySelector('span:last-child').textContent = item.classList.contains('open') ? '−' : '+';
-        });
-      });
-    }
-
     function setupTerms(){
       document.querySelectorAll('.openTerms').forEach(link=>{
         link.addEventListener('click',e=>{
@@ -2025,7 +2001,7 @@
     }
 
     function observeReveals(){
-      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+      document.querySelectorAll('.reveal, .revealLong').forEach(el=>observer.observe(el));
     }
 
     const observer = new IntersectionObserver(entries=>{
@@ -2141,9 +2117,9 @@
     renderProducts();
     renderCustomers();
     renderGallery();
+    setupGallery();
     renderCart();
     startHeroSlideshow();
-    setupFAQ();
     setupTerms();
     observeReveals();
   </script>
