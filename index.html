@@ -326,7 +326,8 @@
     .productMedia{position:relative;height:360px;background:#fff}
     .productCard img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block;transition:transform .44s cubic-bezier(.22,.61,.36,1)}
     .productCard:hover img{transform:scale(1.08)}
-    .productBody{padding:15px 16px 16px;display:flex;justify-content:center;align-items:center}
+    .productBody{padding:15px 16px 16px;display:flex;flex-direction:column;gap:12px}
+    .productName{margin:0;text-align:center;font-size:1.05rem;line-height:1.45;color:#2b1f13;font-weight:700}
     .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
     .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
 
@@ -670,22 +671,36 @@
   </div>
 
   <script>
-    const products = [
-      {id:1,name:'10',price:100,img:'em/10-300x300.png'},
-      {id:2,name:'10',price:100,img:'em/10-768x768.png'},
-      {id:3,name:'8',price:100,img:'em/8-300x300.png'},
-      {id:4,name:'9',price:100,img:'em/9-300x300.png'},
-      {id:5,name:'קמח מצה שמורה מארז 500 גרם',price:100,img:'em/קמח-מצה-שמורה-מארז-500-גרם-768x768.webp'},
-      {id:6,name:'מצה שמורה עבודת יד לאפה מארז 1 קילו 5 7 מצות 100 קמח מלא',price:100,img:'em/מצה-שמורה-עבודת-יד-לאפה-מארז-1-קילו-5-7-מצות-100_-קמח-מלא-300x300.webp'},
-      {id:7,name:'מצות אבהתנא 1',price:100,img:'em/מצות-אבהתנא-1-300x300.webp'},
-      {id:8,name:'מצות מכונה שמורה משעת קצירה מארז 2 קילו',price:100,img:'em/מצות-מכונה-שמורה-משעת-קצירה-מארז-2-קילו-300x300.webp'},
-      {id:9,name:'מצות עבודת יד רכות לאפות קטנות אישיות מחולקות לכזיתות אריזת 1 קילו כ 28 יחידות במארז 100 קמח מלא',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-1-קילו-כ-28-יחידות-במארז-100_-קמח-מלא-300x300.webp'},
-      {id:10,name:'מצות עבודת יד רכות לאפות קטנות אישיות מחולקות לכזיתות אריזת 500 גרם כ 14 יחידות במארז 100 קמח כוסמין מלא',price:100,img:'em/מצות-עבודת-יד-רכות-לאפות-קטנות-אישיות-מחולקות-לכזיתות-אריזת-500-גרם-כ-14-יחידות-במארז-100_-קמח-כוסמין-מלא-768x768.webp'},
-      {id:11,name:'מצות עבודת יד רכות מקמח שיבולת שועל במפעל נקי מאבקת קמח מארז כ 550 גרם מעל 3 מצות באריזה',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-300x300.webp'},
-      {id:12,name:'מצות עבודת יד רכות מקמח שיבולת שועל במפעל נקי מאבקת קמח מארז כ 550 גרם מעל 3 מצות באריזה',price:100,img:'em/מצות-עבודת-יד-רכות-מקמח-שיבולת-שועל-במפעל-נקי-מאבקת-קמח-מארז-כ-550-גרם-מעל-3-מצות-באריזה-768x768.webp'},
-      {id:13,name:'מצות רכות עבודת יד מארז 1 קילו כ 5 מצות באריזה',price:100,img:'em/מצות-רכות-עבודת-יד-מארז-1-קילו-כ-5-מצות-באריזה-300x300.webp'},
-      {id:14,name:'סט 3 מצות עבודת יד לאפה מארז לתושבי חול 454 גרם 1 פאונד',price:100,img:'em/סט-3-מצות-עבודת-יד-לאפה-מארז-לתושבי-חול-454-גרם-1-פאונד-300x300.webp'}
+    const productImageFiles = [
+      'מוצרים/ כזיתות חיטה קמח חיטה מלא חצי ק״ג- מכירה 75.jpg',
+      'מוצרים/כזיתות חיטה קמח חיטה מלא 1 ק״ג- מכירה 139.jpg',
+      'מוצרים/כזיתות מקמח כוסמין 550 גרם מכירה - 135.jpg',
+      'מוצרים/לאפה אבהתנא קמח חיטה מלא 1 ק״ג - מכירה 115.jpg',
+      'מוצרים/מצות לאפה מקמח כוסמין 550 גרם - מכירה 115.jpg',
+      'מוצרים/מצות מבית אבא רכות ואיכותיות מכירה - 90.jpg',
+      'מוצרים/מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג  מכירה 85.jpg',
+      'מוצרים/מצות קשות ( פריכות ) ודקות אבהתנא 1 ק״ג מכירה 110.jpg',
+      'מוצרים/מצות שיבולת שועל ללא גלוטן 400 גרם מכירה 149.jpg',
+      'מוצרים/קמח מצה שמורה חצי ק״ג - מכירה 25.jpg'
     ];
+
+    const productNameOverrides = {
+      'כזיתות חיטה קמח חיטה מלא חצי ק״ג': 'כזיתות חיטה קמח חיטה מלאה, חצי ק"ג'
+    };
+
+    function parseProductFromFilename(path, index){
+      const file = path.split('/').pop().replace(/\.[^.]+$/, '').trim();
+      const priceMatch = file.match(/מכירה\s*-?\s*(\d+)/);
+      const price = priceMatch ? Number(priceMatch[1]) : 0;
+      const rawName = file
+        .replace(/\s*-?\s*מכירה\s*-?\s*\d+.*$/,'')
+        .replace(/\s+/g,' ')
+        .trim();
+      const name = productNameOverrides[rawName] || rawName;
+      return {id:index+1,name,price,img:path};
+    }
+
+    const products = productImageFiles.map(parseProductFromFilename);
     const galleryItems = [
       {type:'image',src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1',caption:'מצות אבהתנא'},
       {type:'image',src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2',caption:'איכות של מסורת'},
@@ -818,6 +833,7 @@
             <img src="${p.img}" alt="${p.name}">
           </div>
           <div class="productBody">
+            <p class="productName">${p.name}</p>
             <div class="productMeta">
               <div class="price">${p.price} ₪</div>
               <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
