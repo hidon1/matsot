@@ -70,6 +70,27 @@
       to{opacity:1;transform:translateX(0) scale(1)}
     }
 
+    @keyframes heroEnterRight{
+      from{opacity:0;transform:translateX(120px) scale(.96)}
+      to{opacity:1;transform:translateX(0) scale(1)}
+    }
+
+    @keyframes heroEnterLeft{
+      from{opacity:0;transform:translateX(-120px) scale(.96)}
+      to{opacity:1;transform:translateX(0) scale(1)}
+    }
+
+    @keyframes heroEnterTop{
+      from{opacity:0;transform:translateY(-90px) scale(.95)}
+      to{opacity:1;transform:translateY(0) scale(1)}
+    }
+
+    @keyframes heroEnterPop{
+      0%{opacity:0;transform:scale(.82) rotate(-3deg)}
+      70%{opacity:1;transform:scale(1.03) rotate(1deg)}
+      100%{opacity:1;transform:scale(1) rotate(0)}
+    }
+
     @keyframes certEntrance{
       from{opacity:0;transform:translateX(70px) scale(.95)}
       to{opacity:1;transform:translateX(0) scale(1)}
@@ -434,7 +455,7 @@
             <h1>מצות אבהתנא</h1>
             <p class="lead">כאן לא מדובר רק במצה – אלא במסורת, איכות ואפייה מוקפדת. אנחנו משקיעים בכל שלב בתהליך, ודואגים שכל מארז שמגיע אליכם יהיה טרי, מכובד וטעים במיוחד. הזמינו עוד היום את מצות אבהתנא ותיהנו מטעם של פסח אמיתי וזאת המצה ״די אכלו אבהתנא בארעא דמצרים״.</p>
           </div>
-          <img class="heroRabbiImg" src="הרב יגאל.webp" alt="הרב יגאל">
+          <img class="heroRabbiImg" id="heroRabbiImg" src="הרב1.webp" alt="הרב1.webp">
         </div>
         <div class="certGrid" aria-label="תעודות הכשר">
           <div class="certCard certCardInfo">
@@ -664,11 +685,18 @@
     const galleryPrev = document.getElementById('galleryPrev');
     const galleryNext = document.getElementById('galleryNext');
     const customersGrid = document.getElementById('customersGrid');
+    const heroRabbiImg = document.getElementById('heroRabbiImg');
     const customerLogos = [
       {src:'לקוחות/אושר עד.webp',alt:'אושר עד'},
       {src:'לקוחות/אשפר-300x300.webp',alt:'אשפר'},
       {src:'לקוחות/יש-חסד-300x300.webp',alt:'יש חסד'}
     ];
+    const heroSlides = [
+      {src:'הרב1.webp',alt:'הרב1.webp'},
+      {src:'הרב2.webp',alt:'הרב2.webp'},
+      {src:'הרב3.webp',alt:'הרב3.webp'}
+    ];
+    const heroSlideAnimations = ['heroEnterRight','heroEnterLeft','heroEnterTop','heroEnterPop'];
     const lightbox = document.getElementById('lightbox');
     const lightboxMedia = document.getElementById('lightboxMedia');
     const checkoutForm = document.getElementById('checkoutForm');
@@ -703,6 +731,30 @@
     }
 
     function shiftGallery(step){galleryStart = (galleryStart + step + galleryItems.length) % galleryItems.length;renderGallery();}
+
+    function startHeroSlideshow(){
+      if(!heroRabbiImg) return;
+      let heroSlideIndex = 0;
+      let heroAnimationIndex = 0;
+
+      heroSlides.forEach((slide)=>{
+        const preloadedImage = new Image();
+        preloadedImage.src = slide.src;
+      });
+
+      setInterval(()=>{
+        heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+        const nextSlide = heroSlides[heroSlideIndex];
+        const nextAnimation = heroSlideAnimations[heroAnimationIndex % heroSlideAnimations.length];
+        heroAnimationIndex += 1;
+
+        heroRabbiImg.src = nextSlide.src;
+        heroRabbiImg.alt = nextSlide.alt;
+        heroRabbiImg.style.animation = 'none';
+        heroRabbiImg.offsetHeight;
+        heroRabbiImg.style.animation = `${nextAnimation} 1s cubic-bezier(.2,.82,.24,1)`;
+      },5000);
+    }
 
     function renderLightbox(){
       const item = galleryItems[lightboxIndex];
@@ -894,6 +946,7 @@
     renderCustomers();
     renderGallery();
     renderCart();
+    startHeroSlideshow();
   </script>
   <script src="https://cdn.enable.co.il/licenses/enable-L54377l6sbnmaph3-0326-80470/init.js"></script>
 </body>
