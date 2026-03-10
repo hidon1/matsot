@@ -453,6 +453,76 @@
     @media (max-width:980px){.certGrid,.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:640px){.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.aboutFeatures{grid-template-columns:1fr}.certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryViewport{padding:0 4px}.galleryBtn{width:28px;height:28px;border:none;background:transparent;box-shadow:none;position:absolute;top:50%;transform:translateY(-50%);z-index:2;font-size:1.7rem;line-height:1;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.75)}.galleryBtn:hover{transform:translateY(-50%) scale(1.08);box-shadow:none}.galleryBtn:focus-visible{outline:2px solid #fff;outline-offset:2px}#galleryNext{right:2px}#galleryPrev{left:2px}.lightboxNav{width:28px;height:28px;border:none;border-radius:0;background:transparent;box-shadow:none;top:50%;transform:translateY(-50%);font-size:1.7rem;line-height:1;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.75)}.lightboxNav:hover{transform:translateY(-50%) scale(1.08)}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:154px}.productBrand{font-size:1.15rem}.productName{font-size:.85rem;line-height:1.3}.productTagline,.productPack,.productFlour,.productInlineRow .productPack,.productInlineRow .productTagline{font-size:.78rem;line-height:1.25}.price{font-size:1.05rem}.termsConfirm label{align-items:flex-start}.aboutInlineImage img{max-height:420px}.certCard{padding:6px}.certCard img{height:128px}.certCard:hover,.certCard.certCardInfo:hover{transform:none;box-shadow:0 10px 20px rgba(56,37,14,.12);border-color:rgba(97,59,20,.24)}.certCard:hover img{transform:none}.certCard.certCardInfo{min-height:auto;padding:8px}.certCard.certCardInfo img{height:138px;transform:none}.certCard.certCardInfo .certInfoText{display:none}.certCard.certCardInfo:hover{width:min(100%,246px);min-height:auto}.certCard.certCardInfo:hover img{position:static;width:100%;height:138px;transform:none}.paymentModal{align-items:flex-start;padding:8px}.checkoutFormCard{max-height:calc(100vh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}.footerInner{grid-template-columns:1fr;align-items:start}.footerLinks,.footerNoteAddress,.footerNoteCopyright{justify-self:start;text-align:right}}
     @media (max-width:480px){.topbarInner{gap:6px}.nav a,.nav .cartTrigger{font-size:.82rem;min-height:36px;padding:7px 4px}.nav .navCart{font-size:.96rem}.cartTrigger{font-size:.92rem;padding:8px 10px}.productBody{padding:9px 8px}.price{text-align:center}.productMeta .btn{font-size:.82rem;padding:8px 10px}.productMedia{height:146px}}
+
+
+    /* ===== Bold redesign override ===== */
+    @keyframes auroraMove{
+      0%{background-position:0% 50%,100% 20%,50% 100%}
+      50%{background-position:100% 40%,0% 80%,20% 0%}
+      100%{background-position:0% 50%,100% 20%,50% 100%}
+    }
+    @keyframes productLaunch{
+      0%{opacity:0;transform:translateY(130px) scale(.8) rotateX(20deg)}
+      65%{opacity:1;transform:translateY(-12px) scale(1.04) rotateX(0deg)}
+      100%{opacity:1;transform:translateY(0) scale(1)}
+    }
+    @keyframes sideRushRight{
+      0%{opacity:0;transform:translateX(160px) skewX(-6deg) scale(.88)}
+      70%{opacity:1;transform:translateX(-8px) skewX(0) scale(1.02)}
+      100%{opacity:1;transform:translateX(0) skewX(0) scale(1)}
+    }
+    @keyframes sideRushLeft{
+      0%{opacity:0;transform:translateX(-160px) skewX(6deg) scale(.88)}
+      70%{opacity:1;transform:translateX(8px) skewX(0) scale(1.02)}
+      100%{opacity:1;transform:translateX(0) skewX(0) scale(1)}
+    }
+    :root{
+      --bg:#080415;
+      --bg2:#14042b;
+      --ink:#f5edff;
+      --muted:#d8c8ff;
+      --line:rgba(255,255,255,.24);
+      --gold:#ff7a18;
+      --gold-light:#ffcc70;
+      --card:#160b2f;
+      --shadow:0 22px 56px rgba(5,0,18,.55);
+    }
+    body{
+      background:
+        radial-gradient(circle at 10% 10%,rgba(255,74,120,.42),transparent 35%),
+        radial-gradient(circle at 90% 20%,rgba(43,214,255,.32),transparent 33%),
+        radial-gradient(circle at 60% 90%,rgba(255,183,0,.22),transparent 40%),
+        linear-gradient(130deg,#070210,#19022f 35%,#130a2f 60%,#041a2a);
+      background-size:140% 140%,140% 140%,160% 160%,100% 100%;
+      animation:auroraMove 18s ease-in-out infinite;
+      color:var(--ink);
+    }
+    body::before{opacity:.06;mix-blend-mode:screen}
+    .topbar{background:rgba(12,6,28,.72);border-bottom:1px solid rgba(255,255,255,.18);box-shadow:0 18px 42px rgba(0,0,0,.45)}
+    .nav a,.cartTrigger{background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.22);color:#f8f1ff}
+    .nav a:hover,.nav a.active,.cartTrigger:hover{background:linear-gradient(135deg,#ff7a18,#ff3b7a);color:#fff;box-shadow:0 16px 28px rgba(255,84,25,.4)}
+    .heroRabbiBanner,.certCard,.aboutText,.aboutFeature,.card,.customerCard,.productCard,.galleryItem,.termsCard,.checkoutFormCard,.paymentCard,.cart{background:linear-gradient(160deg,rgba(255,255,255,.12),rgba(255,255,255,.03));border-color:rgba(255,255,255,.24);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+    .eyebrow,.lead,.sectionHead p,.aboutText,.productName,.productTagline,.productPack,.productFlour,.footerNote{color:#efe3ff}
+    h1{background:linear-gradient(90deg,#ffe08a,#ff8c3a 35%,#ff4f9a 70%,#8ce8ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+    .sectionHead h2,.certHeading,.subSectionTitle span,.productBrand{color:#fff4d4}
+    .sectionHead h2::after,.subSectionTitle span::after{border-color:#ff8a00;background:linear-gradient(90deg,#ff5b2e,#ffd166)}
+    .btn{background:linear-gradient(135deg,#ff6a00,#ff1f7a);color:#fff;box-shadow:0 12px 28px rgba(255,56,56,.35)}
+    .btn.alt{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.28)}
+    .productCard{border-radius:28px;overflow:hidden;position:relative}
+    .productCard::before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,122,24,.16),transparent 55%,rgba(92,227,255,.14));pointer-events:none}
+    .productMedia{background:rgba(8,4,20,.56)}
+    .productCard:hover{transform:translateY(-14px) scale(1.05) rotate(-.8deg);box-shadow:0 28px 70px rgba(0,0,0,.6)}
+    .price{color:#ffd78d}
+    .galleryItem::after{background:linear-gradient(180deg,rgba(7,3,19,0),rgba(7,3,19,.95))}
+    .galleryBtn{background:linear-gradient(135deg,#ff7a18,#ff3d85);color:#fff;border:none}
+    .customerCard:hover,.galleryItem:hover{box-shadow:0 30px 72px rgba(0,0,0,.62)}
+    .siteFooter{background:linear-gradient(135deg,#0b1328,#24052f);color:#f3e9ff;border-top:1px solid rgba(255,255,255,.2)}
+    input:not([type='checkbox']):not([type='radio']),textarea{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.36);color:#fff}
+    input::placeholder,textarea::placeholder{color:rgba(255,255,255,.72)}
+    .reveal.from-bottom.visible{animation:productLaunch 1.05s cubic-bezier(.19,.86,.24,1) forwards}
+    .reveal.from-right.visible{animation:sideRushRight 1s cubic-bezier(.18,.84,.28,1) forwards}
+    .reveal.from-left.visible{animation:sideRushLeft 1s cubic-bezier(.18,.84,.28,1) forwards}
+
   </style>
 </head>
 <body>
@@ -554,7 +624,7 @@
       <div class="sectionHead reveal">
         <h2>הגלריה</h2>
       </div>
-      <div class="galleryWrap reveal">
+      <div class="galleryWrap reveal from-left">
         <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
         <div class="galleryViewport">
           <div class="galleryTrack" id="galleryTrack"></div>
