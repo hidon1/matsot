@@ -402,12 +402,48 @@
     }
 
     .trustItem{
+      position:relative;
       background:#fff;
       border:1px solid rgba(0,0,0,.07);
       border-radius:18px;
-      padding:16px;
+      padding:24px 16px 16px;
       box-shadow:0 12px 22px rgba(0,0,0,.06);
       text-align:center;
+      overflow:hidden;
+      transition:transform .24s ease, box-shadow .24s ease;
+    }
+
+    .trustItem:hover{
+      transform:translateY(-6px);
+      box-shadow:0 20px 28px rgba(0,0,0,.12);
+    }
+
+    .featureIconBadge{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(180deg,#f2d79e,#c89232);
+      color:#2b1a08;
+      font-size:1.2rem;
+      font-weight:800;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
+      margin:0 auto 12px;
+      transform:translateY(0);
+      transition:transform .35s cubic-bezier(.25,.8,.25,1);
+    }
+
+    .trustItem:hover .featureIconBadge,
+    .aboutFeature:hover .featureIconBadge,
+    .aboutRibbonItem:hover .featureIconBadge{
+      animation:iconBounce .55s ease;
+    }
+
+    @keyframes iconBounce{
+      0%,100%{transform:translateY(0)}
+      35%{transform:translateY(-8px)}
+      70%{transform:translateY(2px)}
     }
 
     .trustItem strong{
@@ -443,7 +479,7 @@
     }
 
     .productMedia{
-      height:300px;
+      height:340px;
       background:#fff;
       padding:12px;
       display:grid;
@@ -462,10 +498,10 @@
     }
 
     .productBody{
-      padding:14px;
+      padding:12px;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:8px;
       flex:1;
       background:rgba(255,255,255,.96);
       position:relative;
@@ -484,11 +520,11 @@
     .productName{
       margin:0;
       text-align:center;
-      font-size:1rem;
-      line-height:1.55;
+      font-size:.95rem;
+      line-height:1.45;
       color:#2b1f13;
       font-weight:700;
-      min-height:52px;
+      min-height:44px;
     }
 
     .productInlineRow{
@@ -501,7 +537,7 @@
     .productPack,
     .productTagline{
       margin:0;
-      font-size:.9rem;
+      font-size:.84rem;
       color:#4b3720;
       font-weight:700;
       text-align:center;
@@ -511,24 +547,7 @@
       margin:0;
       text-align:center;
       color:#5a4225;
-      font-size:.92rem;
-    }
-
-    .productQuickMeta{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:8px;
-    }
-
-    .productQuickMeta span{
-      background:#f7f0e2;
-      border:1px solid rgba(0,0,0,.05);
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:.8rem;
-      font-weight:700;
-      color:#5b4327;
+      font-size:.86rem;
     }
 
     .productMeta{
@@ -765,20 +784,6 @@
       font-weight:700;
     }
 
-    .aboutFeatureIcon{
-      width:42px;
-      height:42px;
-      border-radius:12px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(180deg,#f2d79e,#c89232);
-      color:#2b1a08;
-      font-size:1.1rem;
-      font-weight:800;
-      box-shadow:0 8px 18px rgba(0,0,0,.08);
-      margin-bottom:12px;
-    }
-
     .aboutFeature h3{
       margin:0 0 8px;
       color:#6b451a;
@@ -802,12 +807,18 @@
     }
 
     .aboutRibbonItem{
+      transition:transform .24s ease, box-shadow .24s ease;
       background:linear-gradient(180deg,#ead8b4,#dcc08b);
       border:1px solid rgba(122,84,27,.16);
       border-radius:18px;
       padding:16px;
       text-align:center;
       box-shadow:0 10px 22px rgba(0,0,0,.05);
+    }
+
+    .aboutRibbonItem:hover{
+      transform:translateY(-6px);
+      box-shadow:0 18px 30px rgba(0,0,0,.12);
     }
 
     .aboutRibbonItem strong{
@@ -1223,7 +1234,7 @@
       .mobileStickyCta{display:flex}
       body{padding-bottom:76px}
       .heroFrame{height:340px}
-      .productMedia{height:220px}
+      .productMedia{height:250px}
       .aboutFeatures{grid-template-columns:1fr}
     }
   </style>
@@ -1286,7 +1297,6 @@
               <span>כשרות מהודרת</span>
               <span>משלוח מהיר</span>
               <span>מבחר גדול</span>
-              <span>טריות גבוהה</span>
             </div>
           </div>
 
@@ -1342,18 +1352,22 @@
     <section class="reveal">
       <div class="trustStrip">
         <article class="trustItem">
+          <div class="featureIconBadge" aria-hidden="true">✡</div>
           <strong>איכות ומסורת</strong>
           <span>ייצור מוקפד עם דגש על טעם ונראות</span>
         </article>
         <article class="trustItem">
+          <div class="featureIconBadge" aria-hidden="true">🍽</div>
           <strong>נוחות לאכילת כזית</strong>
           <span>מבחר מוצרים מותאם ונוח לשימוש</span>
         </article>
         <article class="trustItem">
+          <div class="featureIconBadge" aria-hidden="true">🚚</div>
           <strong>אפשרות משלוח</strong>
           <span>איסוף עצמי או משלוח בתוספת תשלום</span>
         </article>
         <article class="trustItem">
+          <div class="featureIconBadge" aria-hidden="true">📦</div>
           <strong>מבחר גדול</strong>
           <span>חיטה, כוסמין, שיבולת שועל, קמח מצה ועוד</span>
         </article>
@@ -1406,7 +1420,7 @@
         <article class="aboutFeature reveal">
           <div class="aboutFeatureInner">
             <div class="aboutFeatureFace">
-              <div class="aboutFeatureIcon">✦</div>
+              <div class="featureIconBadge" aria-hidden="true">✡</div>
               <h3>כשרות מהודרת</h3>
               <p>הקפדה על כל פרט בתהליך הייצור, תחת פיקוח והשגחה ברמה גבוהה, מתוך אחריות מלאה לאיכות ולדיוק.</p>
             </div>
@@ -1417,7 +1431,7 @@
         <article class="aboutFeature reveal">
           <div class="aboutFeatureInner">
             <div class="aboutFeatureFace">
-              <div class="aboutFeatureIcon">✦</div>
+              <div class="featureIconBadge" aria-hidden="true">🍞</div>
               <h3>טעם ואיכות</h3>
               <p>מצות נעימות, מדויקות ומושקעות, עם חוויית אכילה טובה יותר, מראה מכובד וטריות גבוהה.</p>
             </div>
@@ -1428,7 +1442,7 @@
         <article class="aboutFeature reveal">
           <div class="aboutFeatureInner">
             <div class="aboutFeatureFace">
-              <div class="aboutFeatureIcon">✦</div>
+              <div class="featureIconBadge" aria-hidden="true">🕍</div>
               <h3>מסורת מבית אבא</h3>
               <p>שילוב של שורשיות, טעם מסורתי ונראות שמכבדת את שולחן החג, עם תחושת בית ומסורת אמיתית.</p>
             </div>
@@ -1439,7 +1453,7 @@
         <article class="aboutFeature reveal">
           <div class="aboutFeatureInner">
             <div class="aboutFeatureFace">
-              <div class="aboutFeatureIcon">✦</div>
+              <div class="featureIconBadge" aria-hidden="true">🧺</div>
               <h3>מבחר לכל בית</h3>
               <p>חיטה, כוסמין, שיבולת שועל, כזיתות, אריזות שונות וקמח מצה, כך שכל בית יוכל למצוא את מה שמתאים לו.</p>
             </div>
@@ -1450,14 +1464,17 @@
 
       <div class="aboutRibbon revealLong">
         <div class="aboutRibbonItem">
+          <div class="featureIconBadge" aria-hidden="true">🔥</div>
           <strong>אפייה מוקפדת</strong>
           <span>ייצור עם תשומת לב לכל שלב</span>
         </div>
         <div class="aboutRibbonItem">
+          <div class="featureIconBadge" aria-hidden="true">🎁</div>
           <strong>אריזות מכובדות</strong>
           <span>נראות יפה ונקייה לשולחן החג</span>
         </div>
         <div class="aboutRibbonItem">
+          <div class="featureIconBadge" aria-hidden="true">🧩</div>
           <strong>מגוון רחב</strong>
           <span>פתרונות שונים לפי צורך והעדפה</span>
         </div>
@@ -1809,11 +1826,6 @@
               <p class="productTagline">${p.tagline}</p>
             </div>
             <p class="productFlour">${p.flourLine}</p>
-            <div class="productQuickMeta">
-              <span>כשרות מהודרת</span>
-              <span>טריות גבוהה</span>
-              <span>אריזה נוחה</span>
-            </div>
             <div class="productMeta">
               <div class="price">${p.price} ₪</div>
               <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
