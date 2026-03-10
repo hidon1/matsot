@@ -7,455 +7,1259 @@
   <link rel="icon" type="image/png" href="1.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Frank+Ruhl+Libre:wght@500;700;800&family=Heebo:wght@400;500;700;800&family=Noto+Sans+Hebrew:wght@400;500;700;800&family=Secular+One&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#e2d8bb;
-      --bg2:#e2d8bb;
-      --ink:#15110b;
-      --muted:#5a4c3a;
-      --line:rgba(0,0,0,.14);
-      --gold:#c08f3a;
-      --gold-light:#e6c888;
-      --card:#ffffff;
+      --bg:#efe2c7;
+      --bg2:#e6d4af;
+      --ink:#1f160f;
+      --muted:#5f4c37;
+      --line:rgba(63,44,20,.12);
+      --gold:#c79a3c;
+      --gold-light:#f2d7a2;
+      --card:#fffdf9;
       --radius:22px;
-      --shadow:0 16px 40px rgba(60,39,15,.16);
+      --shadow:0 18px 42px rgba(60,39,15,.14);
+      --dark:#2b1c0f;
+      --cream:#f8f1e4;
+      --success:#2f6b3b;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:"Noto Sans Hebrew","Rubik","Assistant","Heebo",system-ui,sans-serif;
+      font-family:"Rubik",system-ui,sans-serif;
       color:var(--ink);
-      background:linear-gradient(180deg,var(--bg),var(--bg2));
-      position:relative;
+      background:
+        radial-gradient(circle at top right,rgba(255,255,255,.72),transparent 26%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
       min-height:100vh;
+      position:relative;
     }
+
     body::before{
       content:"";
       position:fixed;
       inset:0;
-      background:url('1.png') center center / contain no-repeat;
-      opacity:.1;
+      background:url("1.png") center center / contain no-repeat;
+      opacity:.07;
       pointer-events:none;
       z-index:-1;
     }
-    h1,h2,h3,h4{font-family:"Frank Ruhl Libre","Secular One","Rubik",sans-serif;letter-spacing:.015em}
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(14px,3.2vw,24px)}
 
-    @keyframes floatIn{
-      from{opacity:0;transform:translateY(24px) scale(.98)}
-      to{opacity:1;transform:translateY(0) scale(1)}
+    h1,h2,h3,h4{
+      font-family:"Frank Ruhl Libre","Rubik",serif;
+      letter-spacing:.015em;
+      margin-top:0;
     }
 
-    @keyframes slideInSide{
-      from{opacity:0;transform:translateX(120px)}
-      to{opacity:1;transform:translateX(0)}
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%}
+    .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(14px,3vw,24px)}
+
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.04)}
+      100%{transform:scale(1)}
     }
 
-    @keyframes dropFromTop{
-      from{opacity:0;transform:translateY(-52px)}
-      to{opacity:1;transform:translateY(0)}
+    @keyframes floatSoft{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-5px)}
+      100%{transform:translateY(0)}
     }
 
-    @keyframes softSlideInRight{
-      from{opacity:0;transform:translateX(90px) scale(.97)}
-      to{opacity:1;transform:translateX(0) scale(1)}
+    .reveal{
+      opacity:0;
+      transform:translateY(22px);
+      transition:opacity .7s ease,transform .7s ease;
     }
 
-    @keyframes softSlideInLeft{
-      from{opacity:0;transform:translateX(-90px) scale(.97)}
-      to{opacity:1;transform:translateX(0) scale(1)}
-    }
-
-    @keyframes heroEnterRight{
-      from{opacity:0;transform:translateX(120px) scale(.96)}
-      to{opacity:1;transform:translateX(0) scale(1)}
-    }
-
-    @keyframes heroEnterLeft{
-      from{opacity:0;transform:translateX(-120px) scale(.96)}
-      to{opacity:1;transform:translateX(0) scale(1)}
-    }
-
-    @keyframes heroEnterTop{
-      from{opacity:0;transform:translateY(-90px) scale(.95)}
-      to{opacity:1;transform:translateY(0) scale(1)}
-    }
-
-    @keyframes heroEnterPop{
-      0%{opacity:0;transform:scale(.82) rotate(-3deg)}
-      70%{opacity:1;transform:scale(1.03) rotate(1deg)}
-      100%{opacity:1;transform:scale(1) rotate(0)}
-    }
-
-    @keyframes certEntrance{
-      from{opacity:0;transform:translateX(70px) scale(.95)}
-      to{opacity:1;transform:translateX(0) scale(1)}
-    }
-
-
-    @keyframes cardDropIn{
-      0%{opacity:0;transform:translateY(-140px) scale(.94)}
-      62%{opacity:1;transform:translateY(10px) scale(1.02)}
-      100%{opacity:1;transform:translateY(0) scale(1)}
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
     }
 
     .topbar{
-      position:sticky;top:0;z-index:99;
-      min-height:126px;
-      border-bottom:1px solid rgba(0,0,0,.08);
+      position:sticky;
+      top:0;
+      z-index:100;
       background:rgba(255,255,255,.88);
-      backdrop-filter:blur(8px);
-      box-shadow:0 14px 34px rgba(0,0,0,.08);
-      transition:transform .45s ease,opacity .35s ease;
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(0,0,0,.07);
+      box-shadow:0 12px 28px rgba(0,0,0,.08);
     }
-    body.products-focus .topbar{transform:translateY(-108%);opacity:0;pointer-events:none}
-    .topbarInner{min-height:126px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .logoLink{display:flex;align-items:center;gap:10px;min-width:170px;flex-shrink:0;margin-inline-start:auto;opacity:0;animation:slideInSide .95s cubic-bezier(.2,.82,.24,1) .15s forwards}
-    .logoImg{height:64px;filter:drop-shadow(0 12px 16px rgba(0,0,0,.35))}
-    .siteName{display:flex;flex-direction:column;color:#1f160f}
-    .siteName strong{font-size:1.35rem}
-    .siteName span{opacity:.9;font-size:.95rem}
 
-    .heroBrand > *{opacity:0;animation:softSlideInRight 1.1s cubic-bezier(.2,.8,.21,1) forwards}
-    .heroBrand .eyebrow{animation-delay:.2s}
-    .heroBrand h1{animation-delay:.36s}
-    .heroBrand .lead{animation-delay:.52s}
-    .heroBrand .actions{animation-delay:.68s}
-
-    .nav{display:flex;gap:6px;flex-wrap:nowrap;justify-content:center;flex:1;white-space:nowrap}
-    .nav a,
-    .cartTrigger{
-      padding:9px 11px;border-radius:12px;color:#2c2117;font-weight:700;white-space:nowrap;
-      border:1px solid rgba(44,33,23,.18);background:rgba(255,255,255,.92);
-      backdrop-filter:blur(4px);cursor:pointer;
-      transition:transform .45s ease,background .45s ease,box-shadow .45s ease;
-    }
-    .nav a:hover,.nav a.active,.cartTrigger:hover{background:#fff;transform:translateY(-2px) scale(1.06);box-shadow:0 10px 22px rgba(0,0,0,.16)}
-
-    .hamb{display:none;background:#fff;border:none;padding:10px 14px;border-radius:12px;font-weight:800}
-
-    .hero{padding:28px 0 20px}
-    .heroBrand{padding:14px 0 18px}
-    .heroTop{display:grid;grid-template-columns:1.45fr .8fr;gap:24px;align-items:center}
-    .heroRabbiBanner{
-      width:min(100%,430px);
-      height:clamp(250px,35vw,420px);
-      border-radius:18px;
-      box-shadow:0 18px 36px rgba(56,37,14,.2);
-      background:#fff;
-      padding:3px;
+    .topbarInner{
+      min-height:88px;
       display:flex;
       align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      justify-self:end;
-      margin-inline-start:auto;
+      justify-content:space-between;
+      gap:16px;
     }
-    .heroRabbiImg{
+
+    .logoLink{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:120px;
+    }
+
+    .logoImg{
+      height:58px;
+      filter:drop-shadow(0 10px 15px rgba(0,0,0,.18));
+    }
+
+    .nav{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      flex:1;
+      flex-wrap:wrap;
+    }
+
+    .nav a,
+    .cartTrigger{
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid rgba(44,33,23,.15);
+      background:rgba(255,255,255,.92);
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .22s ease,box-shadow .22s ease,background .22s ease;
+    }
+
+    .nav a:hover,
+    .nav a.active,
+    .cartTrigger:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(0,0,0,.12);
+      background:#fff;
+    }
+
+    .topActions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:800;
+      font-family:inherit;
+      background:var(--dark);
+      color:#fff;
+      transition:transform .22s ease, box-shadow .22s ease, filter .22s ease;
+    }
+
+    .btn.alt{
+      background:#fff;
+      color:var(--dark);
+      border:1px solid var(--line);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 26px rgba(0,0,0,.14);
+      filter:saturate(1.06);
+    }
+
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+      filter:none;
+    }
+
+    .hero{
+      padding:34px 0 16px;
+    }
+
+    .heroShell{
+      background:linear-gradient(180deg,rgba(255,255,255,.58),rgba(255,255,255,.3));
+      border:1px solid rgba(120,84,31,.15);
+      border-radius:30px;
+      box-shadow:0 18px 42px rgba(80,53,20,.10);
+      overflow:hidden;
+      padding:22px;
+    }
+
+    .heroTop{
+      display:grid;
+      grid-template-columns:1.2fr .85fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .heroEyebrow{
+      margin:0 0 8px;
+      color:#7a5a2e;
+      font-weight:800;
+      font-size:1rem;
+    }
+
+    .heroTitle{
+      margin:0 0 12px;
+      line-height:1.02;
+      font-size:clamp(2.5rem,5vw,4.4rem);
+      color:#24170e;
+      text-shadow:0 6px 16px rgba(0,0,0,.10);
+    }
+
+    .heroLead{
+      margin:0 0 18px;
+      color:var(--muted);
+      line-height:1.85;
+      font-size:1.05rem;
+      max-width:68ch;
+    }
+
+    .heroActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .heroPrimary{
+      animation:pulse 2.2s infinite;
+    }
+
+    .heroTrust{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin:4px 0 6px;
+    }
+
+    .heroTrust span{
+      background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(250,240,220,.92));
+      border:1px solid rgba(94,67,28,.10);
+      padding:9px 14px;
+      border-radius:999px;
+      font-weight:700;
+      color:#50381d;
+      box-shadow:0 8px 16px rgba(0,0,0,.05);
+    }
+
+    .heroMedia{
+      position:relative;
+      min-height:420px;
+      display:grid;
+      place-items:center;
+    }
+
+    .heroFrame{
+      width:min(100%,430px);
+      height:420px;
+      border-radius:24px;
+      overflow:hidden;
+      background:#fff;
+      border:1px solid rgba(119,81,29,.18);
+      box-shadow:0 22px 40px rgba(56,37,14,.16);
+    }
+
+    .heroFrame img{
       width:100%;
       height:100%;
       object-fit:cover;
-      object-position:center;
-      border-radius:12px;
       display:block;
-      opacity:1;
       transition:opacity .8s ease;
     }
-    .heroRabbiImg.is-fading{
-      opacity:0;
+
+    .heroFrame img.is-fading{opacity:.18}
+
+    .heroBadge{
+      position:absolute;
+      right:14px;
+      bottom:14px;
+      background:rgba(255,255,255,.96);
+      border-radius:18px;
+      padding:12px 14px;
+      box-shadow:0 12px 28px rgba(0,0,0,.12);
+      border:1px solid rgba(0,0,0,.06);
+      max-width:230px;
+      font-weight:700;
+      color:#5c421f;
     }
-    .eyebrow{font-size:1.1rem;color:#6a5437;font-weight:700;margin:0 0 8px}
-    h1{
-      font-size:clamp(2.5rem,4.8vw,4.25rem);
-      margin:0 0 8px;
-      line-height:1.03;
-      font-family:"Secular One","Frank Ruhl Libre","Rubik",sans-serif;
-      text-shadow:0 6px 18px rgba(0,0,0,.16), 0 1px 0 #fff;
-      letter-spacing:.03em;
-    }
-    .lead{font-size:1.08rem;max-width:72ch;line-height:1.7;color:var(--muted);margin:0}
+
     .certHeading{
-      margin:18px 0 0;
-      font-size:clamp(1.4rem,3.4vw,2rem);
-      font-weight:800;
+      margin:28px 0 0;
+      text-align:center;
       color:#7b551f;
-      text-shadow:0 2px 8px rgba(123,85,31,.16);
-      letter-spacing:.02em;
+      font-size:clamp(1.45rem,3vw,2rem);
     }
-    .certGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px;justify-items:center;align-items:start}
+
+    .certGrid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+
     .certCard{
       background:#fff;
-      border:1px solid rgba(97,59,20,.24);
-      border-radius:14px;
-      padding:6px;
-      box-shadow:0 10px 20px rgba(56,37,14,.12);
-      overflow:hidden;
-      opacity:0;
-      animation:certEntrance .9s cubic-bezier(.2,.8,.21,1) forwards;
-      transition:transform .46s cubic-bezier(.22,.61,.36,1),box-shadow .46s ease,border-color .46s ease;
-    }
-    .certCard img{width:100%;height:183px;object-fit:contain;display:block;transition:transform .42s cubic-bezier(.22,.61,.36,1),width .42s cubic-bezier(.22,.61,.36,1),height .42s cubic-bezier(.22,.61,.36,1)}
-    .certCard:nth-child(1){animation-delay:.55s}
-    .certCard:nth-child(2){animation-delay:.7s}
-    .certCard:nth-child(3){animation-delay:.85s}
-    .certCard:nth-child(4){animation-delay:1s}
-    .certCard:hover{
-      transform:translateX(-8px) translateY(-4px) scale(1.08);
-      box-shadow:0 20px 36px rgba(56,37,14,.24);
-      border-color:rgba(192,143,58,.78);
-    }
-    .certCard:hover img{transform:scale(1.07) translateX(-4px)}
-
-    .certCard.certCardInfo{
-      width:min(100%,246px);
-      min-height:234px;
+      border:1px solid rgba(97,59,20,.18);
+      border-radius:18px;
       padding:10px;
+      box-shadow:0 10px 22px rgba(56,37,14,.10);
+      overflow:hidden;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+
+    .certCard:hover{
+      transform:translateY(-5px);
+      box-shadow:0 16px 30px rgba(56,37,14,.16);
+    }
+
+    .certCard img{
+      width:100%;
+      height:185px;
+      object-fit:contain;
+      display:block;
+    }
+
+    .certInfoText{
+      margin:10px 0 0;
+      font-size:.92rem;
+      line-height:1.65;
+      color:#44311e;
+    }
+
+    section{padding:28px 0}
+
+    .sectionHead{
+      text-align:center;
+      margin:0 0 20px;
+    }
+
+    .sectionHead h2{
+      display:inline-block;
+      position:relative;
+      margin:0;
+      padding:0 .5em .42em;
+      font-size:clamp(1.9rem,3.8vw,2.5rem);
+      color:#15110b;
+    }
+
+    .sectionHead h2::after{
+      content:"";
+      position:absolute;
+      right:0;
+      left:0;
+      bottom:0;
+      height:12px;
+      border:3px solid var(--gold);
+      border-top:none;
+      border-radius:0 0 18px 18px;
+      box-shadow:0 6px 12px rgba(192,143,58,.18);
+    }
+
+    .sectionHead p{
+      margin:10px 0 0;
+      color:var(--muted);
+    }
+
+    .trustStrip{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .trustItem{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.07);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 12px 22px rgba(0,0,0,.06);
+      text-align:center;
+    }
+
+    .trustItem strong{
+      display:block;
+      color:#7b551f;
+      font-size:1.05rem;
+      margin-bottom:4px;
+    }
+
+    .productsGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:20px;
+      align-items:stretch;
+    }
+
+    .productCard{
+      position:relative;
+      background:var(--card);
+      border:1px solid rgba(114,80,32,.18);
+      border-radius:24px;
+      box-shadow:0 16px 34px rgba(77,52,20,.12);
+      overflow:hidden;
       display:flex;
       flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      transition:transform .46s cubic-bezier(.22,.61,.36,1),box-shadow .46s ease,border-color .46s ease,width .46s ease,min-height .46s ease;
+      transition:transform .24s ease, box-shadow .24s ease, border-color .24s ease;
     }
-    .certCard.certCardInfo img{
-      width:100%;
-      height:207px;
-      transform:none;
-      object-fit:contain;
-      transform-origin:top center;
-    }
-    .certCard.certCardInfo .certInfoText{
-      margin:10px 0 0;
-      opacity:0;
-      max-height:0;
-      overflow:hidden;
-      transform:translateY(4px);
-      transition:opacity .4s ease,transform .4s ease,max-height .45s ease;
-      font-size:.92rem;
-      line-height:1.45;
-      color:#3f2f1d;
-      padding:0 2px;
-      text-align:right;
-    }
-    .certCard.certCardInfo:hover{
-      width:min(100%,320px);
-      min-height:340px;
-      transform:translateX(-8px) translateY(-4px) scale(1.04);
-      box-shadow:0 20px 36px rgba(56,37,14,.24);
-      border-color:rgba(192,143,58,.78);
-    }
-    .certCard.certCardInfo:hover img{
-      width:132px;
-      height:132px;
-      transform:translateY(-2px);
-    }
-    .certCard.certCardInfo:hover .certInfoText{opacity:1;transform:translateY(0);max-height:190px}
 
-    .btn{border:none;cursor:pointer;padding:12px 18px;border-radius:14px;font-weight:800;font-family:inherit;background:#23170d;color:#fff;transition:transform .4s ease, box-shadow .4s ease, filter .4s ease}
-    .btn.alt{background:#fff;color:#23170d;border:1px solid var(--line)}
-    .btn:hover{transform:translateY(-2px) scale(1.08);box-shadow:0 12px 26px rgba(0,0,0,.18);filter:saturate(1.08)}
-    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none;filter:none}
+    .productCard:hover{
+      transform:translateY(-8px);
+      box-shadow:0 24px 44px rgba(56,37,14,.18);
+      border-color:rgba(192,143,58,.58);
+    }
 
-    section{padding:24px 0}
-    .sectionHead{margin:0 0 22px;text-align:center}
-    .sectionHead h2{
-      margin:0;
-      font-size:clamp(1.85rem,3.6vw,2.4rem);
-      position:relative;
-      display:inline-block;
-      padding:0 .5em .38em;
-      color:#111;
+    .productBadge{
+      position:absolute;
+      top:12px;
+      right:12px;
+      z-index:2;
+      background:linear-gradient(180deg,#f0d596,#c79331);
+      color:#2f1b05;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:.82rem;
       font-weight:800;
-      transition:transform .45s ease,color .45s ease;
+      box-shadow:0 8px 20px rgba(0,0,0,.14);
     }
-    .sectionHead h2::after{
+
+    .productMedia{
+      height:300px;
+      background:#fff;
+      padding:12px;
+      display:grid;
+      place-items:center;
+    }
+
+    .productMedia img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      transition:transform .24s ease;
+    }
+
+    .productCard:hover .productMedia img{
+      transform:scale(1.05);
+    }
+
+    .productBody{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+
+    .productBrand{
+      margin:0;
+      text-align:center;
+      font-size:1.48rem;
+      color:#b8862f;
+      font-weight:800;
+      text-shadow:0 2px 8px rgba(87,57,18,.11);
+    }
+
+    .productName{
+      margin:0;
+      text-align:center;
+      font-size:1rem;
+      line-height:1.55;
+      color:#2b1f13;
+      font-weight:700;
+      min-height:52px;
+    }
+
+    .productRating{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:.92rem;
+      color:#6e5227;
+      font-weight:700;
+    }
+
+    .stars{
+      color:#d8a538;
+      letter-spacing:2px;
+      font-size:1rem;
+    }
+
+    .productInlineRow{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .productPack,
+    .productTagline{
+      margin:0;
+      font-size:.9rem;
+      color:#4b3720;
+      font-weight:700;
+      text-align:center;
+    }
+
+    .productFlour{
+      margin:0;
+      text-align:center;
+      color:#5a4225;
+      font-size:.92rem;
+    }
+
+    .productQuickMeta{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .productQuickMeta span{
+      background:#f7f0e2;
+      border:1px solid rgba(0,0,0,.05);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      font-weight:700;
+      color:#5b4327;
+    }
+
+    .productMeta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:auto;
+      padding-top:4px;
+    }
+
+    .price{
+      font-weight:800;
+      color:#613b14;
+      font-size:1.28rem;
+    }
+
+    .galleryWrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .galleryViewport{
+      overflow:hidden;
+      flex:1;
+      direction:ltr;
+    }
+
+    .galleryTrack{
+      display:flex;
+      gap:14px;
+      transition:transform .55s ease;
+      will-change:transform;
+    }
+
+    .galleryItem{
+      flex:0 0 calc((100% - 28px) / 3);
+      position:relative;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:#fff;
+      cursor:pointer;
+    }
+
+    .galleryItem::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:48%;
+      background:linear-gradient(180deg,rgba(17,11,5,0),rgba(17,11,5,.80));
+      pointer-events:none;
+    }
+
+    .galleryItem img{
+      display:block;
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+    }
+
+    .galleryItem p{
+      position:absolute;
+      right:0;
+      left:0;
+      bottom:0;
+      margin:0;
+      padding:14px 12px;
+      color:#fff;
+      font-weight:800;
+      z-index:1;
+      text-shadow:0 2px 8px rgba(0,0,0,.45);
+    }
+
+    .galleryBtn{
+      width:48px;
+      height:48px;
+      border:none;
+      border-radius:50%;
+      background:#fff;
+      cursor:pointer;
+      font-size:1.4rem;
+      display:grid;
+      place-items:center;
+      box-shadow:0 8px 20px rgba(0,0,0,.12);
+      transition:transform .22s ease;
+    }
+
+    .galleryBtn:hover{transform:scale(1.08)}
+
+    .lightbox{
+      position:fixed;
+      inset:0;
+      background:rgba(8,7,5,.9);
+      display:none;
+      z-index:220;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .lightbox.open{display:flex}
+    .lightboxInner{position:relative;width:min(1100px,96vw)}
+    .lightboxMedia{
+      background:#000;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 24px 52px rgba(0,0,0,.35);
+    }
+
+    .lightboxMedia img{
+      width:100%;
+      max-height:84vh;
+      display:block;
+      object-fit:contain;
+    }
+
+    .lightboxClose{
+      position:absolute;
+      top:-18px;
+      left:0;
+      border:none;
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .lightboxNav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:56px;
+      height:56px;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,.92);
+      font-size:1.8rem;
+      cursor:pointer;
+    }
+
+    .lightboxNav.prev{right:-18px}
+    .lightboxNav.next{left:-18px}
+
+    .aboutText{
+      background:linear-gradient(180deg,#fffaf1,#f3e3c4);
+      border-radius:24px;
+      padding:20px;
+      border:1px solid rgba(125,87,31,.14);
+      line-height:2;
+      color:#3f2f1d;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(280px,.54fr);
+      gap:18px;
+      align-items:center;
+      box-shadow:0 16px 30px rgba(73,48,17,.08);
+    }
+
+    .aboutHighlight{
+      display:block;
+      font-size:1.45rem;
+      font-weight:800;
+      color:#6f3f12;
+      margin:10px 0 8px;
+    }
+
+    .aboutInlineImage{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .aboutInlineImage img{
+      width:100%;
+      max-height:500px;
+      object-fit:contain;
+      animation:floatSoft 4s ease-in-out infinite;
+    }
+
+    .aboutFeatures{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .aboutFeature{
+      position:relative;
+      background:linear-gradient(180deg,#fff8ee,#f4e4c7);
+      border:1px solid rgba(160,116,49,.18);
+      border-radius:22px;
+      padding:18px;
+      box-shadow:0 14px 28px rgba(73,48,17,.08);
+      overflow:hidden;
+      transition:transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+    }
+
+    .aboutFeature::before{
+      content:"";
+      position:absolute;
+      top:0;
+      right:0;
+      width:100%;
+      height:5px;
+      background:linear-gradient(90deg,#f4d08a,#b8832b);
+    }
+
+    .aboutFeature:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 34px rgba(73,48,17,.14);
+      border-color:rgba(184,131,43,.34);
+    }
+
+    .aboutFeatureIcon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(180deg,#f2d79e,#c89232);
+      color:#2b1a08;
+      font-size:1.1rem;
+      font-weight:800;
+      box-shadow:0 8px 18px rgba(0,0,0,.08);
+      margin-bottom:12px;
+    }
+
+    .aboutFeature h3{
+      margin:0 0 8px;
+      color:#6b451a;
+      font-size:1.18rem;
+    }
+
+    .aboutFeature p{
+      margin:0;
+      color:#4d3821;
+      line-height:1.8;
+    }
+
+    .aboutRibbon{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .aboutRibbonItem{
+      background:linear-gradient(180deg,#ead8b4,#dcc08b);
+      border:1px solid rgba(122,84,27,.16);
+      border-radius:18px;
+      padding:16px;
+      text-align:center;
+      box-shadow:0 10px 22px rgba(0,0,0,.05);
+    }
+
+    .aboutRibbonItem strong{
+      display:block;
+      color:#5a3912;
+      margin-bottom:6px;
+      font-size:1rem;
+    }
+
+    .aboutRibbonItem span{
+      color:#664a28;
+      font-size:.95rem;
+    }
+
+    .subSectionTitle{
+      margin:24px 0 14px;
+      text-align:center;
+    }
+
+    .subSectionTitle span{
+      display:inline-block;
+      font-size:1.25rem;
+      font-weight:800;
+      color:#68431a;
+      position:relative;
+      padding:0 .4em .5em;
+    }
+
+    .subSectionTitle span::after{
       content:"";
       position:absolute;
       right:0;
       bottom:0;
       width:100%;
-      height:14px;
-      border:3px solid var(--gold);
-      border-top:none;
-      border-radius:0 0 18px 18px;
-      box-shadow:0 6px 12px rgba(192,143,58,.22);
-    }
-    .sectionHead p{margin:8px 0 0;color:var(--muted)}
-    .sectionHead:hover h2{transform:translateY(-4px) scale(1.05);color:#000}
-
-    .galleryWrap{display:flex;align-items:center;gap:12px;position:relative}
-    .galleryViewport{overflow:hidden;flex:1;direction:ltr}
-    .galleryTrack{--visible-count:3;display:flex;gap:14px;transition:transform .65s cubic-bezier(.22,.61,.36,1);will-change:transform}
-    .galleryItem{position:relative;flex:0 0 calc((100% - (var(--visible-count) - 1) * 14px) / var(--visible-count));border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .6s ease, box-shadow .6s ease, filter .6s ease}
-    .galleryItem::after{content:"";position:absolute;inset:auto 0 0 0;height:52%;background:linear-gradient(180deg,rgba(17,11,5,0),rgba(17,11,5,.82));pointer-events:none}
-    .galleryItem.dropIn{opacity:0;animation:cardDropIn 1.35s cubic-bezier(.2,.86,.22,1) forwards}
-    .galleryItem:hover{transform:translateY(-12px) scale(1.09) rotate(-1deg);box-shadow:0 34px 62px rgba(41,29,13,.26);filter:saturate(1.1)}
-    .galleryItem:nth-child(2):hover{transform:translateY(-12px) scale(1.09) rotate(1deg)}
-    .galleryItem img,.galleryItem video{display:block;width:100%;aspect-ratio:1/1;height:auto;object-fit:cover}
-    .galleryItem p{position:absolute;right:0;left:0;bottom:0;padding:14px 12px;margin:0;font-weight:800;color:#fff;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.45)}
-    .galleryBtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(80,58,30,.28);background:#fff;cursor:pointer;font-size:1.4rem;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.12);transition:transform .4s ease,box-shadow .4s ease}
-    .galleryBtn:hover{transform:scale(1.12);box-shadow:0 10px 24px rgba(0,0,0,.2)}
-
-    @keyframes gallerySectionPulse{
-      0%{transform:translateY(0) scale(1);filter:saturate(1)}
-      55%{transform:translateY(-10px) scale(1.018);filter:saturate(1.08)}
-      100%{transform:translateY(0) scale(1);filter:saturate(1)}
+      height:4px;
+      background:linear-gradient(90deg,var(--gold-light),var(--gold));
+      border-radius:999px;
     }
 
-    #gallery:target .galleryWrap{
-      animation:gallerySectionPulse 1.35s ease;
-      transform-origin:center;
+    .customersGrid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
     }
 
-    .lightbox{position:fixed;inset:0;background:rgba(8,7,5,.9);display:none;z-index:120;align-items:center;justify-content:center;padding:24px}
-    .lightbox.open{display:flex}
-    .lightboxInner{position:relative;width:min(1200px,96vw)}
-    .lightboxMedia{background:#000;border-radius:20px;overflow:hidden;box-shadow:0 24px 52px rgba(0,0,0,.35)}
-    .lightboxMedia img,.lightboxMedia video{width:100%;max-height:85vh;display:block;object-fit:contain}
-    .lightboxClose{position:absolute;top:-18px;left:0;border:none;background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer}
-    .lightboxNav{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border:none;border-radius:50%;background:rgba(255,255,255,.92);font-size:1.8rem;cursor:pointer}
-    .lightboxNav.prev{right:-18px}
-    .lightboxNav.next{left:-18px}
-
-    .productsGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
-    .productCard{
-      background:var(--card);
-      border:1px solid rgba(114,80,32,.24);
-      border-radius:24px;
-      box-shadow:0 16px 34px rgba(77,52,20,.15);
+    .customerCard{
+      background:#fff;
+      border:1px solid rgba(97,59,20,.18);
+      border-radius:18px;
+      padding:10px;
+      box-shadow:0 12px 24px rgba(56,37,14,.10);
       overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      transition:transform .42s cubic-bezier(.22,.61,.36,1), box-shadow .42s ease, border-color .42s ease;
+      transition:transform .22s ease;
     }
-    .productCard:hover{transform:translateX(-10px) translateY(-10px) scale(1.07);box-shadow:0 30px 56px rgba(56,37,14,.3);border-color:rgba(192,143,58,.78)}
-    .productMedia{position:relative;height:300px;background:#fff}
-    .productCard img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block;transition:transform .44s cubic-bezier(.22,.61,.36,1)}
-    .productCard:hover img{transform:scale(1.08)}
-    .productBody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:9px;flex:1}
-    .productBrand{margin:0;text-align:center;font-size:1.52rem;line-height:1.16;color:#b8862f;font-weight:800;font-family:"Frank Ruhl Libre","Secular One","Rubik",sans-serif;text-shadow:0 2px 8px rgba(87,57,18,.16)}
-    .productName{margin:0;text-align:center;font-size:1.01rem;line-height:1.45;color:#2b1f13;font-weight:700}
-    .productTagline,.productPack,.productFlour{margin:0;text-align:center;color:#4b3720;font-size:.94rem;font-weight:600;line-height:1.35}
-    .productPackGold{color:#b8862f;font-weight:700}
-    .productTagline{font-size:.92rem;color:#5b4327}
-    .productInlineRow{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
-    .productInlineRow .productPack,
-    .productInlineRow .productTagline{margin:0;font-size:.94rem;line-height:1.35;color:#4b3720;font-weight:700}
-    .productInlineRow .productPackGold{color:#b8862f}
-    .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:auto;padding-top:4px}
-    .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
 
-    .aboutIntro{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:stretch}
-    .aboutText{background:#fff;border-radius:18px;padding:16px 18px;border:1px solid var(--line);line-height:2;color:#3f2f1d;font-size:1.08rem;font-family:"Assistant","Noto Sans Hebrew","Rubik",sans-serif;letter-spacing:.01em;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.52fr);gap:18px;align-items:center}
-    .aboutTextContent{min-width:0}
-    .aboutInlineImage{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;display:flex;align-items:center;justify-content:center;transition:transform .45s cubic-bezier(.22,.61,.36,1)}
-    .aboutInlineImage img{width:100%;height:100%;max-height:520px;object-fit:contain;display:block}
-    .aboutInlineImage:hover{transform:translateX(-8px) translateY(-6px) scale(1.03)}
-    .aboutHighlight{display:block;font-size:1.55rem;font-weight:800;color:#6f3f12;margin:10px 0 6px}
-    .aboutFeatures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
-    .aboutFeature{background:#fff;border:1px solid rgba(0,0,0,.11);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px;font-family:"Assistant","Noto Sans Hebrew","Rubik",sans-serif}
-    .subSectionTitle{margin:24px 0 14px;text-align:center}
-    .subSectionTitle span{display:inline-block;font-size:1.3rem;font-weight:800;color:#68431a;position:relative;padding:0 .4em .5em;font-family:"Assistant","Noto Sans Hebrew","Rubik",sans-serif}
-    .subSectionTitle span::after{content:"";position:absolute;right:0;bottom:0;width:100%;height:4px;background:linear-gradient(90deg,var(--gold-light),var(--gold));border-radius:999px;box-shadow:0 4px 10px rgba(192,143,58,.3)}
-    .customersGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-    .customerCard{background:#fff;border:1px solid rgba(97,59,20,.24);border-radius:18px;padding:10px;box-shadow:0 12px 24px rgba(56,37,14,.14);overflow:hidden;transition:transform .46s cubic-bezier(.22,.61,.36,1),box-shadow .46s ease,border-color .46s ease}
-    .customerCard img{width:100%;aspect-ratio:1/1;height:auto;object-fit:contain;display:block;transition:transform .46s cubic-bezier(.22,.61,.36,1)}
-    .customerCard:hover{transform:translateX(-10px) translateY(-4px) scale(1.08);box-shadow:0 24px 44px rgba(56,37,14,.26);border-color:rgba(192,143,58,.76)}
-    .customerCard:hover img{transform:translateX(-4px) scale(1.04)}
+    .customerCard:hover{transform:translateY(-4px)}
+    .customerCard img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:contain;
+      display:block;
+    }
 
-    .purchaseStrip{margin-top:16px;padding:14px;border-radius:16px;background:#fff;border:1px dashed rgba(97,59,20,.4);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .purchaseStrip p{margin:0;color:#4e3d2a;font-weight:700}
+    .faqGrid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
 
-    .contactGrid{display:grid;grid-template-columns:1fr 1.4fr;gap:14px;align-items:start}
-    .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+    .faqItem{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:18px;
+      box-shadow:0 12px 22px rgba(0,0,0,.05);
+      overflow:hidden;
+    }
 
-    .topActions{display:flex;align-items:center;gap:8px;min-width:0;justify-content:flex-start;flex-shrink:0}
-    .topActions .cartTrigger{background:#fff;box-shadow:0 10px 26px rgba(0,0,0,.22)}
-    .nav .navCart{display:none}
+    .faqQuestion{
+      width:100%;
+      border:none;
+      background:#fff;
+      text-align:right;
+      font:inherit;
+      font-weight:800;
+      color:#2f2012;
+      padding:16px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .faqQuestion span:last-child{
+      font-size:1.4rem;
+      line-height:1;
+      color:#9a6a24;
+    }
+
+    .faqAnswer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .28s ease;
+      padding:0 16px;
+      color:#4b3720;
+      line-height:1.8;
+    }
+
+    .faqItem.open .faqAnswer{
+      max-height:260px;
+      padding:0 16px 16px;
+    }
+
+    .contactGrid{
+      display:grid;
+      grid-template-columns:1fr 1.35fr;
+      gap:14px;
+      align-items:start;
+    }
+
+    .card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 12px 22px rgba(0,0,0,.05);
+    }
+
+    label{
+      display:block;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+
+    input:not([type='checkbox']):not([type='radio']),
+    textarea{
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,.18);
+      font-family:inherit;
+      margin-bottom:10px;
+      background:#fff;
+    }
+
+    textarea{
+      min-height:130px;
+      resize:vertical;
+    }
+
+    .contactNotice{
+      display:none;
+      margin-top:8px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:#eef7ef;
+      color:#24502d;
+      border:1px solid rgba(47,107,59,.18);
+      font-weight:700;
+    }
+
+    .contactNotice.show{display:block}
+
+    .cart{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100vh;
+      width:min(380px,92vw);
+      z-index:210;
+      background:#fff;
+      border-right:1px solid var(--line);
+      box-shadow:0 10px 40px rgba(0,0,0,.2);
+      transition:transform .35s ease;
+      padding:14px;
+      overflow:auto;
+      transform:translateX(-106%);
+    }
+
+    .cart.open{transform:translateX(0)}
+
+    .cartHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+      gap:10px;
+    }
+
+    .cartItem{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      margin-bottom:8px;
+      background:#fffdf9;
+    }
+
+    .qty{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-top:8px;
+    }
+
+    .qty button{
+      width:32px;
+      height:32px;
+      border:none;
+      border-radius:10px;
+      background:#eee;
+      cursor:pointer;
+      font-weight:800;
+    }
+
+    .cartCheckout{
+      margin-top:14px;
+      width:100%;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.35);
+      display:none;
+      z-index:180;
+    }
+
+    .overlay.open{display:block}
+
+    .paymentModal,
+    .termsModal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.58);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:230;
+      padding:16px;
+    }
+
+    .paymentModal.open,
+    .termsModal.open{display:flex}
+
+    .paymentCard{
+      width:min(920px,95vw);
+      display:grid;
+      gap:8px;
+      max-height:100%;
+    }
+
+    .paymentHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      color:#fff;
+      gap:10px;
+    }
+
+    .checkoutFormCard{
+      background:#fff;
+      border-radius:18px;
+      padding:18px;
+      border:1px solid rgba(0,0,0,.14);
+      box-shadow:0 16px 34px rgba(0,0,0,.22);
+    }
+
+    .checkoutGrid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .checkoutGrid .full{grid-column:1 / -1}
+
+    .radioRow{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .radioRow label{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin:0;
+    }
+
+    .deliveryFields{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .deliveryFields[hidden]{display:none}
+
+    .termsConfirm{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      background:#f7f3ea;
+      border:1px solid rgba(97,59,20,.2);
+    }
+
+    .termsConfirm label{
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      margin:0;
+      line-height:1.6;
+      flex-wrap:wrap;
+    }
+
+    .termsLink{
+      color:#5e3b11;
+      text-decoration:underline;
+      font-weight:800;
+    }
+
+    .summaryLine{
+      margin-top:8px;
+      padding-top:8px;
+      border-top:1px dashed rgba(0,0,0,.2);
+      font-weight:700;
+      color:#3d2e1d;
+    }
+
+    .paymentFrame{
+      width:min(920px,95vw);
+      height:min(620px,86vh);
+      border:none;
+      border-radius:18px;
+      box-shadow:0 20px 44px rgba(0,0,0,.35);
+      background:#fff;
+    }
+
+    .termsCard{
+      position:relative;
+      width:min(880px,95vw);
+      max-height:86vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:18px;
+      padding:20px;
+      border:1px solid rgba(0,0,0,.16);
+      box-shadow:0 20px 44px rgba(0,0,0,.35);
+    }
+
+    .termsClose{
+      position:absolute;
+      top:10px;
+      left:10px;
+      width:34px;
+      height:34px;
+      border:none;
+      border-radius:999px;
+      background:#f1ece2;
+      cursor:pointer;
+      font-size:1.1rem;
+      font-weight:800;
+    }
 
     .siteFooter{
       margin-top:30px;
       background:linear-gradient(180deg,#dce7ec,#cddbe3);
-      border-top:1px solid rgba(20,41,56,.2);
+      border-top:1px solid rgba(20,41,56,.18);
       padding:22px 0;
       color:#223544;
     }
-    .footerInner{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px 22px;align-items:end}
-    .footerTitle{margin:0;font-size:1.25rem}
-    .footerLinks{display:flex;flex-wrap:wrap;gap:10px 18px;font-weight:600;justify-self:start}
-    .footerNote{margin:0;font-size:.95rem;line-height:1.6}
-    .footerNoteAddress{justify-self:center}
-    .footerNoteCopyright{justify-self:end;text-align:left}
-    label{display:block;margin-bottom:6px;font-weight:700}
-    input:not([type='checkbox']):not([type='radio']),textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,.2);font-family:inherit;margin-bottom:10px;background:#fff}
-    textarea{min-height:130px;resize:vertical}
 
-    .cart{position:fixed;top:0;left:0;height:100vh;width:min(360px,92vw);z-index:200;background:#fff;border-right:1px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.2);transition:transform .45s ease;padding:14px;overflow:auto;transform:translateX(-106%)}
-    .cart.open{transform:translateX(0)}
-    .cartHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-    .cartItem{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px}
-    .qty{display:flex;gap:8px;align-items:center;margin-top:8px}
-    .qty button{width:30px;height:30px;border:none;border-radius:8px;background:#eee;cursor:pointer}
-    .cartCheckout{margin-top:14px;width:100%}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:180}
-    .overlay.open{display:block}
+    .footerInner{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto auto;
+      gap:10px 22px;
+      align-items:end;
+    }
 
-    .sheet{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:150}
-    .sheet.open{display:block}
-    .sheetPanel{position:absolute;top:10px;right:10px;left:10px;background:#fff;border-radius:14px;padding:10px}
-    .sheetNav{display:grid;gap:8px}
-    .sheetNav a,.sheetNav button{padding:10px;border-radius:10px;background:#f5f0e7;font-weight:800;border:none;font-family:inherit;text-align:right;cursor:pointer}
+    .footerLinks{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 18px;
+      font-weight:600;
+    }
 
-    .paymentModal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;z-index:220;padding:16px;overflow-y:auto}
-    .paymentModal.open{display:flex}
-    .paymentFrame{width:min(920px,95vw);height:min(620px,86vh);border:none;border-radius:18px;box-shadow:0 20px 44px rgba(0,0,0,.35);background:#fff}
-    .paymentCard{width:min(920px,95vw);display:grid;gap:8px;max-height:100%}
-    .paymentHead{display:flex;justify-content:space-between;align-items:center;color:#fff}
-    .checkoutFormCard{background:#fff;border-radius:18px;padding:18px;border:1px solid rgba(0,0,0,.14);box-shadow:0 16px 34px rgba(0,0,0,.22)}
-    .checkoutFormCard h3{margin:0 0 6px}
-    .checkoutFormCard p{margin:0 0 12px;color:#4e3d2a}
-    .checkoutGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .checkoutGrid .full{grid-column:1 / -1}
-    .radioRow{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-    .radioRow label{display:inline-flex;align-items:center;gap:6px;margin:0;font-weight:600}
-    .deliveryFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .deliveryFields[hidden]{display:none}
-    .termsConfirm{margin-top:12px;padding:10px 12px;border-radius:12px;background:#f7f3ea;border:1px solid rgba(97,59,20,.2)}
-    .termsConfirm label{display:flex;align-items:center;gap:8px;margin:0;font-weight:600;line-height:1.5;flex-wrap:wrap}
-    .termsConfirm input[type='checkbox']{margin:0;flex-shrink:0;width:auto;height:auto;order:-1}
-    .termsText{display:inline}
-    .termsLink{color:#5e3b11;text-decoration:underline;font-weight:800}
+    .mobileStickyCta{
+      position:fixed;
+      right:12px;
+      left:12px;
+      bottom:12px;
+      z-index:160;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      background:linear-gradient(180deg,#2f1d10,#1d120a);
+      color:#fff;
+      border:none;
+      border-radius:18px;
+      padding:14px 16px;
+      box-shadow:0 14px 34px rgba(0,0,0,.22);
+      font-weight:800;
+      cursor:pointer;
+    }
 
-    .termsModal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;z-index:230;padding:16px}
-    .termsModal.open{display:flex}
-    .termsCard{position:relative;width:min(880px,95vw);max-height:86vh;overflow:auto;background:#fff;border-radius:18px;padding:20px;border:1px solid rgba(0,0,0,.16);box-shadow:0 20px 44px rgba(0,0,0,.35)}
-    .termsClose{position:absolute;top:10px;left:10px;width:34px;height:34px;border:none;border-radius:999px;background:#f1ece2;cursor:pointer;font-size:1.1rem;font-weight:800}
-    .termsCard h2{margin:0 0 12px}
-    .termsCard h3{margin:16px 0 8px}
-    .termsCard p{margin:0 0 10px;line-height:1.7;color:#2f2418}
-    .summaryLine{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.2);font-weight:700;color:#3d2e1d}
+    @media (max-width:1100px){
+      .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .trustStrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
 
-    .reveal{opacity:0;transform:translateY(22px) scale(.98)}
-    .reveal.visible{animation:floatIn 1.05s ease forwards}
-    .reveal.from-right{transform:translateX(70px) scale(.98)}
-    .reveal.from-left{transform:translateX(-70px) scale(.98)}
-    .reveal.from-bottom{transform:translateY(68px) scale(.98)}
-    .reveal.from-right.visible{animation:softSlideInRight 1s cubic-bezier(.2,.8,.21,1) forwards}
-    .reveal.from-left.visible{animation:softSlideInLeft 1s cubic-bezier(.2,.8,.21,1) forwards}
-    .reveal.from-bottom.visible{animation:floatIn 1.05s ease forwards}
+    @media (max-width:980px){
+      .heroTop{grid-template-columns:1fr}
+      .heroMedia{min-height:auto}
+      .aboutText{grid-template-columns:1fr}
+      .contactGrid{grid-template-columns:1fr}
+      .faqGrid{grid-template-columns:1fr}
+      .customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .aboutRibbon{grid-template-columns:1fr}
+    }
 
-    @media (max-width:1100px){.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}.heroTop{grid-template-columns:1fr}.aboutText{grid-template-columns:1fr}}
-    @media (max-width:820px){.topbar{position:static;min-height:auto}.topbarInner{min-height:auto;padding:10px 0 12px;display:grid;grid-template-columns:auto 1fr;grid-template-areas:'logo spacer' 'nav nav';align-items:start;gap:8px}.logoLink{grid-area:logo;min-width:0;margin-inline-start:0;gap:0}.logoImg{height:38px}.siteName{display:none}.nav{grid-area:nav;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;white-space:normal}.nav a,.nav .cartTrigger{display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 6px;min-height:40px;font-size:.88rem}.topActions{display:none}.nav .navCart{display:flex;font-size:1.05rem;font-weight:800}.nav .navCart span{display:none}.hamb{display:none}.hero{padding:16px 0 10px}.sectionHead h2{font-size:1.7rem}}
-    @media (max-width:980px){.certGrid,.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media (max-width:640px){.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.aboutFeatures{grid-template-columns:1fr}.certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:clamp(2rem,9vw,2.6rem)}.galleryWrap{gap:8px}.galleryViewport{padding:0 4px}.galleryBtn{width:28px;height:28px;border:none;background:transparent;box-shadow:none;position:absolute;top:50%;transform:translateY(-50%);z-index:2;font-size:1.7rem;line-height:1;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.75)}.galleryBtn:hover{transform:translateY(-50%) scale(1.08);box-shadow:none}.galleryBtn:focus-visible{outline:2px solid #fff;outline-offset:2px}#galleryNext{right:2px}#galleryPrev{left:2px}.lightboxNav{width:28px;height:28px;border:none;border-radius:0;background:transparent;box-shadow:none;top:50%;transform:translateY(-50%);font-size:1.7rem;line-height:1;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.75)}.lightboxNav:hover{transform:translateY(-50%) scale(1.08)}.lightboxNav.prev{right:4px}.lightboxNav.next{left:4px}.checkoutGrid{grid-template-columns:1fr}.productMedia{height:154px}.productBrand{font-size:1.15rem}.productName{font-size:.85rem;line-height:1.3}.productTagline,.productPack,.productFlour,.productInlineRow .productPack,.productInlineRow .productTagline{font-size:.78rem;line-height:1.25}.price{font-size:1.05rem}.termsConfirm label{align-items:flex-start}.aboutInlineImage img{max-height:420px}.certCard{padding:6px}.certCard img{height:128px}.certCard:hover,.certCard.certCardInfo:hover{transform:none;box-shadow:0 10px 20px rgba(56,37,14,.12);border-color:rgba(97,59,20,.24)}.certCard:hover img{transform:none}.certCard.certCardInfo{min-height:auto;padding:8px}.certCard.certCardInfo img{height:138px;transform:none}.certCard.certCardInfo .certInfoText{display:none}.certCard.certCardInfo:hover{width:min(100%,246px);min-height:auto}.certCard.certCardInfo:hover img{position:static;width:100%;height:138px;transform:none}.paymentModal{align-items:flex-start;padding:8px}.checkoutFormCard{max-height:calc(100vh - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch}.footerInner{grid-template-columns:1fr;align-items:start}.footerLinks,.footerNoteAddress,.footerNoteCopyright{justify-self:start;text-align:right}}
-    @media (max-width:480px){.topbarInner{gap:6px}.nav a,.nav .cartTrigger{font-size:.82rem;min-height:36px;padding:7px 4px}.nav .navCart{font-size:.96rem}.cartTrigger{font-size:.92rem;padding:8px 10px}.productBody{padding:9px 8px}.price{text-align:center}.productMeta .btn{font-size:.82rem;padding:8px 10px}.productMedia{height:146px}}
+    @media (max-width:820px){
+      .topbar{position:static}
+      .topbarInner{
+        min-height:auto;
+        padding:10px 0 12px;
+        display:grid;
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+
+      .logoLink{justify-content:center}
+
+      .nav{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+
+      .nav a,.cartTrigger{
+        text-align:center;
+        padding:9px 8px;
+      }
+
+      .topActions{justify-content:center}
+      .heroShell{padding:18px}
+    }
+
+    @media (max-width:640px){
+      .productsGrid{grid-template-columns:1fr;gap:12px}
+      .galleryItem{flex:0 0 100%}
+      .galleryBtn{
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        z-index:3;
+        background:rgba(255,255,255,.92);
+      }
+      #galleryPrev{left:6px}
+      #galleryNext{right:6px}
+      .lightboxNav{
+        width:42px;
+        height:42px;
+      }
+      .checkoutGrid{grid-template-columns:1fr}
+      .deliveryFields{grid-template-columns:1fr}
+      .footerInner{grid-template-columns:1fr}
+      .mobileStickyCta{display:flex}
+      body{padding-bottom:76px}
+      .heroFrame{height:340px}
+      .productMedia{height:220px}
+      .aboutFeatures{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
+
   <header class="topbar">
     <div class="wrap">
       <div class="topbarInner">
@@ -465,16 +1269,15 @@
 
         <nav class="nav" aria-label="תפריט ראשי">
           <a class="active" href="#home">דף הבית</a>
-          <a href="#gallery">הגלריה</a>
           <a href="#products">המוצרים שלנו</a>
+          <a href="#gallery">הגלריה</a>
           <a href="#about">מי אנחנו</a>
+          <a href="#faq">שאלות נפוצות</a>
           <a href="#contact">צור קשר</a>
-          <button class="cartTrigger navCart" id="openCartMobile" type="button" aria-label="סל קניות">🛒 <span>סל קניות (<span id="cartCountMobile">0</span>)</span></button>
         </nav>
 
         <div class="topActions">
           <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
-          <button class="hamb" id="openMenu" type="button">תפריט</button>
         </div>
       </div>
     </div>
@@ -492,93 +1295,247 @@
   <div class="overlay" id="overlay"></div>
 
   <main class="wrap" id="home">
-    <section class="hero">
-      <div class="heroBrand">
+
+    <section class="hero reveal">
+      <div class="heroShell">
         <div class="heroTop">
           <div>
-            <p class="eyebrow">כל המצות רכות, טעימות ומדויקות לאכילת כזית בשמחה</p>
-            <h1>מצות אבהתנא</h1>
-            <p class="lead">כאן לא מדובר רק במצה – אלא במסורת, איכות ואפייה מוקפדת. אנחנו משקיעים בכל שלב בתהליך, ודואגים שכל מארז שמגיע אליכם יהיה טרי, מכובד וטעים במיוחד. הזמינו עוד היום את מצות אבהתנא ותיהנו מטעם של פסח אמיתי וזאת המצה ״די אכלו אבהתנא בארעא דמצרים״.</p>
-            <h2 class="certHeading">בכשרויות המהודרות:</h2>
+            <p class="heroEyebrow">מצות רכות, מהודרות וטעימות לאכילת כזית בשמחה</p>
+            <h1 class="heroTitle">מצות אבהתנא</h1>
+            <p class="heroLead">
+              כאן לא מדובר רק במצה, אלא במסורת, איכות ואפייה מוקפדת. אנחנו משקיעים בכל שלב
+              בתהליך, ודואגים שכל מארז שמגיע אליכם יהיה טרי, מכובד וטעים במיוחד. הזמינו עוד היום
+              את מצות אבהתנא ותיהנו מטעם של פסח אמיתי – “די אכלו אבהתנא בארעא דמצרים”.
+            </p>
+
+            <div class="heroActions">
+              <a class="btn heroPrimary" href="#products">למוצרים ולהזמנה</a>
+              <a class="btn alt" href="#contact">דברו איתנו</a>
+            </div>
+
+            <div class="heroTrust">
+              <span>כשרות מהודרת</span>
+              <span>משלוח מהיר</span>
+              <span>מבחר גדול</span>
+              <span>טריות גבוהה</span>
+            </div>
           </div>
-          <div class="heroRabbiBanner">
-            <img class="heroRabbiImg" id="heroRabbiImg" src="הרב1.jpg" alt="הרב1.jpg">
+
+          <div class="heroMedia">
+            <div class="heroFrame">
+              <img id="heroRabbiImg" src="הרב1.jpg" alt="תמונת רב">
+            </div>
+            <div class="heroBadge">
+              מצות עבודת יד, כזיתות, כוסמין, שיבולת שועל ללא גלוטן ועוד.
+            </div>
           </div>
         </div>
-        <div class="certGrid" aria-label="תעודות הכשר">
-          <div class="certCard certCardInfo">
-            <img src="הכשר/כשרות-הרב-שבתי-לוי-בני-ברק.webp" alt="כשרות הרב שבתי לוי בני ברק">
-            <p class="certInfoText">הרב שבתי לוי הוא רב ידוע ומוכר בבני ברק, העומד בראשות מוסדות תורה וחסד רבים. המוצרים הנמצאים בפיקוח הרב לוי נושאים את חותמת הכשרות שלו, המעידה על כך שהם עומדים בכל הדרישות ההלכתיות המחמירות – בכשרות הרב שבתי לוי.</p>
-          </div>
-          <div class="certCard certCardInfo">
-            <img src="הכשר/כשרות-בדץ-יביע-אומר.webp" alt="כשרות בדץ יביע אומר">
-            <p class="certInfoText">&quot;בד&quot;ץ יביע אומר&quot; הוא גוף כשרות מוכר וידוע בישראל, המפקח על ייצור ושיווק של מוצרים כשרים למהדרין. המוצרים הנמצאים בפיקוח הבד&quot;ץ נושאים את חותמת הכשרות שלו, המעידה על הקפדה מלאה בכל הדרישות ההלכתיות המחמירות – בהכשר יביע אומר.</p>
-          </div>
-          <div class="certCard certCardInfo"><img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="פיקוח והשגחת בדץ העדה החרדית הספרדית"><p class="certInfoText">בפיקוח והשגחת בד״ץ העדה החרדית הספרדית. ה"בדץ העדה החרדית הספרדית" הוא גוף כשרות מוכר וידוע בישראל, המפקח על ייצור ושיווק של מוצרים כשרים למהדרין.</p></div>
-          <div class="certCard certCardInfo">
-            <img src="הכשר/כשרות-מהדרין-רבנות-הראשית-פתח-תקווה.webp" alt="כשרות מהדרין רבנות הראשית פתח תקווה">
-            <p class="certInfoText">&quot;הרבנות הראשית פתח תקווה&quot; היא הגוף האחראי על הכשרות בעיר פתח תקווה, ומציעה רמות כשרות שונות ובהן &quot;כשרות מהדרין&quot;. כשרות זו מוצגת בהכשר של הרב מיכה לוי, בדומה להכשר הרב אשכנזי.</p>
-          </div>
+
+        <h2 class="certHeading">בכשרויות המהודרות:</h2>
+        <div class="certGrid">
+          <article class="certCard">
+            <img src="הכשר/כשרות-הרב-שבתי-לוי-בני-ברק.webp" alt="כשרות הרב שבתי לוי בני ברק" loading="lazy">
+            <p class="certInfoText">כשרות הרב שבתי לוי – פיקוח קפדני והקפדה על דרישות ההלכה המחמירות.</p>
+          </article>
+          <article class="certCard">
+            <img src="הכשר/כשרות-בדץ-יביע-אומר.webp" alt="כשרות בדץ יביע אומר" loading="lazy">
+            <p class="certInfoText">בד״ץ יביע אומר – גוף כשרות מוכר וידוע, עם רמת פיקוח גבוהה.</p>
+          </article>
+          <article class="certCard">
+            <img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="בדץ העדה החרדית הספרדית" loading="lazy">
+            <p class="certInfoText">בפיקוח והשגחת בד״ץ העדה החרדית הספרדית – כשרות מהודרת ומוכרת.</p>
+          </article>
+          <article class="certCard">
+            <img src="הכשר/כשרות-מהדרין-רבנות-הראשית-פתח-תקווה.webp" alt="רבנות הראשית פתח תקווה" loading="lazy">
+            <p class="certInfoText">כשרות מהדרין רבנות הראשית פתח תקווה – עם השגחה הדוקה ומסודרת.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="products">
-      <div class="sectionHead reveal">
+    <section class="reveal">
+      <div class="trustStrip">
+        <article class="trustItem">
+          <strong>איכות ומסורת</strong>
+          <span>ייצור מוקפד עם דגש על טעם ונראות</span>
+        </article>
+        <article class="trustItem">
+          <strong>נוחות לאכילת כזית</strong>
+          <span>מבחר מוצרים מותאם ונוח לשימוש</span>
+        </article>
+        <article class="trustItem">
+          <strong>אפשרות משלוח</strong>
+          <span>איסוף עצמי או משלוח בתוספת תשלום</span>
+        </article>
+        <article class="trustItem">
+          <strong>מבחר גדול</strong>
+          <span>חיטה, כוסמין, שיבולת שועל, קמח מצה ועוד</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="products" class="reveal">
+      <div class="sectionHead">
         <h2>המוצרים שלנו</h2>
+        <p>מגוון מצות, כזיתות, אריזות וקמחים באיכות גבוהה</p>
       </div>
       <div class="productsGrid" id="productsGrid"></div>
     </section>
 
-    <section id="about">
-      <div class="sectionHead reveal"><h2>מי אנחנו</h2></div>
-      <div class="aboutIntro reveal">
-        <div class="aboutText">
-          <div class="aboutTextContent">מצות אבהתנא מיוצרות מחומרים איכותיים בלבד, על כל כללי ההלכה וכן על כללי הכשרות.<br>המצות רכות וטעימות, וקלות מאד לאכילת הכזיתות, ומגיעות באריזות של קילו וחצי קילו, מצות מכוסמין, באריזות של 550 גרם,<br>כזיתות מחולקות ומוכנות באריזות של 1 ק״ג, וחצי ק״ג<br>ומצות משיבולת שועל ללא גלוטן באריזות של חצי ק״ג. עם מצות אבהתנא, אתם יכולים להיות בטוחים במצה המהודרת ביותר עם הטעם הנפלא ביותר.<br>הזמינו עוד היום את מצות אבהתנא ותיהנו מטעם של פסח אמיתי וזאת המצה ״די אכלו אבהתנא בארעא דמצרים״.<br><br><span class="aboutHighlight">למה לבחור במצות אבהתנא?</span>מסורת של איכות: אנו ממשיכים את דרכם של אבותינו, תוך שימוש בידע ובניסיון שצברנו לאורך דורות.<br>חומרי גלם משובחים: אנו משתמשים אך ורק בקמח מצה שמורה, ומי באר זכים לחומרה כמובא בשולחן ערוך.<br>תהליך ייצור קפדני: כל מצה עוברת תהליך ייצור קפדני תחת השגחה הדוקה.<br>כשרות מהודרת: כל מוצרינו מיוצרים תחת השגחת ומקבלים את כל האישורים הנדרשים.</div>
-          <div class="aboutInlineImage">
-            <img src="2.png" alt="לוגו מצות אבהתנא">
-          </div>
-        </div>
-      </div>
-      <div class="aboutFeatures">
-        <article class="aboutFeature reveal"><h3>כשרות מהודרת</h3><p>מצות אבהתנא ידועות כמחמירות על כל פרט ופרט בדקדוקי ההלכה, תוך הקפדה על כל שלב בתהליך.</p></article>
-        <article class="aboutFeature reveal"><h3>טעם ואיכות</h3><p>הייצור נעשה ממגוון קמחים מלאים מחמשת מיני דגן, כולל כוסמין ושיבולת שועל, לקבלת מצות פריכות וטעימות.</p></article>
-        <article class="aboutFeature reveal"><h3>מסורת מבית אבא</h3><p>מצות אבהתנא מיוצרות לפי מתכון מסורתי שעובר מדור לדור ומשלב טעם אותנטי עם איכות מודרנית.</p></article>
-        <article class="aboutFeature reveal"><h3>מגוון לכל בית</h3><p>המוצרים מגיעים במגוון גדלים וטעמים, כך שכל משפחה מוצאת את המצה המתאימה לצרכים שלה.</p></article>
-      </div>
-      <div class="subSectionTitle reveal"><span>ניתן להשיג גם בחנויות</span></div>
-      <div class="customersGrid" id="customersGrid"></div>
-    </section>
-
-    <section id="gallery">
-      <div class="sectionHead reveal">
+    <section id="gallery" class="reveal">
+      <div class="sectionHead">
         <h2>הגלריה</h2>
+        <p>מבט מקרוב על האפייה, האריזות והאיכות</p>
       </div>
-      <div class="galleryWrap reveal">
-        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
+
+      <div class="galleryWrap">
+        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
         <div class="galleryViewport">
           <div class="galleryTrack" id="galleryTrack"></div>
         </div>
-        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
+        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
       </div>
     </section>
 
-    <section id="contact">
-      <div class="sectionHead reveal">
+    <section id="about" class="reveal">
+      <div class="sectionHead">
+        <h2>מי אנחנו</h2>
+      </div>
+
+      <div class="aboutText">
+        <div>
+          מצות אבהתנא מיוצרות מחומרים איכותיים בלבד, על כל כללי ההלכה וכן על כללי הכשרות.
+          המצות רכות וטעימות, קלות לאכילת הכזיתות, ומגיעות באריזות מגוונות – חצי קילו, קילו,
+          כוסמין, כזיתות מחולקות, שיבולת שועל ללא גלוטן ועוד.
+          <br><br>
+          <span class="aboutHighlight">למה לבחור במצות אבהתנא?</span>
+          מסורת של איכות, חומרי גלם משובחים, תהליך ייצור קפדני והשגחה מהודרת.
+          כל מוצר נארז בצורה מכובדת ומגיע מוכן לחג.
+        </div>
+
+        <div class="aboutInlineImage">
+          <img src="2.png" alt="לוגו מצות אבהתנא" loading="lazy">
+        </div>
+      </div>
+
+      <div class="aboutFeatures">
+        <article class="aboutFeature reveal">
+          <div class="aboutFeatureIcon">✦</div>
+          <h3>כשרות מהודרת</h3>
+          <p>הקפדה על כל פרט בתהליך הייצור, תחת פיקוח והשגחה ברמה גבוהה, מתוך אחריות מלאה לאיכות ולדיוק.</p>
+        </article>
+
+        <article class="aboutFeature reveal">
+          <div class="aboutFeatureIcon">✦</div>
+          <h3>טעם ואיכות</h3>
+          <p>מצות נעימות, מדויקות ומושקעות, עם חוויית אכילה טובה יותר, מראה מכובד וטריות גבוהה.</p>
+        </article>
+
+        <article class="aboutFeature reveal">
+          <div class="aboutFeatureIcon">✦</div>
+          <h3>מסורת מבית אבא</h3>
+          <p>שילוב של שורשיות, טעם מסורתי ונראות שמכבדת את שולחן החג, עם תחושת בית ומסורת אמיתית.</p>
+        </article>
+
+        <article class="aboutFeature reveal">
+          <div class="aboutFeatureIcon">✦</div>
+          <h3>מבחר לכל בית</h3>
+          <p>חיטה, כוסמין, שיבולת שועל, כזיתות, אריזות שונות וקמח מצה, כך שכל בית יוכל למצוא את מה שמתאים לו.</p>
+        </article>
+      </div>
+
+      <div class="aboutRibbon reveal">
+        <div class="aboutRibbonItem">
+          <strong>אפייה מוקפדת</strong>
+          <span>ייצור עם תשומת לב לכל שלב</span>
+        </div>
+        <div class="aboutRibbonItem">
+          <strong>אריזות מכובדות</strong>
+          <span>נראות יפה ונקייה לשולחן החג</span>
+        </div>
+        <div class="aboutRibbonItem">
+          <strong>מגוון רחב</strong>
+          <span>פתרונות שונים לפי צורך והעדפה</span>
+        </div>
+      </div>
+
+      <div class="subSectionTitle"><span>ניתן להשיג גם בחנויות</span></div>
+      <div class="customersGrid" id="customersGrid"></div>
+    </section>
+
+    <section id="faq" class="reveal">
+      <div class="sectionHead">
+        <h2>שאלות נפוצות</h2>
+        <p>תשובות מהירות לדברים שלקוחות שואלים בדרך כלל</p>
+      </div>
+
+      <div class="faqGrid">
+        <article class="faqItem">
+          <button class="faqQuestion" type="button">
+            <span>האם אפשר לבצע איסוף עצמי?</span>
+            <span>+</span>
+          </button>
+          <div class="faqAnswer">
+            כן. ניתן לבחור באיסוף עצמי במהלך הרכישה מהמקום: סמטת התבור 3, פתח תקווה.
+          </div>
+        </article>
+
+        <article class="faqItem">
+          <button class="faqQuestion" type="button">
+            <span>האם יש אפשרות למשלוח?</span>
+            <span>+</span>
+          </button>
+          <div class="faqAnswer">
+            כן. ניתן לבחור משלוח בתוספת 30 ₪ ולמלא את פרטי הכתובת במסך הרכישה.
+          </div>
+        </article>
+
+        <article class="faqItem">
+          <button class="faqQuestion" type="button">
+            <span>האם יש מצות ללא גלוטן?</span>
+            <span>+</span>
+          </button>
+          <div class="faqAnswer">
+            כן. קיימות מצות שיבולת שועל ללא גלוטן, בהתאם למה שמוצג ברשימת המוצרים.
+          </div>
+        </article>
+
+        <article class="faqItem">
+          <button class="faqQuestion" type="button">
+            <span>האם ניתן ליצור קשר להזמנה מיוחדת?</span>
+            <span>+</span>
+          </button>
+          <div class="faqAnswer">
+            כן. אפשר לפנות דרך טופס יצירת הקשר או דרך פרטי ההתקשרות המופיעים באתר.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal">
+      <div class="sectionHead">
         <h2>צור קשר</h2>
         <p>השאירו פרטים והודעה</p>
       </div>
+
       <div class="contactGrid">
         <div class="card">
           <h3>פרטים ישירים</h3>
           <p><strong>טלפון:</strong> <a href="tel:0500000000">050-000-0000</a></p>
           <p><strong>מייל:</strong> <a href="mailto:info@example.com">info@example.com</a></p>
-          <p>נשמח לענות במהירות לכל שאלה, הזמנה מיוחדת או בקשה מותאמת אישית.</p>
+          <p>נשמח לענות במהירות לכל שאלה, הזמנה מיוחדת או בקשה מותאמת.</p>
         </div>
+
         <form class="card" id="contactForm">
-          <label for="name">שם</label><input id="name" name="name" required>
-          <label for="email">אימייל</label><input id="email" name="email" type="email" required>
-          <label for="message">תוכן הפנייה</label><textarea id="message" name="message" required></textarea>
+          <label for="name">שם</label>
+          <input id="name" name="name" required>
+
+          <label for="email">אימייל</label>
+          <input id="email" name="email" type="email" required>
+
+          <label for="message">תוכן הפנייה</label>
+          <textarea id="message" name="message" required></textarea>
+
           <button class="btn" type="submit">שליחה</button>
         </form>
       </div>
@@ -587,47 +1544,55 @@
 
   <footer class="siteFooter">
     <div class="wrap footerInner">
-      <h3 class="footerTitle">מידע חשוב ושירות</h3>
-      <div class="footerLinks">
-        <a href="#" class="openTerms" role="button">תקנון האתר</a>
+      <div>
+        <h3 style="margin:0 0 8px">מידע חשוב ושירות</h3>
+        <p style="margin:0">© כל הזכויות שמורות למצות אבהתנא.</p>
       </div>
-      <p class="footerNote footerNoteAddress"><strong>כתובתנו:</strong> סמטת התבור 3, פתח תקווה</p>
-      <p class="footerNote footerNoteCopyright">© כל הזכויות שמורות למצות אבהתנא.</p>
+
+      <div class="footerLinks">
+        <a href="#" class="openTerms">תקנון האתר</a>
+      </div>
+
+      <div>
+        <p style="margin:0"><strong>כתובת:</strong> סמטת התבור 3, פתח תקווה</p>
+      </div>
     </div>
   </footer>
 
-  <div class="sheet" id="sheet" aria-hidden="true">
-    <div class="sheetPanel" role="dialog" aria-modal="true" aria-label="תפריט">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>תפריט</strong><button class="btn alt" id="closeMenu" type="button">סגור</button></div>
-      <div class="sheetNav">
-        <a href="#home">דף הבית</a><a href="#gallery">הגלריה</a><a href="#products">המוצרים שלנו</a><a href="#about">מי אנחנו</a><a href="#contact">צור קשר</a>
-        <button id="openCartSheet" type="button">🛒 סל קניות</button>
-      </div>
-    </div>
-  </div>
+  <button class="mobileStickyCta" id="mobileStickyCta" type="button">
+    🛒 מעבר לסל (<span id="cartCountMobile">0</span>)
+  </button>
 
   <div class="paymentModal" id="paymentModal" aria-hidden="true">
-    <div class="paymentCard" role="dialog" aria-modal="true" aria-label="אזור רכישה">
-      <div class="paymentHead"><strong>רכישה מאובטחת</strong><button class="btn alt" type="button" id="closePayment">סגור</button></div>
+    <div class="paymentCard">
+      <div class="paymentHead">
+        <strong>רכישה מאובטחת</strong>
+        <button class="btn alt" type="button" id="closePayment">סגור</button>
+      </div>
+
       <form class="checkoutFormCard" id="checkoutForm">
         <h3>לפני תשלום – פרטי הזמנה</h3>
         <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
+
         <div class="checkoutGrid">
           <div>
             <label for="fullName">שם מלא</label>
             <input id="fullName" name="fullName" required>
           </div>
+
           <div>
             <label for="customerEmail">מייל לקבלת קבלה</label>
             <input id="customerEmail" name="customerEmail" type="email" required>
           </div>
+
           <div class="full">
             <label>אופן קבלת ההזמנה</label>
             <div class="radioRow">
-              <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (סמטת התבור 3 פתח תקווה, ללא עלות)</label>
+              <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום</label>
               <label><input type="radio" name="deliveryType" value="delivery"> משלוח (+30 ₪)</label>
             </div>
           </div>
+
           <div class="full deliveryFields" id="deliveryFields" hidden>
             <div>
               <label for="deliveryCity">עיר למשלוח</label>
@@ -643,39 +1608,50 @@
             </div>
             <div>
               <label for="deliveryPhone">טלפון למשלוח</label>
-              <input id="deliveryPhone" name="deliveryPhone" type="tel" inputmode="tel" pattern="[0-9\-+ ]{9,}">
+              <input id="deliveryPhone" name="deliveryPhone" type="tel">
             </div>
           </div>
         </div>
+
         <div class="termsConfirm">
           <label for="termsApprove">
             <input id="termsApprove" name="termsApprove" type="checkbox" required>
-            <span class="termsText">קראתי את <a href="#" class="termsLink openTerms" role="button">תקנון האתר</a> ואני מאשר אותו.</span>
+            <span>קראתי את <a href="#" class="termsLink openTerms">תקנון האתר</a> ואני מאשר אותו.</span>
           </label>
         </div>
+
         <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
-      <iframe class="paymentFrame" id="paymentFrame" title="מערכת סליקה" hidden srcdoc="<!doctype html><html lang='he' dir='rtl'><head><meta charset='utf-8'><style>body{margin:0;font-family:Assistant,Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);display:grid;place-items:center;height:100vh;color:#3b2d1c}div{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:24px;max-width:540px;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:0;line-height:1.7}</style></head><body><div><h2>מערכת סליקה בבנייה</h2><p>כאן יופיע בהמשך אייפרם של מערכת הסליקה שלכם. כרגע ניתן להשאיר את התוכן הזה כמצב זמני.</p></div></body></html>"></iframe>
+
+      <iframe
+        class="paymentFrame"
+        id="paymentFrame"
+        hidden
+        title="מערכת סליקה"
+        srcdoc="<!doctype html><html lang='he' dir='rtl'><head><meta charset='utf-8'><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);display:grid;place-items:center;height:100vh;color:#3b2d1c}div{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:24px;max-width:540px;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:0;line-height:1.7}</style></head><body><div><h2>מערכת סליקה בבנייה</h2><p>כאן יופיע אייפרם של מערכת הסליקה שלך. כרגע זהו מסך זמני.</p></div></body></html>">
+      </iframe>
     </div>
   </div>
 
-
   <div class="termsModal" id="termsModal" aria-hidden="true">
-    <div class="termsCard" role="dialog" aria-modal="true" aria-label="תקנון האתר">
+    <div class="termsCard">
       <button class="termsClose" type="button" id="closeTerms" aria-label="סגירת התקנון">✕</button>
       <h2>תקנון האתר</h2>
+
       <h3>תנאי שימוש</h3>
-      <p>השימוש באתר מצות אבהתנא כפוף לתנאים המפורטים בעמוד זה. שימוש באתר, בגלישה או ביצוע הזמנה מעידים על הסכמה לתנאי השימוש כפי שיעודכנו מעת לעת.</p>
+      <p>השימוש באתר כפוף לתנאים המפורטים בעמוד זה. שימוש באתר או ביצוע הזמנה מעידים על הסכמה לתנאי השימוש כפי שיעודכנו מעת לעת.</p>
       <p>תכני האתר, העיצוב, התמונות והמידע מוצגים לצורך שירות הלקוחות והזמנות בלבד, ואין לעשות בהם שימוש מסחרי ללא אישור מראש.</p>
+
       <h3>מדיניות פרטיות</h3>
       <p>בעת יצירת קשר או הזמנה באתר, ייתכן שייאספו פרטים כגון שם, טלפון, דוא״ל ותוכן הפנייה לצורך מתן שירות, חזרה ללקוח וטיפול בהזמנות.</p>
       <p>המידע נשמר באופן סביר ומוגן, ולא יועבר לצד שלישי אלא אם נדרש לצורך השלמת השירות או לפי דין.</p>
+
       <h3>מדיניות ביטולים והחזרות</h3>
-      <p><strong>1. ביטול הזמנה לפני משלוח:</strong> ניתן לבטל הזמנה כל עוד ההזמנה טרם נשלחה ללקוח. בקשה לביטול יש להעביר בהקדם האפשרי באמצעות פרטי יצירת הקשר המופיעים באתר.</p>
-      <p><strong>2. מוצרים שנשלחו או נמסרו ללקוח:</strong> מאחר ומדובר במוצרי מזון, מטעמי בריאות, בטיחות והיגיינה לא ניתן להחזיר מוצרים לאחר שנמסרו ללקוח. לפיכך, לא יתאפשר זיכוי או החזר כספי לאחר קבלת המוצר.</p>
-      <p><strong>3. מוצר פגום או טעות בהזמנה:</strong> במקרה של מוצר פגום, מוצר שניזוק במהלך המשלוח או טעות במשלוח, יש ליצור קשר עם שירות הלקוחות של האתר בהקדם האפשרי ולכל המאוחר בתוך 24 שעות ממועד קבלת המשלוח. לאחר בדיקה, יינתן פתרון מתאים בהתאם לנסיבות המקרה.</p>
-      <p><strong>4. דרכי יצירת קשר:</strong> לצורך ביטול הזמנה או פנייה בנושא החזרות ניתן ליצור קשר באמצעות טופס יצירת הקשר באתר או באמצעי הקשר המפורטים בעמוד "צור קשר".</p>
+      <p><strong>1. ביטול הזמנה לפני משלוח:</strong> ניתן לבטל הזמנה כל עוד ההזמנה טרם נשלחה.</p>
+      <p><strong>2. מוצרים שנשלחו או נמסרו:</strong> מאחר ומדובר במוצרי מזון, לא ניתן להחזיר מוצרים לאחר שנמסרו ללקוח.</p>
+      <p><strong>3. מוצר פגום או טעות בהזמנה:</strong> במקרה כזה יש ליצור קשר בהקדם האפשרי ולכל המאוחר בתוך 24 שעות ממועד הקבלה.</p>
+      <p><strong>4. דרכי יצירת קשר:</strong> ניתן ליצור קשר דרך טופס יצירת הקשר באתר או בפרטי ההתקשרות המופיעים באתר.</p>
     </div>
   </div>
 
@@ -689,294 +1665,268 @@
   </div>
 
   <script>
-    const productImageFiles = [
-      'מוצרים/ כזיתות חיטה קמח חיטה מלא חצי ק״ג- מכירה 75.jpg',
-      'מוצרים/כזיתות חיטה קמח חיטה מלא 1 ק״ג- מכירה 139.jpg',
-      'מוצרים/כזיתות מקמח כוסמין 550 גרם מכירה - 135.jpg',
-      'מוצרים/לאפה אבהתנא קמח חיטה מלא 1 ק״ג - מכירה 115.jpg',
-      'מוצרים/מצות לאפה מקמח כוסמין 550 גרם - מכירה 115.jpg',
-      'מוצרים/מצות מבית אבא רכות ואיכותיות מכירה - 90.jpg',
-      'מוצרים/מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג  מכירה 85.jpg',
-      'מוצרים/לאפה אבהתנא קמח חיטה מלא חצי ק״ג  מכירה 60.jpg',
-      'מוצרים/מצות קשות ( פריכות ) ודקות אבהתנא 1 ק״ג מכירה 110.jpg',
-      'מוצרים/מצות מכונה גאולתינו 1 ק״ג מכירה 50.jpg',
-      'מוצרים/מצות שיבולת שועל ללא גלוטן 400 גרם מכירה 149.jpg',
-      'מוצרים/קמח מצה שמורה חצי ק״ג - מכירה 25.jpg'
+    const products = [
+      {
+        id:1,
+        displayBrand:'מצות אבהתנא',
+        name:'כזיתות חיטה, מצות מחולקות לכזיתות',
+        tagline:'● מצה שמורה',
+        packageLine:'מארז חצי ק"ג',
+        flourLine:'100% קמח מלא',
+        price:75,
+        img:'מוצרים/ כזיתות חיטה קמח חיטה מלא חצי ק״ג- מכירה 75.jpg'
+      },
+      {
+        id:2,
+        displayBrand:'מצות אבהתנא',
+        name:'כזיתות חיטה, מצות מחולקות לכזיתות',
+        tagline:'● מצה שמורה',
+        packageLine:'מארז 1 קילוגרם',
+        flourLine:'100% קמח מלא',
+        price:139,
+        img:'מוצרים/כזיתות חיטה קמח חיטה מלא 1 ק״ג- מכירה 139.jpg'
+      },
+      {
+        id:3,
+        displayBrand:'מצות אבהתנא',
+        name:'מצות כזית קמח כוסמין',
+        tagline:'● מצות עבודת יד רכות',
+        packageLine:'אריזת 550 גרם',
+        flourLine:'100% קמח כוסמין מלא',
+        price:135,
+        img:'מוצרים/כזיתות מקמח כוסמין 550 גרם מכירה - 135.jpg'
+      },
+      {
+        id:4,
+        displayBrand:'מצות אבהתנא',
+        name:'מצות אבהתנא',
+        tagline:'● מצה שמורה עבודת יד (לאפה)',
+        packageLine:'מארז 1 קילו',
+        flourLine:'100% קמח מלא',
+        price:115,
+        img:'מוצרים/לאפה אבהתנא קמח חיטה מלא 1 ק״ג - מכירה 115.jpg'
+      },
+      {
+        id:5,
+        displayBrand:'מצות אבהתנא',
+        name:'מצות אבהתנא - כוסמין',
+        tagline:'● מצה שמורה עבודת יד',
+        packageLine:'מארז 550 גרם',
+        flourLine:'100% קמח כוסמין מלא',
+        price:115,
+        img:'מוצרים/מצות לאפה מקמח כוסמין 550 גרם - מכירה 115.jpg'
+      },
+      {
+        id:6,
+        displayBrand:'מצות אבהתנא',
+        name:'מצות מבית אבא רכות ואיכותיות',
+        tagline:'● מצות רכות עבודת יד',
+        packageLine:'מארז 1 קילו',
+        flourLine:'100% קמח מלא',
+        price:90,
+        img:'מוצרים/מצות מבית אבא רכות ואיכותיות מכירה - 90.jpg'
+      },
+      {
+        id:7,
+        displayBrand:'מצות גאולתנו',
+        name:'מצות מכונה שמורה משעת קצירה',
+        tagline:'● מצות מכונה',
+        packageLine:'מארז 2 קילו',
+        flourLine:'100% קמח מלא',
+        price:85,
+        img:'מוצרים/מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג  מכירה 85.jpg'
+      },
+      {
+        id:8,
+        displayBrand:'מצות אבהתנא',
+        name:'לאפה אבהתנא חצי קילו',
+        tagline:'● מצה שמורה עבודת יד',
+        packageLine:'מארז חצי קילו',
+        flourLine:'100% קמח מלא',
+        price:60,
+        img:'מוצרים/לאפה אבהתנא קמח חיטה מלא חצי ק״ג  מכירה 60.jpg'
+      },
+      {
+        id:9,
+        displayBrand:'מצות אבהתנא',
+        name:'מצות שמורות קשות עבודת יד',
+        tagline:'● מצות קשות, פריכות ודקות',
+        packageLine:'מארז 1 קילו',
+        flourLine:'כשר לפסח למהדרין מן המהדרין',
+        price:110,
+        img:'מוצרים/מצות קשות ( פריכות ) ודקות אבהתנא 1 ק״ג מכירה 110.jpg'
+      },
+      {
+        id:10,
+        displayBrand:'מצות גאולתנו',
+        name:'מצות מכונה שמורה משעת קצירה',
+        tagline:'● מצות מכונה',
+        packageLine:'מארז 1 קילו',
+        flourLine:'100% קמח מלא',
+        price:50,
+        img:'מוצרים/מצות מכונה גאולתינו 1 ק״ג מכירה 50.jpg'
+      },
+      {
+        id:11,
+        displayBrand:'מצות אבהתנא',
+        name:'מצות שיבולת שועל',
+        tagline:'● עבודת יד ללא גלוטן',
+        packageLine:'מארז 400–550 גרם',
+        flourLine:'שיבולת שועל ללא גלוטן',
+        price:149,
+        img:'מוצרים/מצות שיבולת שועל ללא גלוטן 400 גרם מכירה 149.jpg'
+      },
+      {
+        id:12,
+        displayBrand:'מצות אבהתנא',
+        name:'קמח מצה שמורה',
+        tagline:'● קמח מצה',
+        packageLine:'מארז 500 גרם',
+        flourLine:'קמח מצה שמורה',
+        price:25,
+        img:'מוצרים/קמח מצה שמורה חצי ק״ג - מכירה 25.jpg'
+      }
     ];
 
-    const productNameOverrides = {
-      'כזיתות חיטה קמח חיטה מלא חצי ק״ג': 'כזיתות חיטה קמח חיטה מלאה, חצי ק"ג',
-      'כזיתות מקמח כוסמין 550 גרם': 'מצות כזית קמח כוסמין',
-      'לאפה אבהתנא קמח חיטה מלא 1 ק״ג': 'מצות אבהתנא',
-      'מצות לאפה מקמח כוסמין 550 גרם': 'מצות אבהתנא - כוסמין',
-      'מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג': 'מצות גאולתנו',
-      'מצות קשות ( פריכות ) ודקות אבהתנא 1 ק״ג': 'מצות שמורות קשות עבודת יד',
-      'מצות שיבולת שועל ללא גלוטן 400 גרם': 'מצות שיבולת שועל',
-      'קמח מצה שמורה חצי ק״ג': 'קמח מצה'
-    };
-
-    const productCopyOverrides = {
-      'מצות כזית קמח כוסמין': {
-        tagline: '● מצות עבודת יד רכות (לאפות קטנות) אישיות מחולקות לכזיתות',
-        packageLine: 'אריזת 550 גרם (כ-14 יחידות במארז)',
-        flourLine: '100% קמח כוסמין מלא'
-      },
-      'מצות אבהתנא': {
-        tagline: '● מצה שמורה עבודת יד (לאפה)',
-        packageLine: 'מארז 1 קילו (5-7 מצות)',
-        flourLine: '100% קמח מלא'
-      },
-      'מצות אבהתנא - כוסמין': {
-        tagline: '● מצה שמורה עבודת יד (לאפה) - קמח כוסמין אורגני',
-        packageLine: 'מארז 550 גרם',
-        flourLine: '100% קמח כוסמין מלא'
-      },
-      'מצות מבית אבא רכות ואיכותיות': {
-        tagline: '● מצות רכות עבודת יד',
-        packageLine: 'מארז 1 קילו (כ-5 מצות באריזה)',
-        flourLine: '100% קמח מלא'
-      },
-      'מצות גאולתנו': {
-        tagline: '● מצות מכונה שמורה משעת קצירה',
-        packageLine: 'מארז 2 קילו',
-        flourLine: '100% קמח מלא'
-      },
-      'מצות שמורות קשות עבודת יד': {
-        tagline: '● מצות שמורות קשות, פריכות ודקות עבודת יד',
-        packageLine: 'מארז 1 קילו',
-        flourLine: 'כשר לפסח למהדרין מן המהדרין'
-      },
-      'מצות שיבולת שועל': {
-        tagline: '● מצות עבודת יד רכות מקמח שיבולת שועל ללא גלוטן (במפעל נקי מאבקת קמח)',
-        packageLine: 'מארז כ-550 גרם (מעל 3 מצות באריזה)',
-        flourLine: ''
-      },
-      'קמח מצה': {
-        tagline: '● קמח מצה שמורה',
-        packageLine: 'מארז 500 גרם',
-        flourLine: ''
-      }
-    };
-
-    const hiddenProductNameRawNames = new Set([
-      'מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג',
-      'לאפה אבהתנא קמח חיטה מלא 1 ק״ג'
-    ]);
-
-    const productCardOverrides = {
-      75: {
-        displayBrand: 'מצות אבהתנא',
-        name: 'כזיתות חיטה, מצות מחולקות לכזיתות (כ-14 מצות)',
-        packageLine: 'מארז חצי ק"ג',
-        tagline: '● מצה שמורה',
-        flourLine: '100% קמח מלא'
-      },
-      139: {
-        displayBrand: 'מצות אבהתנא',
-        name: 'כזיתות חיטה, מצות מחולקות לכזיתות (כ-28 יחידות במארז)',
-        packageLine: 'מארז 1 קילוגרם',
-        tagline: '● מצה שמורה',
-        flourLine: '100% קמח מלא'
-      },
-      50: {
-        displayBrand: 'מצות גאולתנו',
-        name: 'מצות מכונה שמורה משעת קצירה',
-        packageLine: 'מארז 1 קילו',
-        tagline: '● מצה שמורה',
-        flourLine: '100% קמח מלא'
-      }
-    };
-
-    function parseProductDetails(name){
-      const isGeulatenu = /גאולת/i.test(name);
-      const isLafa = /לאפה|רכות/i.test(name);
-      const amountMatch = name.match(/(\d+\s*ק["״]?ג|\d+\s*גרם|חצי\s*ק["״]?ג)/);
-      const packageText = amountMatch ? amountMatch[1].replace(/\s+/g,' ').trim() : 'מארז משפחתי';
-      let flourText = '100% קמח מלא';
-      if(/כוסמין/i.test(name)) flourText = 'קמח כוסמין';
-      else if(/שיבולת\s*שועל/i.test(name)) flourText = 'קמח שיבולת שועל';
-      const productDetails = {
-        displayBrand: isGeulatenu ? 'מצות גאולתנו' : 'מצות אבהתנא',
-        tagline: isLafa ? '● מצה שמורה (עבודת יד לאפה)' : '● מצה שמורה',
-        packageLine: `מארז ${packageText}`,
-        flourLine: flourText
-      };
-      return {...productDetails,...(productCopyOverrides[name] || {})};
-    }
-
-    function parseProductFromFilename(path, index){
-      const file = path.split('/').pop().replace(/\.[^.]+$/, '').trim();
-      const priceMatch = file.match(/מכירה\s*-?\s*(\d+)/);
-      const price = priceMatch ? Number(priceMatch[1]) : 0;
-      const rawName = file
-        .replace(/\s*-?\s*מכירה\s*-?\s*\d+.*$/,'')
-        .replace(/\s+/g,' ')
-        .trim();
-      const name = productNameOverrides[rawName] || rawName;
-      const hideName = hiddenProductNameRawNames.has(rawName);
-      const baseProduct = {id:index+1,name,price,img:path,hideName,...parseProductDetails(name),packageClass:'productPack'};
-      return {...baseProduct,...(productCardOverrides[price] || {})};
-    }
-
-    const products = productImageFiles.map(parseProductFromFilename);
     const galleryItems = [
-      {type:'image',src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1',caption:'מצות אבהתנא'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2',caption:'איכות של מסורת'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0074-225x300.webp',alt:'תמונת גלריה 3',caption:'אפייה מוקפדת'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0076-300x169.webp',alt:'תמונת גלריה 4',caption:'טריות בכל משלוח'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת גלריה 5',caption:'טעם של חג'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת גלריה 6',caption:'השקעה בכל פרט'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0079-225x300.webp',alt:'תמונת גלריה 7',caption:'מסורת משפחתית'},
-      {type:'image',src:'גלריה/IMG-20240301-WA0080-225x300.webp',alt:'תמונת גלריה 8',caption:'מבחר עשיר לפסח'},
-      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_35457738-300x225.webp',alt:'תמונת גלריה 9',caption:'אריזות מהודרות'},
-      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_ee1166dc-225x300.webp',alt:'תמונת גלריה 10',caption:'ייצור נקי ומבוקר'},
-      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.27_21b4b558-300x225.webp',alt:'תמונת גלריה 11',caption:'התאמה לכל בית'},
-      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.27_7bfc424d-300x225.webp',alt:'תמונת גלריה 12',caption:'חוויה אותנטית'},
-      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.27_bebb67c6-300x169.webp',alt:'תמונת גלריה 13',caption:'טעם של פעם'},
-      {type:'image',src:'גלריה/תמונה-של-WhatsApp_-2024-03-02-בשעה-21.54.51_0d147c2e-225x300.webp',alt:'תמונת גלריה 14',caption:'זמינות מהירה לחג'}
+      {src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת גלריה 1',caption:'מצות אבהתנא'},
+      {src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת גלריה 2',caption:'איכות של מסורת'},
+      {src:'גלריה/IMG-20240301-WA0074-225x300.webp',alt:'תמונת גלריה 3',caption:'אפייה מוקפדת'},
+      {src:'גלריה/IMG-20240301-WA0076-300x169.webp',alt:'תמונת גלריה 4',caption:'טריות בכל משלוח'},
+      {src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת גלריה 5',caption:'טעם של חג'},
+      {src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת גלריה 6',caption:'השקעה בכל פרט'},
+      {src:'גלריה/IMG-20240301-WA0079-225x300.webp',alt:'תמונת גלריה 7',caption:'מסורת משפחתית'},
+      {src:'גלריה/IMG-20240301-WA0080-225x300.webp',alt:'תמונת גלריה 8',caption:'מבחר עשיר לפסח'},
+      {src:'גלריה/תמונה-של-WhatsApp_-2024-03-01-בשעה-12.53.26_35457738-300x225.webp',alt:'תמונת גלריה 9',caption:'אריזות מהודרות'}
     ];
 
-    const cart = new Map();
-    const productsGrid = document.getElementById('productsGrid');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    const cartCount = document.getElementById('cartCount');
-    const cartEl = document.getElementById('cart');
-    const overlay = document.getElementById('overlay');
-    const galleryTrack = document.getElementById('galleryTrack');
-    const galleryPrev = document.getElementById('galleryPrev');
-    const galleryNext = document.getElementById('galleryNext');
-    const customersGrid = document.getElementById('customersGrid');
-    const heroRabbiImg = document.getElementById('heroRabbiImg');
     const customerLogos = [
       {src:'לקוחות/אושר עד.webp',alt:'אושר עד'},
       {src:'לקוחות/אשפר-300x300.webp',alt:'אשפר'},
       {src:'לקוחות/יש-חסד-300x300.webp',alt:'יש חסד'},
       {src:'לקוחות/הידברות-300x300.webp',alt:'הידברות'}
     ];
+
     const heroSlides = [
-      {src:'הרב1.jpg',alt:'הרב1.jpg'},
-      {src:'הרב2.jpg',alt:'הרב2.jpg'},
-      {src:'הרב3.jpg',alt:'הרב3.jpg'}
+      {src:'הרב1.jpg',alt:'הרב 1'},
+      {src:'הרב2.jpg',alt:'הרב 2'},
+      {src:'הרב3.jpg',alt:'הרב 3'}
     ];
-    const lightbox = document.getElementById('lightbox');
-    const lightboxMedia = document.getElementById('lightboxMedia');
-    const checkoutForm = document.getElementById('checkoutForm');
+
+    const DELIVERY_FEE = 30;
+
+    const productsGrid = document.getElementById('productsGrid');
+    const galleryTrack = document.getElementById('galleryTrack');
+    const customersGrid = document.getElementById('customersGrid');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartCount = document.getElementById('cartCount');
+    const cartCountMobile = document.getElementById('cartCountMobile');
+    const cartEl = document.getElementById('cart');
+    const overlay = document.getElementById('overlay');
+    const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
+    const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
-    const DELIVERY_FEE = 30;
-    let galleryStart = 0;
-    let galleryPage = 0;
-    let lightboxIndex = 0;
-    let touchStartX = 0;
-    let isProductsPinned = false;
+    const termsApprove = document.getElementById('termsApprove');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxMedia = document.getElementById('lightboxMedia');
+    const heroRabbiImg = document.getElementById('heroRabbiImg');
 
-    function getGalleryVisibleCount(){
-      return window.innerWidth <= 1100 ? 2 : 3;
+    const cart = new Map();
+    let galleryStart = 0;
+    let lightboxIndex = 0;
+
+    function getBadge(index){
+      if(index % 3 === 0) return 'מומלץ';
+      if(index % 3 === 1) return 'נמכר הרבה';
+      return 'בחירה טובה';
     }
 
-    function preloadGalleryImages(){
-      galleryItems.forEach((item)=>{
-        if(item.type !== 'image') return;
-        const preloadImage = new Image();
-        preloadImage.src = item.src;
-      });
+    function renderProducts(){
+      productsGrid.innerHTML = products.map((p,index)=>`
+        <article class="productCard reveal">
+          <span class="productBadge">${getBadge(index)}</span>
+          <div class="productMedia">
+            <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async">
+          </div>
+          <div class="productBody">
+            <p class="productBrand">${p.displayBrand}</p>
+            <p class="productName">${p.name}</p>
+            <div class="productRating">
+              <span class="stars">★★★★★</span>
+              <span>אהוב על לקוחות</span>
+            </div>
+            <div class="productInlineRow">
+              <p class="productPack">${p.packageLine}</p>
+              <p class="productTagline">${p.tagline}</p>
+            </div>
+            <p class="productFlour">${p.flourLine}</p>
+            <div class="productQuickMeta">
+              <span>כשרות מהודרת</span>
+              <span>טריות גבוהה</span>
+              <span>אריזה נוחה</span>
+            </div>
+            <div class="productMeta">
+              <div class="price">${p.price} ₪</div>
+              <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      observeReveals();
+    }
+
+    function renderCustomers(){
+      customersGrid.innerHTML = customerLogos.map(store=>`
+        <article class="customerCard reveal">
+          <img src="${store.src}" alt="${store.alt}" loading="lazy">
+        </article>
+      `).join('');
+      observeReveals();
+    }
+
+    function getVisibleGalleryCount(){
+      return window.innerWidth <= 640 ? 1 : 3;
     }
 
     function renderGallery(){
-      const visibleCount = getGalleryVisibleCount();
-      const pageSize = visibleCount;
-      const pagesCount = Math.ceil(galleryItems.length / pageSize);
-      galleryTrack.style.setProperty('--visible-count', visibleCount);
-      galleryTrack.innerHTML = galleryItems.map((item,index)=>{
-        const media = item.type === 'video'
-          ? `<video src="${item.src}" muted playsinline preload="metadata"></video>`
-          : `<img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">`;
-        return `<article class="galleryItem" role="button" tabindex="0" data-index="${index}">${media}<p>${item.caption}</p></article>`;
-      }).join('');
+      galleryTrack.innerHTML = galleryItems.map((item,index)=>`
+        <article class="galleryItem" onclick="openLightbox(${index})">
+          <img src="${item.src}" alt="${item.alt}" loading="lazy">
+          <p>${item.caption}</p>
+        </article>
+      `).join('');
 
-      galleryPage = Math.max(0, Math.min(galleryPage, pagesCount - 1));
-      galleryStart = galleryPage * pageSize;
-      const slideWidth = galleryTrack.querySelector('.galleryItem')?.getBoundingClientRect().width || 0;
-      const gap = 14;
-      const offset = -(galleryPage * pageSize * (slideWidth + gap));
-      galleryTrack.style.transform = `translateX(${offset}px)`;
-
-      galleryTrack.querySelectorAll('.galleryItem').forEach(card=>{
-        const open = ()=>openLightbox(Number(card.dataset.index));
-        card.addEventListener('click', open);
-        card.addEventListener('keydown', (e)=>{ if(e.key==='Enter') open(); });
+      const visible = getVisibleGalleryCount();
+      const itemWidth = 100 / visible;
+      [...galleryTrack.children].forEach(el=>{
+        el.style.flex = `0 0 calc(${itemWidth}% - ${visible === 1 ? 0 : 10}px)`;
       });
+
+      updateGalleryPosition();
+    }
+
+    function updateGalleryPosition(){
+      const visible = getVisibleGalleryCount();
+      const item = galleryTrack.children[0];
+      if(!item) return;
+      const gap = 14;
+      const totalItems = galleryItems.length;
+      const maxStart = Math.max(0, totalItems - visible);
+      if(galleryStart > maxStart) galleryStart = 0;
+      const itemWidth = item.getBoundingClientRect().width + gap;
+      galleryTrack.style.transform = `translateX(-${galleryStart * itemWidth}px)`;
     }
 
     function shiftGallery(step){
-      const pageSize = getGalleryVisibleCount();
-      const pagesCount = Math.ceil(galleryItems.length / pageSize);
-      galleryPage = (galleryPage + step + pagesCount) % pagesCount;
-      galleryStart = galleryPage * pageSize;
-      const slideWidth = galleryTrack.querySelector('.galleryItem')?.getBoundingClientRect().width || 0;
-      const gap = 14;
-      const offset = -(galleryPage * pageSize * (slideWidth + gap));
-      galleryTrack.style.transform = `translateX(${offset}px)`;
-    }
-
-    function setupProductsFocusMode(){
-      const productsSection = document.getElementById('products');
-      if(!productsSection) return;
-
-      const updateProductsFocus = ()=>{
-        if(window.innerWidth <= 820){
-          if(isProductsPinned){
-            document.body.classList.remove('products-focus');
-            isProductsPinned = false;
-          }
-          return;
-        }
-
-        const rect = productsSection.getBoundingClientRect();
-        const shouldPin = rect.top <= 132 && rect.bottom > window.innerHeight * 0.42;
-        if(shouldPin === isProductsPinned) return;
-        isProductsPinned = shouldPin;
-        document.body.classList.toggle('products-focus', shouldPin);
-      };
-
-      window.addEventListener('scroll', updateProductsFocus, {passive:true});
-      window.addEventListener('resize', updateProductsFocus);
-      updateProductsFocus();
-    }
-
-    function startHeroSlideshow(){
-      if(!heroRabbiImg) return;
-      let heroSlideIndex = 0;
-      let isTransitioning = false;
-
-      heroSlides.forEach((slide)=>{
-        const preloadedImage = new Image();
-        preloadedImage.src = slide.src;
-      });
-
-      setInterval(()=>{
-        if(isTransitioning) return;
-        isTransitioning = true;
-        heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
-        const nextSlide = heroSlides[heroSlideIndex];
-
-        heroRabbiImg.classList.add('is-fading');
-        setTimeout(()=>{
-          heroRabbiImg.src = nextSlide.src;
-          heroRabbiImg.alt = nextSlide.alt;
-          heroRabbiImg.classList.remove('is-fading');
-          isTransitioning = false;
-        },700);
-      },5000);
-    }
-
-    function renderLightbox(){
-      const item = galleryItems[lightboxIndex];
-      lightboxMedia.innerHTML = item.type === 'video'
-        ? `<video controls autoplay src="${item.src}"></video>`
-        : `<img src="${item.src}" alt="${item.alt}">`;
+      const visible = getVisibleGalleryCount();
+      const maxStart = Math.max(0, galleryItems.length - visible);
+      galleryStart += step;
+      if(galleryStart < 0) galleryStart = maxStart;
+      if(galleryStart > maxStart) galleryStart = 0;
+      updateGalleryPosition();
     }
 
     function openLightbox(index){
@@ -985,194 +1935,283 @@
       lightbox.classList.add('open');
     }
 
-    function closeLightbox(){lightbox.classList.remove('open');lightboxMedia.innerHTML='';}
-    function moveLightbox(step){lightboxIndex = (lightboxIndex + step + galleryItems.length) % galleryItems.length;renderLightbox();}
-
-    function renderCustomers(){
-      customersGrid.innerHTML = customerLogos.map((store, index) => `
-        <article class="customerCard reveal ${index % 2 === 0 ? 'from-right' : 'from-left'}">
-          <img src="${store.src}" alt="${store.alt}">
-        </article>
-      `).join('');
-      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    function renderLightbox(){
+      const item = galleryItems[lightboxIndex];
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
     }
 
-    function renderProducts(){
-      productsGrid.innerHTML = products.map(p => `
-        <article class="productCard reveal from-bottom">
-          <div class="productMedia">
-            <img src="${p.img}" alt="${p.name}">
-          </div>
-          <div class="productBody">
-            <p class="productBrand">${p.displayBrand}</p>
-            ${p.hideName ? '' : `<p class="productName">${p.name}</p>`}
-            <div class="productInlineRow">
-              <p class="${p.packageClass || 'productPack'}">${p.packageLine}</p>
-              <p class="productTagline">${p.tagline}</p>
-            </div>
-            <p class="productFlour">${p.flourLine}</p>
-            <div class="productMeta">
-              <div class="price">${p.price} ₪</div>
-              <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
-            </div>
-          </div>
-        </article>
-      `).join('');
-      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    function moveLightbox(step){
+      lightboxIndex = (lightboxIndex + step + galleryItems.length) % galleryItems.length;
+      renderLightbox();
     }
 
-    function openCart(){cartEl.classList.add('open');overlay.classList.add('open');}
-    function closeCart(){cartEl.classList.remove('open');overlay.classList.remove('open');}
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      lightboxMedia.innerHTML = '';
+    }
 
-    function addToCart(id){cart.set(id,(cart.get(id)||0)+1);renderCart();openCart();}
+    function openCart(){
+      cartEl.classList.add('open');
+      overlay.classList.add('open');
+    }
+
+    function closeCart(){
+      cartEl.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+
+    function addToCart(id){
+      cart.set(id,(cart.get(id) || 0) + 1);
+      renderCart();
+      openCart();
+    }
 
     function changeQty(id,delta){
-      const next = (cart.get(id)||0)+delta;
-      if(next<=0) cart.delete(id); else cart.set(id,next);
+      const next = (cart.get(id) || 0) + delta;
+      if(next <= 0) cart.delete(id);
+      else cart.set(id,next);
       renderCart();
-    }
-
-    function renderCart(){
-      let total = 0;
-      let totalItems = 0;
-      cartItems.innerHTML = [...cart.entries()].map(([id,qty])=>{
-        const product = products.find(p=>p.id===id);
-        const sum = product.price * qty;
-        total += sum;
-        totalItems += qty;
-        return `<div class="cartItem"><strong>${product.name}</strong><div>${product.price} ₪ × ${qty} = ${sum} ₪</div><div class="qty"><button type="button" onclick="changeQty(${id},1)">+</button><button type="button" onclick="changeQty(${id},-1)">-</button></div></div>`;
-      }).join('') || '<p>הסל עדיין ריק.</p>';
-      cartTotal.textContent = total;
-      cartCount.textContent = totalItems;
-      const cartCountMobile = document.getElementById('cartCountMobile');
-      if(cartCountMobile) cartCountMobile.textContent = totalItems;
-      updateCheckoutSummary();
     }
 
     function getCartTotal(){
       return [...cart.entries()].reduce((sum,[id,qty])=>{
-        const product = products.find(p=>p.id===id);
+        const product = products.find(p=>p.id === id);
         return sum + (product ? product.price * qty : 0);
       },0);
     }
 
+    function renderCart(){
+      let total = 0;
+      let items = 0;
+
+      cartItems.innerHTML = [...cart.entries()].map(([id,qty])=>{
+        const product = products.find(p=>p.id === id);
+        const lineTotal = product.price * qty;
+        total += lineTotal;
+        items += qty;
+
+        return `
+          <div class="cartItem">
+            <strong>${product.name}</strong>
+            <div>${product.price} ₪ × ${qty} = ${lineTotal} ₪</div>
+            <div class="qty">
+              <button type="button" onclick="changeQty(${id},1)">+</button>
+              <button type="button" onclick="changeQty(${id},-1)">-</button>
+            </div>
+          </div>
+        `;
+      }).join('') || '<p>הסל עדיין ריק.</p>';
+
+      cartTotal.textContent = total;
+      cartCount.textContent = items;
+      cartCountMobile.textContent = items;
+      updateCheckoutSummary();
+    }
+
     function isDeliverySelected(){
-      return checkoutForm?.elements.deliveryType.value === 'delivery';
+      return checkoutForm.elements.deliveryType.value === 'delivery';
     }
 
     function updateCheckoutSummary(){
       const productsTotal = getCartTotal();
       const shipping = isDeliverySelected() ? DELIVERY_FEE : 0;
+      const total = productsTotal + shipping;
+      checkoutSummary.textContent = `סה״כ לתשלום: ${total} ₪ (מוצרים: ${productsTotal} ₪, משלוח: ${shipping} ₪)`;
+
       const deliverySelected = isDeliverySelected();
-      checkoutSummary.textContent = `סה״כ לתשלום: ${productsTotal + shipping} ₪ (מוצרים: ${productsTotal} ₪, משלוח: ${shipping} ₪)`;
       deliveryFields.hidden = !deliverySelected;
-      ['deliveryCity','deliveryStreet','deliveryHouseNumber','deliveryPhone'].forEach((fieldId)=>{
-        const field = document.getElementById(fieldId);
-        if(field) field.required = deliverySelected;
+
+      ['deliveryCity','deliveryStreet','deliveryHouseNumber','deliveryPhone'].forEach(id=>{
+        const field = document.getElementById(id);
+        field.required = deliverySelected;
       });
     }
 
-    const GOOGLE_SCRIPT_URL = '';
-    document.getElementById('contactForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const formData = Object.fromEntries(new FormData(e.target).entries());
-      if(!GOOGLE_SCRIPT_URL){
-        alert('יש להוסיף את כתובת Google Apps Script בקוד כדי לאפשר שליחה אוטומטית.');
-        return;
-      }
-      await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(formData)});
-      alert('ההודעה נשלחה בהצלחה.');
-      e.target.reset();
-    });
+    function startHeroSlideshow(){
+      let heroIndex = 0;
 
-    document.getElementById('closeCart').addEventListener('click', closeCart);
-    document.getElementById('openCartTop').addEventListener('click', openCart);
-    document.getElementById('openCartMobile')?.addEventListener('click', openCart);
-    document.getElementById('openCartSheet').addEventListener('click', ()=>{openCart();sheet.classList.remove('open');});
-    overlay.addEventListener('click', closeCart);
-
-    const sheet = document.getElementById('sheet');
-    document.getElementById('openMenu')?.addEventListener('click', ()=>sheet.classList.add('open'));
-    document.getElementById('closeMenu')?.addEventListener('click', ()=>sheet.classList.remove('open'));
-    sheet?.addEventListener('click', (e)=>{ if(e.target===sheet) sheet.classList.remove('open'); });
-    sheet.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>sheet.classList.remove('open')));
-
-    const paymentModal = document.getElementById('paymentModal');
-    const termsModal = document.getElementById('termsModal');
-    const termsApprove = document.getElementById('termsApprove');
-    document.getElementById('openPaymentInCart')?.addEventListener('click', ()=>{
-      paymentModal.classList.add('open');
-      paymentFrame.hidden = true;
-      checkoutForm.hidden = false;
-      updateCheckoutSummary();
-      closeCart();
-    });
-    document.getElementById('closePayment')?.addEventListener('click', ()=>paymentModal.classList.remove('open'));
-    paymentModal?.addEventListener('click', (e)=>{ if(e.target===paymentModal) paymentModal.classList.remove('open'); });
-    checkoutForm?.elements.deliveryType.forEach(radio=>radio.addEventListener('change', updateCheckoutSummary));
-    checkoutForm?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      paymentFrame.hidden = false;
-      checkoutForm.hidden = true;
-    });
-
-
-    document.querySelectorAll('.openTerms').forEach(link=>{
-      link.addEventListener('click',(e)=>{
-        e.preventDefault();
-        termsModal.classList.add('open');
+      heroSlides.forEach(slide=>{
+        const img = new Image();
+        img.src = slide.src;
       });
-    });
-    document.getElementById('closeTerms')?.addEventListener('click', ()=>termsModal.classList.remove('open'));
-    termsModal?.addEventListener('click', (e)=>{ if(e.target===termsModal) termsModal.classList.remove('open'); });
 
-    const checkoutSubmitBtn = checkoutForm?.querySelector('button[type="submit"]');
-    function updateCheckoutSubmitState(){
-      if(!checkoutSubmitBtn || !termsApprove) return;
-      checkoutSubmitBtn.disabled = !termsApprove.checked;
+      setInterval(()=>{
+        heroIndex = (heroIndex + 1) % heroSlides.length;
+        heroRabbiImg.classList.add('is-fading');
+
+        setTimeout(()=>{
+          heroRabbiImg.src = heroSlides[heroIndex].src;
+          heroRabbiImg.alt = heroSlides[heroIndex].alt;
+          heroRabbiImg.classList.remove('is-fading');
+        },500);
+      },4500);
     }
-    termsApprove?.addEventListener('change', updateCheckoutSubmitState);
-    updateCheckoutSubmitState();
 
-    galleryPrev.addEventListener('click', ()=>shiftGallery(-1));
-    galleryNext.addEventListener('click', ()=>shiftGallery(1));
-    window.addEventListener('resize', renderGallery);
+    function setupGalleryAutoPlay(){
+      setInterval(()=>{
+        shiftGallery(1);
+      },4000);
+    }
 
-    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-    document.getElementById('lightboxPrev').addEventListener('click', ()=>moveLightbox(-1));
-    document.getElementById('lightboxNext').addEventListener('click', ()=>moveLightbox(1));
-    lightbox.addEventListener('click',(e)=>{if(e.target===lightbox) closeLightbox();});
-    lightbox.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].clientX;}, {passive:true});
-    lightbox.addEventListener('touchend',e=>{
-      const diff = e.changedTouches[0].clientX - touchStartX;
-      if(Math.abs(diff) < 40) return;
-      moveLightbox(diff > 0 ? 1 : -1);
-    }, {passive:true});
-    document.addEventListener('keydown',(e)=>{
-      if(!lightbox.classList.contains('open')) return;
-      if(e.key==='Escape') closeLightbox();
-      if(e.key==='ArrowRight') moveLightbox(-1);
-      if(e.key==='ArrowLeft') moveLightbox(1);
-    });
+    function setupFAQ(){
+      document.querySelectorAll('.faqQuestion').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const item = btn.closest('.faqItem');
+          item.classList.toggle('open');
+          btn.querySelector('span:last-child').textContent = item.classList.contains('open') ? '−' : '+';
+        });
+      });
+    }
 
-    const observer = new IntersectionObserver((entries)=>{
+    function setupTerms(){
+      document.querySelectorAll('.openTerms').forEach(link=>{
+        link.addEventListener('click',e=>{
+          e.preventDefault();
+          document.getElementById('termsModal').classList.add('open');
+        });
+      });
+
+      document.getElementById('closeTerms').addEventListener('click',()=>{
+        document.getElementById('termsModal').classList.remove('open');
+      });
+
+      document.getElementById('termsModal').addEventListener('click',e=>{
+        if(e.target.id === 'termsModal'){
+          e.currentTarget.classList.remove('open');
+        }
+      });
+    }
+
+    function observeReveals(){
+      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    }
+
+    const observer = new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
           entry.target.classList.add('visible');
           observer.unobserve(entry.target);
         }
       });
-    },{threshold:.15});
-    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    },{threshold:.12});
+
+    const GOOGLE_SCRIPT_URL = '';
+    const contactForm = document.getElementById('contactForm');
+    const contactNotice = document.createElement('div');
+    contactNotice.className = 'contactNotice';
+    contactForm.appendChild(contactNotice);
+
+    contactForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'שולח...';
+
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+
+      try{
+        if(!GOOGLE_SCRIPT_URL){
+          contactNotice.textContent = 'כדי שטופס יצירת הקשר ישלח בפועל, צריך להזין ב־GOOGLE_SCRIPT_URL כתובת של Google Apps Script.';
+          contactNotice.classList.add('show');
+          return;
+        }
+
+        await fetch(GOOGLE_SCRIPT_URL,{
+          method:'POST',
+          mode:'no-cors',
+          body:new URLSearchParams(formData)
+        });
+
+        contactNotice.textContent = 'ההודעה נשלחה בהצלחה. נחזור אליכם בהקדם.';
+        contactNotice.classList.add('show');
+        e.target.reset();
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+
+    document.getElementById('openCartTop').addEventListener('click',openCart);
+    document.getElementById('mobileStickyCta').addEventListener('click',openCart);
+    document.getElementById('closeCart').addEventListener('click',closeCart);
+    overlay.addEventListener('click',closeCart);
+
+    document.getElementById('openPaymentInCart').addEventListener('click',()=>{
+      paymentModal.classList.add('open');
+      paymentFrame.hidden = true;
+      checkoutForm.hidden = false;
+      updateCheckoutSummary();
+      closeCart();
+    });
+
+    document.getElementById('closePayment').addEventListener('click',()=>{
+      paymentModal.classList.remove('open');
+    });
+
+    paymentModal.addEventListener('click',e=>{
+      if(e.target === paymentModal){
+        paymentModal.classList.remove('open');
+      }
+    });
+
+    [...checkoutForm.elements.deliveryType].forEach(radio=>{
+      radio.addEventListener('change',updateCheckoutSummary);
+    });
+
+    function updateCheckoutSubmitState(){
+      const btn = checkoutForm.querySelector('button[type="submit"]');
+      btn.disabled = !termsApprove.checked;
+    }
+
+    termsApprove.addEventListener('change',updateCheckoutSubmitState);
+    updateCheckoutSubmitState();
+
+    checkoutForm.addEventListener('submit',e=>{
+      e.preventDefault();
+      paymentFrame.hidden = false;
+      checkoutForm.hidden = true;
+    });
+
+    document.getElementById('galleryPrev').addEventListener('click',()=>shiftGallery(-1));
+    document.getElementById('galleryNext').addEventListener('click',()=>shiftGallery(1));
+
+    document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));
+    document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));
+
+    lightbox.addEventListener('click',e=>{
+      if(e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown',e=>{
+      if(lightbox.classList.contains('open')){
+        if(e.key === 'Escape') closeLightbox();
+        if(e.key === 'ArrowRight') moveLightbox(-1);
+        if(e.key === 'ArrowLeft') moveLightbox(1);
+      }
+    });
+
+    window.addEventListener('resize',renderGallery);
+
+    document.querySelectorAll('.nav a').forEach(link=>{
+      link.addEventListener('click',()=>{
+        document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
 
     renderProducts();
     renderCustomers();
-    preloadGalleryImages();
     renderGallery();
-    setupProductsFocusMode();
     renderCart();
     startHeroSlideshow();
+    setupGalleryAutoPlay();
+    setupFAQ();
+    setupTerms();
+    observeReveals();
   </script>
+
   <script src="https://cdn.enable.co.il/licenses/enable-L54377l6sbnmaph3-0326-80470/init.js"></script>
 </body>
 </html>
