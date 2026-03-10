@@ -145,7 +145,7 @@
       border-radius:18px;
       box-shadow:0 18px 36px rgba(56,37,14,.2);
       background:#fff;
-      padding:5px;
+      padding:3px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -154,18 +154,15 @@
     .heroRabbiImg{
       width:100%;
       height:100%;
-      object-fit:contain;
+      object-fit:cover;
+      object-position:center;
       border-radius:12px;
       display:block;
       opacity:1;
-      transform:scale(1);
-      transition:opacity 1.4s ease,transform 1.4s ease,filter 1.4s ease;
-      filter:blur(0);
+      transition:opacity .8s ease;
     }
     .heroRabbiImg.is-fading{
       opacity:0;
-      transform:scale(1.012);
-      filter:blur(1px);
     }
     .eyebrow{font-size:1.1rem;color:#6a5437;font-weight:700;margin:0 0 8px}
     h1{
@@ -332,6 +329,10 @@
     .productTagline,.productPack,.productFlour{margin:0;text-align:center;color:#4b3720;font-size:.94rem;font-weight:600;line-height:1.35}
     .productPackGold{color:#b8862f;font-weight:700}
     .productTagline{font-size:.92rem;color:#5b4327}
+    .productInlineRow{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+    .productInlineRow .productPack,
+    .productInlineRow .productTagline{margin:0;font-size:.94rem;line-height:1.35;color:#4b3720;font-weight:700}
+    .productInlineRow .productPackGold{color:#b8862f}
     .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
     .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
 
@@ -427,8 +428,10 @@
     .reveal.visible{animation:floatIn 1.05s ease forwards}
     .reveal.from-right{transform:translateX(70px) scale(.98)}
     .reveal.from-left{transform:translateX(-70px) scale(.98)}
+    .reveal.from-bottom{transform:translateY(68px) scale(.98)}
     .reveal.from-right.visible{animation:softSlideInRight 1s cubic-bezier(.2,.8,.21,1) forwards}
     .reveal.from-left.visible{animation:softSlideInLeft 1s cubic-bezier(.2,.8,.21,1) forwards}
+    .reveal.from-bottom.visible{animation:floatIn 1.05s ease forwards}
 
     @media (max-width:1100px){.galleryTrack,.productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media (max-width:980px){.topbar{min-height:108px}.topbarInner{min-height:108px}.contactGrid{grid-template-columns:1fr}.logoImg{height:56px}.heroTop{grid-template-columns:1fr}.aboutText{grid-template-columns:1fr}}
@@ -761,10 +764,10 @@
         flourLine: '100% קמח מלא'
       },
       50: {
-        displayBrand: 'מצות אבהתנא',
+        displayBrand: 'מצות גאולתנו',
         name: 'מצות מכונה שמורה משעת קצירה',
         packageLine: 'מארז 1 קילו',
-        tagline: '● מצות מכונה שמורה משעת קצירה',
+        tagline: '● מצה שמורה',
         flourLine: '100% קמח מלא'
       }
     };
@@ -896,7 +899,7 @@
           heroRabbiImg.alt = nextSlide.alt;
           heroRabbiImg.classList.remove('is-fading');
           isTransitioning = false;
-        },1200);
+        },700);
       },5000);
     }
 
@@ -927,15 +930,17 @@
 
     function renderProducts(){
       productsGrid.innerHTML = products.map(p => `
-        <article class="productCard reveal from-right">
+        <article class="productCard reveal from-bottom">
           <div class="productMedia">
             <img src="${p.img}" alt="${p.name}">
           </div>
           <div class="productBody">
             <p class="productBrand">${p.displayBrand}</p>
             <p class="productName">${p.name}</p>
-            <p class="${p.packageClass || 'productPack'}">${p.packageLine}</p>
-            <p class="productTagline">${p.tagline}</p>
+            <div class="productInlineRow">
+              <p class="${p.packageClass || 'productPack'}">${p.packageLine}</p>
+              <p class="productTagline">${p.tagline}</p>
+            </div>
             <p class="productFlour">${p.flourLine}</p>
             <div class="productMeta">
               <div class="price">${p.price} ₪</div>
