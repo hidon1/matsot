@@ -691,7 +691,39 @@
     ];
 
     const productNameOverrides = {
-      'כזיתות חיטה קמח חיטה מלא חצי ק״ג': 'כזיתות חיטה קמח חיטה מלאה, חצי ק"ג'
+      'כזיתות חיטה קמח חיטה מלא חצי ק״ג': 'כזיתות חיטה קמח חיטה מלאה, חצי ק"ג',
+      'כזיתות מקמח כוסמין 550 גרם': 'מצות כזית קמח כוסמין',
+      'לאפה אבהתנא קמח חיטה מלא 1 ק״ג': 'מצות אבהתנא',
+      'מצות לאפה מקמח כוסמין 550 גרם': 'מצות אבהתנא - כוסמין',
+      'מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג': 'מצות גאולתנו'
+    };
+
+    const productCopyOverrides = {
+      'מצות כזית קמח כוסמין': {
+        tagline: '● מצות עבודת יד רכות (לאפות קטנות) אישיות מחולקות לכזיתות',
+        packageLine: 'אריזת 500 גרם (כ-14 יחידות במארז)',
+        flourLine: '100% קמח כוסמין מלא'
+      },
+      'מצות אבהתנא': {
+        tagline: '● מצה שמורה עבודת יד (לאפה)',
+        packageLine: 'מארז 1 קילו (5-7 מצות)',
+        flourLine: '100% קמח מלא'
+      },
+      'מצות אבהתנא - כוסמין': {
+        tagline: '● מצה שמורה עבודת יד (לאפה) - קמח כוסמין אורגני',
+        packageLine: 'מארז 550 גרם',
+        flourLine: '100% קמח כוסמין מלא'
+      },
+      'מצות מבית אבא רכות ואיכותיות': {
+        tagline: '● מצות רכות עבודת יד',
+        packageLine: 'מארז 1 קילו (כ-5 מצות באריזה)',
+        flourLine: '100% קמח מלא'
+      },
+      'מצות גאולתנו': {
+        tagline: '● מצות מכונה שמורה משעת קצירה',
+        packageLine: 'מארז 2 קילו',
+        flourLine: '100% קמח מלא'
+      }
     };
 
     const productCardOverrides = {
@@ -720,12 +752,13 @@
       let flourText = '100% קמח מלא';
       if(/כוסמין/i.test(name)) flourText = 'קמח כוסמין';
       else if(/שיבולת\s*שועל/i.test(name)) flourText = 'קמח שיבולת שועל';
-      return {
+      const productDetails = {
         displayBrand: isGeulatenu ? 'מצות גאולתנו' : 'מצות אבהתנא',
         tagline: isLafa ? '● מצה שמורה (עבודת יד לאפה)' : '● מצה שמורה',
         packageLine: `מארז ${packageText}`,
         flourLine: flourText
       };
+      return {...productDetails,...(productCopyOverrides[name] || {})};
     }
 
     function parseProductFromFilename(path, index){
