@@ -33,8 +33,8 @@
       font-family:"Rubik",system-ui,sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(circle at top right,rgba(255,255,255,.72),transparent 26%),
-        linear-gradient(180deg,var(--bg),var(--bg2));
+        linear-gradient(180deg,rgba(245,234,210,.84),rgba(224,201,156,.86)),
+        url("ChatGPT Image Mar 11, 2026, 12_00_05 AM.png") center top / cover fixed no-repeat;
       min-height:100vh;
       position:relative;
     }
@@ -43,8 +43,8 @@
       content:"";
       position:fixed;
       inset:0;
-      background:url("1.png") center center / contain no-repeat;
-      opacity:.07;
+      background:radial-gradient(circle at center,rgba(255,255,255,.45),rgba(255,255,255,.05) 55%,transparent 80%);
+      opacity:.9;
       pointer-events:none;
       z-index:-1;
     }
@@ -86,7 +86,7 @@
       position:sticky;
       top:0;
       z-index:100;
-      background:rgba(255,255,255,.88);
+      background:rgba(255,255,255,.48);
       backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(0,0,0,.07);
       box-shadow:0 12px 28px rgba(0,0,0,.08);
@@ -126,7 +126,7 @@
       padding:10px 14px;
       border-radius:14px;
       border:1px solid rgba(44,33,23,.15);
-      background:rgba(255,255,255,.92);
+      background:rgba(255,255,255,.68);
       font-weight:700;
       cursor:pointer;
       transition:transform .22s ease,box-shadow .22s ease,background .22s ease;
@@ -276,20 +276,6 @@
 
     .heroFrame img.is-fading{opacity:.18}
 
-    .heroBadge{
-      position:absolute;
-      right:14px;
-      bottom:14px;
-      background:rgba(255,255,255,.96);
-      border-radius:18px;
-      padding:12px 14px;
-      box-shadow:0 12px 28px rgba(0,0,0,.12);
-      border:1px solid rgba(0,0,0,.06);
-      max-width:230px;
-      font-weight:700;
-      color:#5c421f;
-    }
-
     .certHeading{
       margin:28px 0 0;
       text-align:center;
@@ -305,21 +291,40 @@
     }
 
     .certCard{
-      background:#fff;
-      border:1px solid rgba(97,59,20,.18);
+      background:transparent;
+      border:0;
       border-radius:18px;
-      padding:10px;
+      padding:0;
       box-shadow:0 10px 22px rgba(56,37,14,.10);
       overflow:hidden;
-      transition:transform .22s ease, box-shadow .22s ease;
+      min-height:290px;
+      perspective:1100px;
     }
 
-    .certCard:hover{
-      transform:translateY(-5px);
-      box-shadow:0 16px 30px rgba(56,37,14,.16);
+    .certCardInner{
+      position:relative;
+      width:100%;
+      height:100%;
+      transform-style:preserve-3d;
+      transition:transform .75s ease;
     }
 
-    .certCard img{
+    .certCard:hover .certCardInner{
+      transform:rotateY(180deg);
+    }
+
+    .certFace{
+      position:absolute;
+      inset:0;
+      border-radius:18px;
+      backface-visibility:hidden;
+      background:#fff;
+      border:1px solid rgba(97,59,20,.18);
+      box-shadow:0 12px 24px rgba(56,37,14,.12);
+      padding:12px;
+    }
+
+    .certFace img{
       width:100%;
       height:185px;
       object-fit:contain;
@@ -331,6 +336,18 @@
       font-size:.92rem;
       line-height:1.65;
       color:#44311e;
+    }
+
+    .certBack{
+      transform:rotateY(180deg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      background:linear-gradient(180deg,#fff8ea,#f0dcc0);
+      font-weight:700;
+      line-height:1.8;
+      color:#4e3518;
     }
 
     section{padding:28px 0}
@@ -414,20 +431,6 @@
       border-color:rgba(192,143,58,.58);
     }
 
-    .productBadge{
-      position:absolute;
-      top:12px;
-      right:12px;
-      z-index:2;
-      background:linear-gradient(180deg,#f0d596,#c79331);
-      color:#2f1b05;
-      padding:7px 12px;
-      border-radius:999px;
-      font-size:.82rem;
-      font-weight:800;
-      box-shadow:0 8px 20px rgba(0,0,0,.14);
-    }
-
     .productMedia{
       height:300px;
       background:#fff;
@@ -472,22 +475,6 @@
       color:#2b1f13;
       font-weight:700;
       min-height:52px;
-    }
-
-    .productRating{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      font-size:.92rem;
-      color:#6e5227;
-      font-weight:700;
-    }
-
-    .stars{
-      color:#d8a538;
-      letter-spacing:2px;
-      font-size:1rem;
     }
 
     .productInlineRow{
@@ -545,43 +532,21 @@
       font-size:1.28rem;
     }
 
-    .galleryWrap{
-      position:relative;
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .galleryViewport{
-      overflow:hidden;
-      flex:1;
-      direction:ltr;
-    }
-
     .galleryTrack{
-      display:flex;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
       gap:14px;
-      transition:transform .55s ease;
-      will-change:transform;
     }
 
     .galleryItem{
-      flex:0 0 calc((100% - 28px) / 3);
+      display:flex;
+      flex-direction:column;
       position:relative;
       border-radius:20px;
       overflow:hidden;
       box-shadow:var(--shadow);
       background:#fff;
       cursor:pointer;
-    }
-
-    .galleryItem::after{
-      content:"";
-      position:absolute;
-      inset:auto 0 0 0;
-      height:48%;
-      background:linear-gradient(180deg,rgba(17,11,5,0),rgba(17,11,5,.80));
-      pointer-events:none;
     }
 
     .galleryItem img{
@@ -592,33 +557,12 @@
     }
 
     .galleryItem p{
-      position:absolute;
-      right:0;
-      left:0;
-      bottom:0;
       margin:0;
-      padding:14px 12px;
-      color:#fff;
+      padding:10px 12px 14px;
+      color:#3a2918;
       font-weight:800;
-      z-index:1;
-      text-shadow:0 2px 8px rgba(0,0,0,.45);
+      text-align:center;
     }
-
-    .galleryBtn{
-      width:48px;
-      height:48px;
-      border:none;
-      border-radius:50%;
-      background:#fff;
-      cursor:pointer;
-      font-size:1.4rem;
-      display:grid;
-      place-items:center;
-      box-shadow:0 8px 20px rgba(0,0,0,.12);
-      transition:transform .22s ease;
-    }
-
-    .galleryBtn:hover{transform:scale(1.08)}
 
     .lightbox{
       position:fixed;
@@ -719,16 +663,36 @@
 
     .aboutFeature{
       position:relative;
+      border-radius:22px;
+      overflow:hidden;
+      min-height:220px;
+      perspective:1200px;
+    }
+
+    .aboutFeatureInner{
+      position:relative;
+      width:100%;
+      height:100%;
+      transform-style:preserve-3d;
+      transition:transform .75s ease;
+    }
+
+    .aboutFeature:hover .aboutFeatureInner{
+      transform:rotateY(180deg) rotateZ(1deg);
+    }
+
+    .aboutFeatureFace{
+      position:absolute;
+      inset:0;
       background:linear-gradient(180deg,#fff8ee,#f4e4c7);
       border:1px solid rgba(160,116,49,.18);
       border-radius:22px;
       padding:18px;
       box-shadow:0 14px 28px rgba(73,48,17,.08);
-      overflow:hidden;
-      transition:transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+      backface-visibility:hidden;
     }
 
-    .aboutFeature::before{
+    .aboutFeatureFace::before{
       content:"";
       position:absolute;
       top:0;
@@ -738,10 +702,15 @@
       background:linear-gradient(90deg,#f4d08a,#b8832b);
     }
 
-    .aboutFeature:hover{
-      transform:translateY(-4px);
-      box-shadow:0 18px 34px rgba(73,48,17,.14);
-      border-color:rgba(184,131,43,.34);
+    .aboutFeatureBack{
+      transform:rotateY(180deg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#4b3319;
+      line-height:1.9;
+      font-weight:700;
     }
 
     .aboutFeatureIcon{
@@ -1193,6 +1162,7 @@
       .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .trustStrip{grid-template-columns:repeat(2,minmax(0,1fr))}
       .certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .galleryTrack{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
 
     @media (max-width:980px){
@@ -1233,16 +1203,7 @@
 
     @media (max-width:640px){
       .productsGrid{grid-template-columns:1fr;gap:12px}
-      .galleryItem{flex:0 0 100%}
-      .galleryBtn{
-        position:absolute;
-        top:50%;
-        transform:translateY(-50%);
-        z-index:3;
-        background:rgba(255,255,255,.92);
-      }
-      #galleryPrev{left:6px}
-      #galleryNext{right:6px}
+      .galleryTrack{grid-template-columns:1fr}
       .lightboxNav{
         width:42px;
         height:42px;
@@ -1325,29 +1286,46 @@
             <div class="heroFrame">
               <img id="heroRabbiImg" src="הרב1.jpg" alt="תמונת רב">
             </div>
-            <div class="heroBadge">
-              מצות עבודת יד, כזיתות, כוסמין, שיבולת שועל ללא גלוטן ועוד.
-            </div>
           </div>
         </div>
 
         <h2 class="certHeading">בכשרויות המהודרות:</h2>
         <div class="certGrid">
           <article class="certCard">
-            <img src="הכשר/כשרות-הרב-שבתי-לוי-בני-ברק.webp" alt="כשרות הרב שבתי לוי בני ברק" loading="lazy">
-            <p class="certInfoText">כשרות הרב שבתי לוי – פיקוח קפדני והקפדה על דרישות ההלכה המחמירות.</p>
+            <div class="certCardInner">
+              <div class="certFace">
+                <img src="הכשר/כשרות-הרב-שבתי-לוי-בני-ברק.webp" alt="כשרות הרב שבתי לוי בני ברק" loading="lazy">
+                <p class="certInfoText">כשרות הרב שבתי לוי.</p>
+              </div>
+              <div class="certFace certBack">פיקוח הלכתי רציף החל מהכנת הקמח ועד לאריזה הסופית, כולל בדיקות קבועות כדי לשמור על רמת כשרות מהודרת ואחידה.</div>
+            </div>
           </article>
           <article class="certCard">
-            <img src="הכשר/כשרות-בדץ-יביע-אומר.webp" alt="כשרות בדץ יביע אומר" loading="lazy">
-            <p class="certInfoText">בד״ץ יביע אומר – גוף כשרות מוכר וידוע, עם רמת פיקוח גבוהה.</p>
+            <div class="certCardInner">
+              <div class="certFace">
+                <img src="הכשר/כשרות-בדץ-יביע-אומר.webp" alt="כשרות בדץ יביע אומר" loading="lazy">
+                <p class="certInfoText">בד״ץ יביע אומר.</p>
+              </div>
+              <div class="certFace certBack">צוות משגיחים מקצועי המלווה את כל שלבי הייצור, עם נהלי עבודה ברורים ובקרה מחמירה על חומרי הגלם ותהליך האפייה.</div>
+            </div>
           </article>
           <article class="certCard">
-            <img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="בדץ העדה החרדית הספרדית" loading="lazy">
-            <p class="certInfoText">בפיקוח והשגחת בד״ץ העדה החרדית הספרדית – כשרות מהודרת ומוכרת.</p>
+            <div class="certCardInner">
+              <div class="certFace">
+                <img src="הכשר/בפיקוח-והשגחת-בדץ-העדה-החרדית-הספרדית.webp" alt="בדץ העדה החרדית הספרדית" loading="lazy">
+                <p class="certInfoText">בד״ץ העדה החרדית הספרדית.</p>
+              </div>
+              <div class="certFace certBack">השגחה קפדנית עם עמידה בדרישות מחמירות של ניקיון, הפרדה ובדיקות שוטפות, כדי להבטיח אמינות מלאה לכל מוצר שיוצא מהמאפייה.</div>
+            </div>
           </article>
           <article class="certCard">
-            <img src="הכשר/כשרות-מהדרין-רבנות-הראשית-פתח-תקווה.webp" alt="רבנות הראשית פתח תקווה" loading="lazy">
-            <p class="certInfoText">כשרות מהדרין רבנות הראשית פתח תקווה – עם השגחה הדוקה ומסודרת.</p>
+            <div class="certCardInner">
+              <div class="certFace">
+                <img src="הכשר/כשרות-מהדרין-רבנות-הראשית-פתח-תקווה.webp" alt="רבנות הראשית פתח תקווה" loading="lazy">
+                <p class="certInfoText">מהדרין רבנות הראשית פתח תקווה.</p>
+              </div>
+              <div class="certFace certBack">כשרות מסודרת ומבוקרת לאורך כל הדרך, עם נהלי פיקוח מחייבים ושקיפות מלאה, למענה איכותי ומתאים לכל משפחה שומרת כשרות.</div>
+            </div>
           </article>
         </div>
       </div>
@@ -1388,13 +1366,7 @@
         <p>מבט מקרוב על האפייה, האריזות והאיכות</p>
       </div>
 
-      <div class="galleryWrap">
-        <button class="galleryBtn" id="galleryPrev" type="button" aria-label="הקודם">›</button>
-        <div class="galleryViewport">
-          <div class="galleryTrack" id="galleryTrack"></div>
-        </div>
-        <button class="galleryBtn" id="galleryNext" type="button" aria-label="הבא">‹</button>
-      </div>
+      <div class="galleryTrack" id="galleryTrack"></div>
     </section>
 
     <section id="about" class="reveal">
@@ -1420,27 +1392,47 @@
 
       <div class="aboutFeatures">
         <article class="aboutFeature reveal">
-          <div class="aboutFeatureIcon">✦</div>
-          <h3>כשרות מהודרת</h3>
-          <p>הקפדה על כל פרט בתהליך הייצור, תחת פיקוח והשגחה ברמה גבוהה, מתוך אחריות מלאה לאיכות ולדיוק.</p>
+          <div class="aboutFeatureInner">
+            <div class="aboutFeatureFace">
+              <div class="aboutFeatureIcon">✦</div>
+              <h3>כשרות מהודרת</h3>
+              <p>הקפדה על כל פרט בתהליך הייצור, תחת פיקוח והשגחה ברמה גבוהה, מתוך אחריות מלאה לאיכות ולדיוק.</p>
+            </div>
+            <div class="aboutFeatureFace aboutFeatureBack">פיקוח יומיומי, בדיקת חומרי גלם ותיעוד מסודר לכל שלב – כדי להבטיח מוצר אמין ומהודר לכל שולחן חג.</div>
+          </div>
         </article>
 
         <article class="aboutFeature reveal">
-          <div class="aboutFeatureIcon">✦</div>
-          <h3>טעם ואיכות</h3>
-          <p>מצות נעימות, מדויקות ומושקעות, עם חוויית אכילה טובה יותר, מראה מכובד וטריות גבוהה.</p>
+          <div class="aboutFeatureInner">
+            <div class="aboutFeatureFace">
+              <div class="aboutFeatureIcon">✦</div>
+              <h3>טעם ואיכות</h3>
+              <p>מצות נעימות, מדויקות ומושקעות, עם חוויית אכילה טובה יותר, מראה מכובד וטריות גבוהה.</p>
+            </div>
+            <div class="aboutFeatureFace aboutFeatureBack">שילוב מדויק בין אפייה מסורתית לבקרת איכות מודרנית מעניק מרקם נעים, טעם עשיר וטריות שמורגשת בכל ביס.</div>
+          </div>
         </article>
 
         <article class="aboutFeature reveal">
-          <div class="aboutFeatureIcon">✦</div>
-          <h3>מסורת מבית אבא</h3>
-          <p>שילוב של שורשיות, טעם מסורתי ונראות שמכבדת את שולחן החג, עם תחושת בית ומסורת אמיתית.</p>
+          <div class="aboutFeatureInner">
+            <div class="aboutFeatureFace">
+              <div class="aboutFeatureIcon">✦</div>
+              <h3>מסורת מבית אבא</h3>
+              <p>שילוב של שורשיות, טעם מסורתי ונראות שמכבדת את שולחן החג, עם תחושת בית ומסורת אמיתית.</p>
+            </div>
+            <div class="aboutFeatureFace aboutFeatureBack">הידע שעובר מדור לדור נשמר בכל מאפה – אותה מסורת אהובה עם הקפדה עדכנית שמתאימה למשפחות של היום.</div>
+          </div>
         </article>
 
         <article class="aboutFeature reveal">
-          <div class="aboutFeatureIcon">✦</div>
-          <h3>מבחר לכל בית</h3>
-          <p>חיטה, כוסמין, שיבולת שועל, כזיתות, אריזות שונות וקמח מצה, כך שכל בית יוכל למצוא את מה שמתאים לו.</p>
+          <div class="aboutFeatureInner">
+            <div class="aboutFeatureFace">
+              <div class="aboutFeatureIcon">✦</div>
+              <h3>מבחר לכל בית</h3>
+              <p>חיטה, כוסמין, שיבולת שועל, כזיתות, אריזות שונות וקמח מצה, כך שכל בית יוכל למצוא את מה שמתאים לו.</p>
+            </div>
+            <div class="aboutFeatureFace aboutFeatureBack">מגוון מוצרים רחב מאפשר התאמה נוחה לכל צורך: ארוחות חג, כזיתות מוכנות, אפשרויות ללא גלוטן ופתרונות לכל משפחה.</div>
+          </div>
         </article>
       </div>
 
@@ -1835,29 +1827,18 @@
     const heroRabbiImg = document.getElementById('heroRabbiImg');
 
     const cart = new Map();
-    let galleryStart = 0;
     let lightboxIndex = 0;
 
-    function getBadge(index){
-      if(index % 3 === 0) return 'מומלץ';
-      if(index % 3 === 1) return 'נמכר הרבה';
-      return 'בחירה טובה';
-    }
 
     function renderProducts(){
-      productsGrid.innerHTML = products.map((p,index)=>`
+      productsGrid.innerHTML = products.map(p=>`
         <article class="productCard reveal">
-          <span class="productBadge">${getBadge(index)}</span>
           <div class="productMedia">
             <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async">
           </div>
           <div class="productBody">
             <p class="productBrand">${p.displayBrand}</p>
             <p class="productName">${p.name}</p>
-            <div class="productRating">
-              <span class="stars">★★★★★</span>
-              <span>אהוב על לקוחות</span>
-            </div>
             <div class="productInlineRow">
               <p class="productPack">${p.packageLine}</p>
               <p class="productTagline">${p.tagline}</p>
@@ -1887,10 +1868,6 @@
       observeReveals();
     }
 
-    function getVisibleGalleryCount(){
-      return window.innerWidth <= 640 ? 1 : 3;
-    }
-
     function renderGallery(){
       galleryTrack.innerHTML = galleryItems.map((item,index)=>`
         <article class="galleryItem" onclick="openLightbox(${index})">
@@ -1898,35 +1875,6 @@
           <p>${item.caption}</p>
         </article>
       `).join('');
-
-      const visible = getVisibleGalleryCount();
-      const itemWidth = 100 / visible;
-      [...galleryTrack.children].forEach(el=>{
-        el.style.flex = `0 0 calc(${itemWidth}% - ${visible === 1 ? 0 : 10}px)`;
-      });
-
-      updateGalleryPosition();
-    }
-
-    function updateGalleryPosition(){
-      const visible = getVisibleGalleryCount();
-      const item = galleryTrack.children[0];
-      if(!item) return;
-      const gap = 14;
-      const totalItems = galleryItems.length;
-      const maxStart = Math.max(0, totalItems - visible);
-      if(galleryStart > maxStart) galleryStart = 0;
-      const itemWidth = item.getBoundingClientRect().width + gap;
-      galleryTrack.style.transform = `translateX(-${galleryStart * itemWidth}px)`;
-    }
-
-    function shiftGallery(step){
-      const visible = getVisibleGalleryCount();
-      const maxStart = Math.max(0, galleryItems.length - visible);
-      galleryStart += step;
-      if(galleryStart < 0) galleryStart = maxStart;
-      if(galleryStart > maxStart) galleryStart = 0;
-      updateGalleryPosition();
     }
 
     function openLightbox(index){
@@ -2045,12 +1993,6 @@
           heroRabbiImg.classList.remove('is-fading');
         },500);
       },4500);
-    }
-
-    function setupGalleryAutoPlay(){
-      setInterval(()=>{
-        shiftGallery(1);
-      },4000);
     }
 
     function setupFAQ(){
@@ -2173,9 +2115,6 @@
       checkoutForm.hidden = true;
     });
 
-    document.getElementById('galleryPrev').addEventListener('click',()=>shiftGallery(-1));
-    document.getElementById('galleryNext').addEventListener('click',()=>shiftGallery(1));
-
     document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
     document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));
     document.getElementById('lightboxNext').addEventListener('click',()=>moveLightbox(1));
@@ -2192,8 +2131,6 @@
       }
     });
 
-    window.addEventListener('resize',renderGallery);
-
     document.querySelectorAll('.nav a').forEach(link=>{
       link.addEventListener('click',()=>{
         document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('active'));
@@ -2206,7 +2143,6 @@
     renderGallery();
     renderCart();
     startHeroSlideshow();
-    setupGalleryAutoPlay();
     setupFAQ();
     setupTerms();
     observeReveals();
