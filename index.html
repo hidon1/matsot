@@ -326,8 +326,11 @@
     .productMedia{position:relative;height:360px;background:#fff}
     .productCard img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block;transition:transform .44s cubic-bezier(.22,.61,.36,1)}
     .productCard:hover img{transform:scale(1.08)}
-    .productBody{padding:15px 16px 16px;display:flex;flex-direction:column;gap:12px}
-    .productName{margin:0;text-align:center;font-size:1.05rem;line-height:1.45;color:#2b1f13;font-weight:700}
+    .productBody{padding:15px 16px 16px;display:flex;flex-direction:column;gap:11px}
+    .productBrand{margin:0;text-align:center;font-size:1.52rem;line-height:1.16;color:#b8862f;font-weight:800;font-family:"Frank Ruhl Libre","Secular One","Rubik",sans-serif;text-shadow:0 2px 8px rgba(87,57,18,.16)}
+    .productName{margin:0;text-align:center;font-size:1.01rem;line-height:1.45;color:#2b1f13;font-weight:700}
+    .productTagline,.productPack,.productFlour{margin:0;text-align:center;color:#4b3720;font-size:.94rem;font-weight:600;line-height:1.35}
+    .productTagline{font-size:.92rem;color:#5b4327}
     .productMeta{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
     .price{font-family:"Rubik";font-weight:800;color:#613b14;font-size:1.28rem}
 
@@ -679,7 +682,9 @@
       'מוצרים/מצות לאפה מקמח כוסמין 550 גרם - מכירה 115.jpg',
       'מוצרים/מצות מבית אבא רכות ואיכותיות מכירה - 90.jpg',
       'מוצרים/מצות מכונה גאולתינו מבית אבהתנא שמורה 2 ק״ג  מכירה 85.jpg',
+      'מוצרים/לאפה אבהתנא קמח חיטה מלא חצי ק״ג  מכירה 60.jpg',
       'מוצרים/מצות קשות ( פריכות ) ודקות אבהתנא 1 ק״ג מכירה 110.jpg',
+      'מוצרים/מצות מכונה גאולתינו 1 ק״ג מכירה 50.jpg',
       'מוצרים/מצות שיבולת שועל ללא גלוטן 400 גרם מכירה 149.jpg',
       'מוצרים/קמח מצה שמורה חצי ק״ג - מכירה 25.jpg'
     ];
@@ -687,6 +692,22 @@
     const productNameOverrides = {
       'כזיתות חיטה קמח חיטה מלא חצי ק״ג': 'כזיתות חיטה קמח חיטה מלאה, חצי ק"ג'
     };
+
+    function parseProductDetails(name){
+      const isGeulatenu = /גאולת/i.test(name);
+      const isLafa = /לאפה|רכות/i.test(name);
+      const amountMatch = name.match(/(\d+\s*ק["״]?ג|\d+\s*גרם|חצי\s*ק["״]?ג)/);
+      const packageText = amountMatch ? amountMatch[1].replace(/\s+/g,' ').trim() : 'מארז משפחתי';
+      let flourText = '100% קמח מלא';
+      if(/כוסמין/i.test(name)) flourText = 'קמח כוסמין';
+      else if(/שיבולת\s*שועל/i.test(name)) flourText = 'קמח שיבולת שועל';
+      return {
+        displayBrand: isGeulatenu ? 'מצות גאולתנו' : 'מצות אבהתנא',
+        tagline: isLafa ? '● מצה שמורה (עבודת יד לאפה)' : '● מצה שמורה',
+        packageLine: `מארז ${packageText}`,
+        flourLine: flourText
+      };
+    }
 
     function parseProductFromFilename(path, index){
       const file = path.split('/').pop().replace(/\.[^.]+$/, '').trim();
@@ -697,7 +718,7 @@
         .replace(/\s+/g,' ')
         .trim();
       const name = productNameOverrides[rawName] || rawName;
-      return {id:index+1,name,price,img:path};
+      return {id:index+1,name,price,img:path,...parseProductDetails(name)};
     }
 
     const products = productImageFiles.map(parseProductFromFilename);
@@ -833,7 +854,11 @@
             <img src="${p.img}" alt="${p.name}">
           </div>
           <div class="productBody">
+            <p class="productBrand">${p.displayBrand}</p>
             <p class="productName">${p.name}</p>
+            <p class="productTagline">${p.tagline}</p>
+            <p class="productPack">${p.packageLine}</p>
+            <p class="productFlour">${p.flourLine}</p>
             <div class="productMeta">
               <div class="price">${p.price} ₪</div>
               <button class="btn" type="button" onclick="addToCart(${p.id})">הוסף לסל</button>
