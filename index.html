@@ -2596,6 +2596,34 @@
           requestAnimationFrame(animate);
         }
       });
+
+      document.querySelectorAll('a[href^="#"]').forEach(link=>{
+        link.addEventListener('click',event=>{
+          const targetSelector = link.getAttribute('href');
+          if(!targetSelector || targetSelector === '#'){
+            return;
+          }
+
+          const sectionTarget = document.querySelector(targetSelector);
+          if(!sectionTarget){
+            return;
+          }
+
+          event.preventDefault();
+          currentY = window.scrollY;
+          targetY = sectionTarget.getBoundingClientRect().top + window.scrollY;
+          targetY = Math.max(0,Math.min(targetY,maxScroll()));
+
+          if(window.location.hash !== targetSelector){
+            history.pushState(null,'',targetSelector);
+          }
+
+          if(!isTicking){
+            isTicking = true;
+            requestAnimationFrame(animate);
+          }
+        });
+      });
     }
     function setupTerms(){
       document.querySelectorAll('.openTerms').forEach(link=>{
