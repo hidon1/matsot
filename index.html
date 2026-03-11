@@ -1474,7 +1474,8 @@
         position:absolute;
         left:0;
         right:0;
-        bottom:calc(100% + 8px);
+        top:calc(100% + 8px);
+        bottom:auto;
         display:none;
         grid-template-columns:1fr;
         gap:8px;
@@ -1495,11 +1496,26 @@
         border-color:rgba(62,44,24,.2);
       }
 
+      .nav a:hover,
+      .nav a.active,
+      .cartTrigger:hover,
+      .mobileMenuTrigger:hover,
+      .productCard:hover,
+      .productCard:hover .productMedia img,
+      .certCard:hover .certCardInner,
+      .aboutFeature:hover .aboutFeatureInner,
+      .aboutRibbonItem:hover .aboutRibbonInner,
+      .trustItem:hover{
+        transform:none;
+        box-shadow:none;
+        animation:none;
+      }
+
       .heroShell{padding:18px}
     }
 
     @media (max-width:640px){
-      .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
       .sectionHead h2{font-size:1.55rem}
       .galleryTrack{grid-template-columns:repeat(2,minmax(0,1fr))}
       .galleryControl{min-width:100px;height:40px;font-size:.95rem}
@@ -1519,14 +1535,15 @@
       .aboutFeature{--feature-swap-height:260px}
       .heroMedia{min-height:220px}
       .heroFrame{height:250px;max-width:260px}
-      .productMedia{height:200px}
-      .productBody{padding:10px;gap:6px}
-      .productBrand{font-size:1.1rem}
-      .productName{font-size:.82rem;line-height:1.35;min-height:46px}
+      .productCard{border-radius:18px}
+      .productMedia{height:150px;padding:8px}
+      .productBody{padding:9px 8px;gap:5px}
+      .productBrand{font-size:1.02rem}
+      .productName{font-size:.79rem;line-height:1.25;min-height:38px}
       .productPack,
-      .productTagline{font-size:.82rem}
-      .productFlour{font-size:.86rem}
-      .price{font-size:1.05rem}
+      .productTagline{font-size:.78rem;line-height:1.2}
+      .productFlour{font-size:.8rem;line-height:1.2}
+      .price{font-size:1rem}
       .paymentModal{align-items:flex-start}
       .paymentCard{width:min(920px,100%);margin:auto 0}
       .reveal,
