@@ -617,12 +617,13 @@
       position:relative;
       padding:0 28px;
       overflow:hidden;
+      border-radius:22px;
     }
 
     .galleryTrack{
       display:flex;
       gap:14px;
-      transition:transform .75s ease;
+      transition:transform .85s cubic-bezier(.25,.8,.25,1);
       will-change:transform;
     }
 
@@ -634,8 +635,9 @@
       border-radius:20px;
       overflow:hidden;
       box-shadow:var(--shadow);
-      background:#fff;
+      background:rgba(255,250,240,.55);
       cursor:pointer;
+      border:1px solid rgba(126,89,40,.18);
     }
 
     .galleryItem img{
@@ -643,6 +645,12 @@
       width:100%;
       aspect-ratio:1/1;
       object-fit:cover;
+      transition:transform .9s ease, filter .9s ease;
+    }
+
+    .galleryItem:hover img{
+      transform:scale(1.05);
+      filter:saturate(1.05);
     }
 
     .galleryControl{
@@ -669,10 +677,10 @@
     .miniShowcase{
       overflow:hidden;
       border-radius:18px;
-      border:1px solid rgba(125,87,31,.14);
-      box-shadow:0 16px 30px rgba(73,48,17,.08);
-      background:rgba(255,255,255,.6);
-      padding:8px;
+      border:none;
+      box-shadow:none;
+      background:transparent;
+      padding:0;
       max-width:760px;
       margin:0 auto;
     }
@@ -690,8 +698,9 @@
       justify-content:center;
       align-items:center;
       overflow:hidden;
-      border:none;
-      box-shadow:none;
+      border-radius:18px;
+      border:1px solid rgba(125,87,31,.16);
+      box-shadow:0 14px 30px rgba(56,36,14,.12);
       background:transparent;
     }
 
@@ -699,7 +708,7 @@
       display:block;
       width:100%;
       max-height:420px;
-      object-fit:contain;
+      object-fit:cover;
     }
 
     .lightbox{
@@ -1889,9 +1898,10 @@
     ];
 
     const miniShowcaseItems = [
-      {src:'הרב1שקוף.png',alt:'הרב 1 שקוף'},
-      {src:'הרב2שקוף.png',alt:'הרב 2 שקוף'},
-      {src:'הרב3שקוף.png',alt:'הרב 3 שקוף'}
+      {src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת אווירה 1'},
+      {src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת אווירה 2'},
+      {src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת אווירה 3'},
+      {src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת אווירה 4'}
     ];
 
     const DELIVERY_FEE = 30;
@@ -1995,7 +2005,7 @@
       galleryTrack.style.transition = 'none';
       galleryTrack.style.transform = `translateX(${-galleryStartIndex * step}px)`;
       requestAnimationFrame(()=>{
-        galleryTrack.style.transition = 'transform .75s ease';
+        galleryTrack.style.transition = 'transform .85s cubic-bezier(.25,.8,.25,1)';
       });
     }
 
@@ -2020,7 +2030,7 @@
         galleryTrack.style.transition = 'none';
         galleryTrack.style.transform = `translateX(${-galleryStartIndex * resetStep}px)`;
         requestAnimationFrame(()=>{
-          galleryTrack.style.transition = 'transform .75s ease';
+          galleryTrack.style.transition = 'transform .85s cubic-bezier(.25,.8,.25,1)';
         });
       },{once:true});
     }
@@ -2032,8 +2042,18 @@
       prevBtn.addEventListener('click',()=>moveGallery(-1));
       nextBtn.addEventListener('click',()=>moveGallery(1));
 
-      if(galleryAutoSlide) clearInterval(galleryAutoSlide);
-      galleryAutoSlide = setInterval(()=>moveGallery(1),3500);
+      function startGalleryAutoSlide(){
+        if(galleryAutoSlide) clearInterval(galleryAutoSlide);
+        galleryAutoSlide = setInterval(()=>moveGallery(1),4200);
+      }
+
+      startGalleryAutoSlide();
+
+      galleryTrack.addEventListener('mouseenter',()=>{
+        if(galleryAutoSlide) clearInterval(galleryAutoSlide);
+      });
+
+      galleryTrack.addEventListener('mouseleave',()=>startGalleryAutoSlide());
       window.addEventListener('resize',renderGallery);
     }
 
