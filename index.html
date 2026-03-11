@@ -1109,6 +1109,7 @@
       justify-content:center;
       z-index:230;
       padding:16px;
+      overflow-y:auto;
     }
 
     .paymentModal.open,
@@ -1299,6 +1300,7 @@
       .topbar{
         width:min(1200px,100% - 20px);
         border-radius:0 0 24px 24px;
+        height:clamp(165px,45vw,210px);
       }
       .topbarInner{
         left:10px;
@@ -1313,10 +1315,10 @@
       .mobileMenuTrigger,
       .cartTrigger{
         width:100%;
-        min-height:46px;
+        min-height:40px;
         display:grid;
         place-items:center;
-        padding:10px 6px;
+        padding:8px 6px;
         font-size:.8rem;
         text-align:center;
       }
@@ -1324,6 +1326,27 @@
       .cartTrigger{
         white-space:nowrap;
         line-height:1.1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:6px;
+        padding:8px 10px;
+      }
+
+      .cartTriggerLabel{
+        display:none;
+      }
+
+      .cartTriggerBadge{
+        min-width:20px;
+        height:20px;
+        border-radius:999px;
+        background:rgba(0,0,0,.46);
+        display:grid;
+        place-items:center;
+        font-size:.72rem;
+        font-weight:800;
+        padding:0 6px;
       }
 
       .mobileMenuTrigger{display:grid}
@@ -1376,6 +1399,17 @@
       .aboutFeatures{grid-template-columns:1fr}
       .heroCopy{padding-top:84px}
       .heroBlinkBadge{width:94px;font-size:.8rem}
+      .heroMedia{min-height:220px}
+      .heroFrame{height:250px;max-width:260px}
+      .productMedia{height:200px}
+      .productName{min-height:56px}
+      .paymentModal{align-items:flex-start}
+      .paymentCard{width:min(920px,100%);margin:auto 0}
+      .reveal,
+      .revealLong{
+        opacity:1;
+        transform:none;
+      }
     }
   </style>
 </head>
@@ -1394,7 +1428,11 @@
           <a href="#contact">צור קשר</a>
         </nav>
 
-        <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
+        <button class="cartTrigger" id="openCartTop" type="button" aria-label="סל קניות">
+          <span aria-hidden="true">🛒</span>
+          <span class="cartTriggerLabel">סל קניות</span>
+          <span class="cartTriggerBadge" id="cartCount">0</span>
+        </button>
       </div>
     </div>
   </header>
@@ -2184,6 +2222,10 @@
     }
 
     function observeReveals(){
+      if(!('IntersectionObserver' in window)){
+        document.querySelectorAll('.reveal, .revealLong').forEach(el=>el.classList.add('visible'));
+        return;
+      }
       document.querySelectorAll('.reveal, .revealLong').forEach(el=>observer.observe(el));
     }
 
