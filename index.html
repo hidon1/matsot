@@ -472,8 +472,8 @@
     }
 
     .trustItem:hover{
-      transform:translateY(-6px);
-      box-shadow:0 20px 28px rgba(0,0,0,.12);
+      transform:translateY(-12px) scale(1.03);
+      box-shadow:0 26px 38px rgba(0,0,0,.16);
     }
 
     .featureIconBadge{
@@ -490,6 +490,7 @@
       margin:0 auto 12px;
       transform:translateY(0);
       transition:transform .35s cubic-bezier(.25,.8,.25,1);
+      will-change:transform;
     }
 
     .trustItem:hover .featureIconBadge,
@@ -499,9 +500,10 @@
     }
 
     @keyframes iconBounce{
-      0%,100%{transform:translateY(0)}
-      35%{transform:translateY(-8px)}
-      70%{transform:translateY(2px)}
+      0%,100%{transform:translateY(0) scale(1)}
+      30%{transform:translateY(-18px) scale(1.12)}
+      60%{transform:translateY(6px) scale(.98)}
+      80%{transform:translateY(-6px) scale(1.04)}
     }
 
     .trustItem strong{
@@ -531,9 +533,9 @@
     }
 
     .productCard:hover{
-      transform:translateY(-8px);
-      box-shadow:0 24px 44px rgba(56,37,14,.18);
-      border-color:rgba(192,143,58,.58);
+      transform:translateY(-16px) scale(1.035);
+      box-shadow:0 30px 52px rgba(56,37,14,.22);
+      border-color:rgba(192,143,58,.7);
     }
 
     .productMedia{
@@ -552,7 +554,7 @@
     }
 
     .productCard:hover .productMedia img{
-      transform:scale(1.05);
+      transform:scale(1.12);
     }
 
     .productBody{
@@ -630,37 +632,14 @@
     }
 
     .galleryTrack{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
+      display:flex;
       gap:14px;
-      transition:transform .7s ease,opacity .7s ease;
+      transition:transform .75s ease;
+      will-change:transform;
     }
-
-    .galleryTrack.is-sliding{
-      transform:translateX(-22px);
-      opacity:.76;
-    }
-
-    .galleryControl{
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:42px;
-      height:42px;
-      border:none;
-      border-radius:50%;
-      font-size:1.45rem;
-      font-weight:800;
-      background:rgba(255,255,255,.92);
-      box-shadow:0 10px 18px rgba(0,0,0,.14);
-      cursor:pointer;
-      z-index:4;
-    }
-
-    .galleryControl.prev{right:0}
-    .galleryControl.next{left:0}
 
     .galleryItem{
+      flex:0 0 calc((100% - 28px) / 3);
       display:flex;
       flex-direction:column;
       position:relative;
@@ -680,38 +659,36 @@
 
     .miniShowcase{
       overflow:hidden;
-      border-radius:24px;
-      border:1px solid rgba(122,84,28,.17);
-      box-shadow:0 14px 34px rgba(76,53,20,.14);
-      background:linear-gradient(180deg,rgba(255,250,241,.95),rgba(244,226,190,.88));
-      padding:16px;
+      border-radius:0;
+      border:none;
+      box-shadow:none;
+      background:transparent;
+      padding:0;
     }
 
     .miniShowcaseTrack{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:14px;
-      transition:transform .7s ease,opacity .7s ease;
-    }
-
-    .miniShowcaseTrack.is-sliding{
-      transform:translateX(-26px);
-      opacity:.74;
+      display:flex;
+      gap:0;
+      transition:transform .8s cubic-bezier(.4,0,.2,1);
+      will-change:transform;
     }
 
     .miniShowcaseItem{
-      border-radius:18px;
+      flex:0 0 100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
       overflow:hidden;
-      border:1px solid rgba(145,107,50,.24);
-      box-shadow:0 10px 22px rgba(73,49,18,.11);
-      background:#fff;
+      border:none;
+      box-shadow:none;
+      background:transparent;
     }
 
     .miniShowcaseItem img{
       display:block;
       width:100%;
-      aspect-ratio:16/11;
-      object-fit:cover;
+      max-height:430px;
+      object-fit:contain;
     }
 
     .lightbox{
@@ -1274,8 +1251,6 @@
       .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .trustStrip{grid-template-columns:repeat(2,minmax(0,1fr))}
       .certGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .galleryTrack{grid-template-columns:repeat(3,minmax(0,1fr))}
-      .miniShowcaseTrack{grid-template-columns:repeat(3,minmax(0,1fr))}
     }
 
     @media (max-width:980px){
@@ -1319,8 +1294,7 @@
     @media (max-width:640px){
       .productsGrid{grid-template-columns:1fr;gap:12px}
       .galleryWrap{padding:0}
-      .galleryTrack{grid-template-columns:1fr}
-      .miniShowcaseTrack{grid-template-columns:1fr}
+      .galleryItem{flex-basis:100%}
       .galleryControl{display:none}
       .lightboxNav{
         width:42px;
@@ -1388,11 +1362,6 @@
               בתהליך, ודואגים שכל מארז שמגיע אליכם יהיה טרי, מכובד וטעים במיוחד. הזמינו עוד היום
               את מצות אבהתנא ותיהנו מטעם של פסח אמיתי – “די אכלו אבהתנא בארעא דמצרים”.
             </p>
-
-            <div class="heroActions">
-              <a class="btn heroPrimary" href="#products">למוצרים ולהזמנה</a>
-              <a class="btn alt" href="#contact">דברו איתנו</a>
-            </div>
 
             <div class="heroTrust">
               <span>כשרות מהודרת</span>
@@ -1893,9 +1862,9 @@
     ];
 
     const miniShowcaseItems = [
-      {src:'לאפה.webp',alt:'לאפה'},
       {src:'הרב1שקוף.png',alt:'הרב 1 שקוף'},
-      {src:'2.png',alt:'לוגו מצות אבהתנא'}
+      {src:'הרב2שקוף.png',alt:'הרב 2 שקוף'},
+      {src:'הרב3שקוף.png',alt:'הרב 3 שקוף'}
     ];
 
     const DELIVERY_FEE = 30;
@@ -1922,9 +1891,9 @@
 
     const cart = new Map();
     let lightboxIndex = 0;
-    let galleryStartIndex = 0;
+    let galleryStartIndex = 3;
     let galleryAutoSlide;
-    let miniShowcaseStartIndex = 0;
+    let miniShowcaseStartIndex = 1;
     let miniShowcaseAutoSlide;
 
 
@@ -1961,26 +1930,73 @@
       observeReveals();
     }
 
+    function preloadImages(items){
+      items.forEach(item=>{
+        const img = new Image();
+        img.src = item.src;
+      });
+    }
+
+    function getSlideStep(track){
+      const first = track.firstElementChild;
+      if(!first) return 0;
+      const styles = getComputedStyle(track);
+      const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+      return first.getBoundingClientRect().width + gap;
+    }
+
     function renderGallery(){
-      const visibleItems = Array.from({length:3},(_,offset)=>{
-        const index = (galleryStartIndex + offset) % galleryItems.length;
-        return {item:galleryItems[index],index};
+      const extendedItems = [
+        ...galleryItems.slice(-3),
+        ...galleryItems,
+        ...galleryItems.slice(0,3)
+      ];
+
+      galleryTrack.innerHTML = extendedItems.map((item,index)=>{
+        const originalIndex = (index - 3 + galleryItems.length) % galleryItems.length;
+        return `
+          <article class="galleryItem" data-gallery-index="${originalIndex}">
+            <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
+          </article>
+        `;
+      }).join('');
+
+      galleryTrack.querySelectorAll('.galleryItem').forEach(el=>{
+        el.addEventListener('click',()=>openLightbox(Number(el.dataset.galleryIndex)));
       });
 
-      galleryTrack.innerHTML = visibleItems.map(({item,index})=>`
-        <article class="galleryItem" onclick="openLightbox(${index})">
-          <img src="${item.src}" alt="${item.alt}" loading="lazy">
-        </article>
-      `).join('');
+      const step = getSlideStep(galleryTrack);
+      galleryTrack.style.transition = 'none';
+      galleryTrack.style.transform = `translateX(${-galleryStartIndex * step}px)`;
+      requestAnimationFrame(()=>{
+        galleryTrack.style.transition = 'transform .75s ease';
+      });
     }
 
     function moveGallery(step = 1){
-      galleryTrack.classList.add('is-sliding');
-      setTimeout(()=>{
-        galleryStartIndex = (galleryStartIndex + step + galleryItems.length) % galleryItems.length;
-        renderGallery();
-        galleryTrack.classList.remove('is-sliding');
-      },280);
+      const slideStep = getSlideStep(galleryTrack);
+      if(!slideStep) return;
+      galleryStartIndex += step;
+      galleryTrack.style.transform = `translateX(${-galleryStartIndex * slideStep}px)`;
+
+      galleryTrack.addEventListener('transitionend',function onEnd(){
+        galleryTrack.removeEventListener('transitionend',onEnd);
+
+        if(galleryStartIndex >= galleryItems.length + 3){
+          galleryStartIndex = 3;
+        }else if(galleryStartIndex < 3){
+          galleryStartIndex = galleryItems.length + 2;
+        }else{
+          return;
+        }
+
+        const resetStep = getSlideStep(galleryTrack);
+        galleryTrack.style.transition = 'none';
+        galleryTrack.style.transform = `translateX(${-galleryStartIndex * resetStep}px)`;
+        requestAnimationFrame(()=>{
+          galleryTrack.style.transition = 'transform .75s ease';
+        });
+      },{once:true});
     }
 
     function setupGallery(){
@@ -1991,35 +2007,63 @@
       nextBtn.addEventListener('click',()=>moveGallery(1));
 
       if(galleryAutoSlide) clearInterval(galleryAutoSlide);
-      galleryAutoSlide = setInterval(()=>moveGallery(1),4000);
+      galleryAutoSlide = setInterval(()=>moveGallery(1),3500);
+      window.addEventListener('resize',renderGallery);
     }
 
     function renderMiniShowcase(){
-      const visibleItems = Array.from({length:3},(_,offset)=>{
-        const index = (miniShowcaseStartIndex + offset) % miniShowcaseItems.length;
-        return miniShowcaseItems[index];
-      });
+      const extendedItems = [
+        miniShowcaseItems[miniShowcaseItems.length - 1],
+        ...miniShowcaseItems,
+        miniShowcaseItems[0]
+      ];
 
-      miniShowcaseTrack.innerHTML = visibleItems.map(item=>`
+      miniShowcaseTrack.innerHTML = extendedItems.map(item=>`
         <article class="miniShowcaseItem">
-          <img src="${item.src}" alt="${item.alt}" loading="lazy">
+          <img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">
         </article>
       `).join('');
+
+      const step = getSlideStep(miniShowcaseTrack);
+      miniShowcaseTrack.style.transition = 'none';
+      miniShowcaseTrack.style.transform = `translateX(${-miniShowcaseStartIndex * step}px)`;
+      requestAnimationFrame(()=>{
+        miniShowcaseTrack.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
+      });
     }
 
     function moveMiniShowcase(step = 1){
-      miniShowcaseTrack.classList.add('is-sliding');
-      setTimeout(()=>{
-        miniShowcaseStartIndex = (miniShowcaseStartIndex + step + miniShowcaseItems.length) % miniShowcaseItems.length;
-        renderMiniShowcase();
-        miniShowcaseTrack.classList.remove('is-sliding');
-      },280);
+      const slideStep = getSlideStep(miniShowcaseTrack);
+      if(!slideStep) return;
+
+      miniShowcaseStartIndex += step;
+      miniShowcaseTrack.style.transform = `translateX(${-miniShowcaseStartIndex * slideStep}px)`;
+
+      miniShowcaseTrack.addEventListener('transitionend',function onEnd(){
+        miniShowcaseTrack.removeEventListener('transitionend',onEnd);
+
+        if(miniShowcaseStartIndex >= miniShowcaseItems.length + 1){
+          miniShowcaseStartIndex = 1;
+        }else if(miniShowcaseStartIndex <= 0){
+          miniShowcaseStartIndex = miniShowcaseItems.length;
+        }else{
+          return;
+        }
+
+        const resetStep = getSlideStep(miniShowcaseTrack);
+        miniShowcaseTrack.style.transition = 'none';
+        miniShowcaseTrack.style.transform = `translateX(${-miniShowcaseStartIndex * resetStep}px)`;
+        requestAnimationFrame(()=>{
+          miniShowcaseTrack.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
+        });
+      },{once:true});
     }
 
     function setupMiniShowcase(){
       renderMiniShowcase();
       if(miniShowcaseAutoSlide) clearInterval(miniShowcaseAutoSlide);
       miniShowcaseAutoSlide = setInterval(()=>moveMiniShowcase(1),3000);
+      window.addEventListener('resize',renderMiniShowcase);
     }
 
     function openLightbox(index){
@@ -2272,6 +2316,9 @@
         link.classList.add('active');
       });
     });
+
+    preloadImages(galleryItems);
+    preloadImages(miniShowcaseItems);
 
     renderProducts();
     renderCustomers();
