@@ -683,21 +683,6 @@
       filter:saturate(1.05);
     }
 
-    .galleryImageBadge{
-      position:absolute;
-      inset-inline:10px;
-      bottom:10px;
-      background:rgba(30,20,10,.72);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:999px;
-      text-align:center;
-      padding:6px 10px;
-      font-size:.88rem;
-      font-weight:700;
-      backdrop-filter:blur(2px);
-    }
-
     .galleryMeta{
       margin:8px 4px 0;
       color:#5a4225;
@@ -788,6 +773,15 @@
       max-height:84vh;
       display:block;
       object-fit:contain;
+    }
+
+    .lightboxMeta{
+      margin:10px 4px 0;
+      color:#f3e9d4;
+      font-size:1rem;
+      font-weight:600;
+      text-align:center;
+      line-height:1.4;
     }
 
     .lightboxClose{
@@ -2158,7 +2152,6 @@
       galleryTrack.innerHTML = visibleItems.map((item,index)=>`
         <article class="galleryItem" data-gallery-index="${index}">
           <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
-          <div class="galleryImageBadge">${item.banner}</div>
           <p class="galleryMeta">${item.related}</p>
         </article>
       `).join('');
@@ -2234,7 +2227,7 @@
 
     function renderLightbox(){
       const item = galleryItems[lightboxIndex];
-      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}"><p class="lightboxMeta">${item.related}</p>`;
     }
 
     function moveLightbox(step){
