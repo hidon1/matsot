@@ -235,14 +235,12 @@
       align-items:center;
     }
 
-    .heroCopy{
-      position:relative;
-    }
+    .heroCopy{position:relative;}
 
     .heroBlinkBadge{
       position:absolute;
-      top:108px;
-      inset-inline-end:clamp(-98px,-7vw,-56px);
+      top:14px;
+      inset-inline-start:14px;
       width:132px;
       aspect-ratio:1;
       border-radius:50%;
@@ -261,21 +259,11 @@
       animation:goldBlink 1s ease-in-out infinite;
       z-index:4;
       transition:transform .22s ease;
-      transform:rotate(-14deg);
+      transform:rotate(-12deg);
     }
 
     .heroBlinkBadge:hover{
-      transform:rotate(-14deg) scale(1.08);
-    }
-
-    @media (min-width:981px){
-      .heroBlinkBadge{
-        position:fixed;
-        left:12px;
-        top:clamp(140px,26vh,220px);
-        inset-inline-end:auto;
-        right:auto;
-      }
+      transform:rotate(-12deg) scale(1.08);
     }
 
     @keyframes goldBlink{
@@ -553,11 +541,28 @@
     }
 
     .productMedia{
+      position:relative;
       height:340px;
       background:#fff;
       padding:12px;
       display:grid;
       place-items:center;
+    }
+
+    .productImageBadge{
+      position:absolute;
+      top:14px;
+      inset-inline-start:14px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:linear-gradient(180deg,#2f9737,#1f7028);
+      color:#fff;
+      font-weight:800;
+      font-size:.92rem;
+      box-shadow:0 8px 18px rgba(31,112,40,.32);
+      border:1px solid rgba(255,255,255,.65);
+      z-index:2;
+      pointer-events:none;
     }
 
     .productMedia img{
@@ -1325,9 +1330,8 @@
     @media (max-width:980px){
       .heroTop{grid-template-columns:1fr}
       .heroMedia{min-height:auto}
-      .heroCopy{padding-top:92px}
-      .heroBlinkBadge{top:28px;inset-inline-end:-22px;transform:rotate(-10deg)}
-      .heroBlinkBadge:hover{transform:rotate(-10deg) scale(1.06)}
+      .heroBlinkBadge{top:10px;inset-inline-start:10px;transform:rotate(-8deg)}
+      .heroBlinkBadge:hover{transform:rotate(-8deg) scale(1.06)}
       .aboutText{grid-template-columns:1fr}
       .contactGrid{grid-template-columns:1fr}
       .customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1436,7 +1440,6 @@
       .heroFrame{height:340px}
       .productMedia{height:320px}
       .aboutFeatures{grid-template-columns:1fr}
-      .heroCopy{padding-top:84px}
       .heroBlinkBadge{width:94px;font-size:.8rem}
       .heroMedia{min-height:220px}
       .heroFrame{height:250px;max-width:260px}
@@ -1493,7 +1496,6 @@
       <div class="heroShell">
         <div class="heroTop">
           <div class="heroCopy">
-            <a class="heroBlinkBadge" href="#products" aria-label="הזמינו עכשיו ועברו למוצרים">הזמינו עכשיו</a>
             <p class="heroEyebrow">מצות רכות, מהודרות וטעימות לאכילת כזית בשמחה</p>
             <h1 class="heroTitle">מצות אבהתנא</h1>
             <p class="heroLead">
@@ -1510,6 +1512,7 @@
           </div>
 
           <div class="heroMedia">
+            <a class="heroBlinkBadge" href="#products" aria-label="הזמינו עכשיו ועברו למוצרים">הזמינו עכשיו</a>
             <div class="heroFrame">
               <img id="heroRabbiImg" src="הרב1.jpg" alt="תמונת רב">
             </div>
@@ -1970,6 +1973,7 @@
         tagline:'● עבודת יד (לאפה)',
         packageLine:'מארז 400–550 גרם',
         flourLine:'שיבולת שועל ללא גלוטן',
+        imageBadge:'ללא גלוטן',
         price:149,
         img:'מוצרים/מצות שיבולת שועל ללא גלוטן 400 גרם מכירה 149.jpg'
       },
@@ -1991,7 +1995,7 @@
         packageLine:'מארז 1 ק״ג',
         flourLine:'100% קמח כוסמין מלא',
         price:165,
-        img:'מוצרים/מצות כוסמין פריכות 1 ק"ג מכירה 165.png'
+        img:'מוצרים/מוצרים/מצות כוסמין פריכות 1 ק"ג מכירה 165.png'
       }
     ];
 
@@ -2095,6 +2099,7 @@
       productsGrid.innerHTML = products.map(p=>`
         <article class="productCard reveal">
           <div class="productMedia">
+            ${p.imageBadge ? `<span class="productImageBadge">${p.imageBadge}</span>` : ''}
             <img src="${p.img}" alt="${p.name}" loading="lazy" decoding="async">
           </div>
           <div class="productBody">
