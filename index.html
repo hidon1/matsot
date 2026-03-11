@@ -261,28 +261,56 @@
     .heroCopy{position:relative;}
 
     .heroBlinkBadge{
-      position:fixed;
-      top:6px;
-      left:22px;
+      position:absolute;
+      top:calc(clamp(260px,38vw,410px) - 52px);
+      left:clamp(12px,2.2vw,26px);
       width:132px;
       aspect-ratio:1;
-      border-radius:50%;
+      border-radius:56% 44% 52% 48% / 44% 56% 46% 54%;
       display:grid;
       place-items:center;
-      background:radial-gradient(circle at 30% 30%,#ffe9a6 0%,#ffd45f 38%,#d8a432 72%,#ac7606 100%);
-      color:#111;
+      background:
+        radial-gradient(circle at 30% 28%,rgba(255,255,255,.7) 0 12%,transparent 36%),
+        radial-gradient(circle at 76% 64%,rgba(214,168,84,.3) 0 22%,transparent 55%),
+        linear-gradient(150deg,#fff4cb 0%,#f7dc9a 46%,#e8c06c 78%,#cc9b41 100%);
+      color:#32210f;
       font-family:"Rubik Bubbles","Rubik",system-ui,sans-serif;
       font-size:1rem;
       text-align:center;
       line-height:1.2;
       padding:10px;
       font-weight:700;
-      border:2px solid rgba(0,0,0,.2);
-      box-shadow:0 0 0 2px rgba(255,223,120,.4),0 16px 24px rgba(79,50,4,.36);
+      border:2px solid rgba(122,84,24,.28);
+      box-shadow:0 0 0 2px rgba(255,246,208,.55),0 14px 20px rgba(106,70,18,.25),inset 0 -8px 14px rgba(151,97,25,.18);
       animation:goldBlink 1s ease-in-out infinite;
       z-index:45;
       transition:transform .22s ease;
       transform:rotate(-12deg);
+      overflow:hidden;
+    }
+
+    .heroBlinkBadge::before,
+    .heroBlinkBadge::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      pointer-events:none;
+    }
+
+    .heroBlinkBadge::before{
+      width:30px;
+      height:20px;
+      right:20px;
+      top:20px;
+      background:rgba(255,233,169,.7);
+      box-shadow:-44px 16px 0 rgba(239,196,112,.5),-8px 52px 0 rgba(225,178,84,.4);
+      filter:blur(.3px);
+    }
+
+    .heroBlinkBadge::after{
+      inset:12px;
+      border:1px dashed rgba(157,110,38,.24);
+      border-radius:55% 45% 52% 48% / 47% 53% 44% 56%;
     }
 
     .heroBlinkBadge:hover{
