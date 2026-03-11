@@ -224,35 +224,35 @@
 
     .heroCopy{
       position:relative;
-      padding-inline-end:120px;
     }
 
     .heroBlinkBadge{
       position:absolute;
-      top:8px;
-      inset-inline-end:0;
-      width:108px;
+      top:42px;
+      inset-inline-end:clamp(-78px,-5vw,-46px);
+      width:132px;
       aspect-ratio:1;
-      border-radius:50%;
+      border-radius:18px;
       display:grid;
       place-items:center;
       background:radial-gradient(circle at 30% 30%,#ffe9a6 0%,#ffd45f 38%,#d8a432 72%,#ac7606 100%);
       color:#111;
       font-family:"Rubik Bubbles","Rubik",system-ui,sans-serif;
-      font-size:1.02rem;
+      font-size:1rem;
       text-align:center;
-      line-height:1.15;
-      padding:12px;
+      line-height:1.2;
+      padding:10px;
       font-weight:700;
       border:2px solid rgba(0,0,0,.2);
       box-shadow:0 0 0 2px rgba(255,223,120,.4),0 16px 24px rgba(79,50,4,.36);
-      animation:goldBlink 1.2s ease-in-out infinite;
-      z-index:3;
+      animation:goldBlink 1s ease-in-out infinite;
+      z-index:4;
       transition:transform .22s ease;
+      transform:rotate(-14deg);
     }
 
     .heroBlinkBadge:hover{
-      transform:scale(1.06);
+      transform:rotate(-14deg) scale(1.08);
     }
 
     @keyframes goldBlink{
@@ -366,20 +366,15 @@
       padding:0;
       box-shadow:0 10px 22px rgba(56,37,14,.10);
       overflow:hidden;
-      min-height:290px;
-      perspective:1100px;
+      aspect-ratio:1/1;
     }
 
     .certCardInner{
       position:relative;
       width:100%;
       height:100%;
-      transform-style:preserve-3d;
-      transition:transform .75s ease;
-    }
-
-    .certCard:hover .certCardInner{
-      transform:rotateY(180deg);
+      transform-style:flat;
+      transition:none;
     }
 
     .certFace{
@@ -395,29 +390,20 @@
 
     .certFace img{
       width:100%;
-      height:185px;
+      height:100%;
       object-fit:contain;
       display:block;
     }
 
     .certInfoText{
-      margin:10px 0 0;
-      font-size:.92rem;
-      line-height:1.65;
+      margin:8px 0 0;
+      font-size:.82rem;
+      line-height:1.45;
       color:#44311e;
+      text-align:center;
     }
 
-    .certBack{
-      transform:rotateY(180deg);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      background:linear-gradient(180deg,#fffaf0,#ead2a4);
-      font-weight:700;
-      line-height:1.8;
-      color:#4e3518;
-    }
+    .certBack{display:none;}
 
     section{padding:28px 0}
 
@@ -518,6 +504,7 @@
       grid-template-columns:repeat(3,minmax(0,1fr));
       gap:20px;
       align-items:stretch;
+      width:100%;
     }
 
     .productCard{
@@ -628,7 +615,8 @@
 
     .galleryWrap{
       position:relative;
-      padding:0 56px;
+      padding:0 28px;
+      overflow:hidden;
     }
 
     .galleryTrack{
@@ -639,7 +627,7 @@
     }
 
     .galleryItem{
-      flex:0 0 calc((100% - 28px) / 3);
+      flex:0 0 calc((100% - 42px) / 4);
       display:flex;
       flex-direction:column;
       position:relative;
@@ -657,13 +645,36 @@
       object-fit:cover;
     }
 
+    .galleryControl{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:28px;
+      height:28px;
+      border:none;
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      box-shadow:0 8px 16px rgba(0,0,0,.18);
+      font-size:1rem;
+      cursor:pointer;
+      z-index:4;
+      display:grid;
+      place-items:center;
+      padding:0;
+    }
+
+    .galleryControl.prev{right:2px}
+    .galleryControl.next{left:2px}
+
     .miniShowcase{
       overflow:hidden;
-      border-radius:0;
-      border:none;
-      box-shadow:none;
-      background:transparent;
-      padding:0;
+      border-radius:18px;
+      border:1px solid rgba(125,87,31,.14);
+      box-shadow:0 16px 30px rgba(73,48,17,.08);
+      background:rgba(255,255,255,.6);
+      padding:8px;
+      max-width:760px;
+      margin:0 auto;
     }
 
     .miniShowcaseTrack{
@@ -687,7 +698,7 @@
     .miniShowcaseItem img{
       display:block;
       width:100%;
-      max-height:430px;
+      max-height:420px;
       object-fit:contain;
     }
 
@@ -1228,6 +1239,7 @@
     }
 
     .mobileStickyCta{
+      display:none !important;
       position:fixed;
       right:12px;
       left:12px;
@@ -1247,6 +1259,18 @@
       cursor:pointer;
     }
 
+
+    [class*="enable" i],
+    [id*="enable" i]{
+      zoom:.84;
+    }
+
+    [class*="enable" i] button,
+    [id*="enable" i] button{
+      transform:scale(.9);
+      transform-origin:bottom right;
+    }
+
     @media (max-width:1100px){
       .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .trustStrip{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1256,9 +1280,9 @@
     @media (max-width:980px){
       .heroTop{grid-template-columns:1fr}
       .heroMedia{min-height:auto}
-      .heroCopy{padding-inline-end:0;padding-top:108px}
-      .heroBlinkBadge{top:0;inset-inline-start:50%;inset-inline-end:auto;transform:translateX(-50%)}
-      .heroBlinkBadge:hover{transform:translateX(-50%) scale(1.06)}
+      .heroCopy{padding-top:92px}
+      .heroBlinkBadge{top:-2px;inset-inline-end:50%;transform:translateX(50%) rotate(-10deg)}
+      .heroBlinkBadge:hover{transform:translateX(50%) rotate(-10deg) scale(1.06)}
       .aboutText{grid-template-columns:1fr}
       .contactGrid{grid-template-columns:1fr}
       .customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1279,23 +1303,30 @@
 
       .nav{
         display:grid;
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        width:100%;
+        gap:6px;
       }
 
       .nav a,.cartTrigger{
         text-align:center;
-        padding:9px 8px;
+        padding:9px 4px;
+        font-size:.77rem;
+        min-height:44px;
+        display:grid;
+        place-items:center;
       }
 
-      .topActions{justify-content:center}
+      .topActions{display:none}
       .heroShell{padding:18px}
     }
 
     @media (max-width:640px){
-      .productsGrid{grid-template-columns:1fr;gap:12px}
-      .galleryWrap{padding:0}
-      .galleryItem{flex-basis:100%}
-      .galleryControl{display:none}
+      .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .sectionHead h2{font-size:1.55rem}
+      .galleryWrap{padding:0 22px}
+      .galleryItem{flex-basis:calc((100% - 14px) / 2)}
+      .galleryControl{width:24px;height:24px;font-size:.84rem;display:grid}
       .lightboxNav{
         width:42px;
         height:42px;
@@ -1303,13 +1334,13 @@
       .checkoutGrid{grid-template-columns:1fr}
       .deliveryFields{grid-template-columns:1fr}
       .footerInner{grid-template-columns:1fr}
-      .mobileStickyCta{display:flex}
-      body{padding-bottom:76px}
+      .mobileStickyCta{display:none !important}
+      body{padding-bottom:0}
       .heroFrame{height:340px}
       .productMedia{height:250px}
       .aboutFeatures{grid-template-columns:1fr}
-      .heroCopy{padding-top:96px}
-      .heroBlinkBadge{width:96px;font-size:.95rem}
+      .heroCopy{padding-top:84px}
+      .heroBlinkBadge{width:94px;font-size:.8rem}
     }
   </style>
 </head>
@@ -1328,11 +1359,10 @@
           <a href="#gallery">הגלריה</a>
           <a href="#about">מי אנחנו</a>
           <a href="#contact">צור קשר</a>
+          <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
         </nav>
 
-        <div class="topActions">
-          <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
-        </div>
+        <div class="topActions"></div>
       </div>
     </div>
   </header>
@@ -1607,9 +1637,6 @@
     </div>
   </footer>
 
-  <button class="mobileStickyCta" id="mobileStickyCta" type="button">
-    🛒 מעבר לסל (<span id="cartCountMobile">0</span>)
-  </button>
 
   <div class="paymentModal" id="paymentModal" aria-hidden="true">
     <div class="paymentCard">
@@ -1876,7 +1903,6 @@
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
     const cartCount = document.getElementById('cartCount');
-    const cartCountMobile = document.getElementById('cartCountMobile');
     const cartEl = document.getElementById('cart');
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
@@ -1891,7 +1917,7 @@
 
     const cart = new Map();
     let lightboxIndex = 0;
-    let galleryStartIndex = 3;
+    let galleryStartIndex = 4;
     let galleryAutoSlide;
     let miniShowcaseStartIndex = 1;
     let miniShowcaseAutoSlide;
@@ -1947,13 +1973,13 @@
 
     function renderGallery(){
       const extendedItems = [
-        ...galleryItems.slice(-3),
+        ...galleryItems.slice(-4),
         ...galleryItems,
-        ...galleryItems.slice(0,3)
+        ...galleryItems.slice(0,4)
       ];
 
       galleryTrack.innerHTML = extendedItems.map((item,index)=>{
-        const originalIndex = (index - 3 + galleryItems.length) % galleryItems.length;
+        const originalIndex = (index - 4 + galleryItems.length) % galleryItems.length;
         return `
           <article class="galleryItem" data-gallery-index="${originalIndex}">
             <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
@@ -1982,10 +2008,10 @@
       galleryTrack.addEventListener('transitionend',function onEnd(){
         galleryTrack.removeEventListener('transitionend',onEnd);
 
-        if(galleryStartIndex >= galleryItems.length + 3){
-          galleryStartIndex = 3;
-        }else if(galleryStartIndex < 3){
-          galleryStartIndex = galleryItems.length + 2;
+        if(galleryStartIndex >= galleryItems.length + 4){
+          galleryStartIndex = 4;
+        }else if(galleryStartIndex < 4){
+          galleryStartIndex = galleryItems.length + 3;
         }else{
           return;
         }
@@ -2141,7 +2167,6 @@
 
       cartTotal.textContent = total;
       cartCount.textContent = items;
-      cartCountMobile.textContent = items;
       updateCheckoutSummary();
     }
 
@@ -2254,7 +2279,6 @@
     });
 
     document.getElementById('openCartTop').addEventListener('click',openCart);
-    document.getElementById('mobileStickyCta').addEventListener('click',openCart);
     document.getElementById('closeCart').addEventListener('click',closeCart);
     overlay.addEventListener('click',closeCart);
 
