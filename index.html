@@ -268,7 +268,7 @@
     .heroBlinkBadge{
       position:absolute;
       top:clamp(8px,2.2vw,24px);
-      right:clamp(16px,9%,52px);
+      left:clamp(16px,9%,52px);
       width:158px;
       aspect-ratio:1;
       border-radius:50%;
@@ -550,16 +550,12 @@
     .trustItem:hover .featureIconBadge,
     .aboutFeature:hover .featureIconBadge,
     .aboutRibbonItem:hover .featureIconBadge{
-      animation:iconJumpDrop 1.15s cubic-bezier(.17,.85,.28,1) both;
+      animation:iconJumpDrop 2.2s ease-in-out both;
     }
 
     @keyframes iconJumpDrop{
       0%{transform:translateY(0) scale(1)}
-      18%{transform:translateY(-30px) scale(1.13)}
-      38%{transform:translateY(-50px) scale(1.08)}
-      58%{transform:translateY(9px) scale(.98)}
-      74%{transform:translateY(-14px) scale(1.03)}
-      88%{transform:translateY(4px) scale(.99)}
+      50%{transform:translateY(-30px) scale(1.03)}
       100%{transform:translateY(0) scale(1)}
     }
 
