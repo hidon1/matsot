@@ -143,7 +143,7 @@
       right:clamp(14px,2.8vw,34px);
       bottom:clamp(14px,2.8vw,28px);
       display:flex;
-      justify-content:flex-start;
+      justify-content:flex-end;
       align-items:flex-end;
       gap:12px;
     }
@@ -154,13 +154,7 @@
       align-items:center;
       justify-content:center;
       flex-wrap:wrap;
-      max-width:min(100%,900px);
-      padding:10px;
-      border-radius:18px;
-      background:rgba(19,12,9,.34);
-      backdrop-filter:blur(7px);
-      border:1px solid rgba(255,255,255,.24);
-      box-shadow:0 12px 28px rgba(0,0,0,.2);
+      max-width:min(100%,940px);
     }
 
     .nav a,
@@ -277,8 +271,8 @@
     @media (min-width:981px){
       .heroBlinkBadge{
         position:fixed;
-        left:5px;
-        top:230px;
+        left:-2px;
+        top:200px;
         inset-inline-end:auto;
         right:auto;
       }
@@ -1311,19 +1305,19 @@
         right:10px;
         bottom:10px;
         display:grid;
-        grid-template-columns:1fr;
+        grid-template-columns:repeat(2,minmax(0,1fr));
         align-items:end;
         gap:8px;
       }
 
       .mobileMenuTrigger,
       .cartTrigger{
-        min-width:112px;
+        width:100%;
         min-height:46px;
         display:grid;
         place-items:center;
-        padding:10px 8px;
-        font-size:.86rem;
+        padding:10px 6px;
+        font-size:.8rem;
         text-align:center;
       }
 
@@ -1335,6 +1329,7 @@
       .mobileMenuTrigger{display:grid}
 
       .nav{
+        grid-column:1 / -1;
         position:absolute;
         left:0;
         right:0;
