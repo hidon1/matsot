@@ -274,6 +274,16 @@
       transform:rotate(-14deg) scale(1.08);
     }
 
+    @media (min-width:981px){
+      .heroBlinkBadge{
+        position:fixed;
+        left:5px;
+        top:230px;
+        inset-inline-end:auto;
+        right:auto;
+      }
+    }
+
     @keyframes goldBlink{
       0%,100%{opacity:1; filter:brightness(1)}
       50%{opacity:.72; filter:brightness(1.2)}
@@ -1313,8 +1323,13 @@
         display:grid;
         place-items:center;
         padding:10px 8px;
-        font-size:.92rem;
+        font-size:.86rem;
         text-align:center;
+      }
+
+      .cartTrigger{
+        white-space:nowrap;
+        line-height:1.1;
       }
 
       .mobileMenuTrigger{display:grid}
