@@ -238,9 +238,9 @@
     .heroCopy{position:relative;}
 
     .heroBlinkBadge{
-      position:absolute;
-      top:14px;
-      inset-inline-start:14px;
+      position:fixed;
+      top:6px;
+      left:22px;
       width:132px;
       aspect-ratio:1;
       border-radius:50%;
@@ -257,7 +257,7 @@
       border:2px solid rgba(0,0,0,.2);
       box-shadow:0 0 0 2px rgba(255,223,120,.4),0 16px 24px rgba(79,50,4,.36);
       animation:goldBlink 1s ease-in-out infinite;
-      z-index:4;
+      z-index:45;
       transition:transform .22s ease;
       transform:rotate(-12deg);
     }
@@ -1330,8 +1330,7 @@
     @media (max-width:980px){
       .heroTop{grid-template-columns:1fr}
       .heroMedia{min-height:auto}
-      .heroBlinkBadge{top:10px;inset-inline-start:10px;transform:rotate(-8deg)}
-      .heroBlinkBadge:hover{transform:rotate(-8deg) scale(1.06)}
+      .heroBlinkBadge{display:none}
       .aboutText{grid-template-columns:1fr}
       .contactGrid{grid-template-columns:1fr}
       .customersGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1440,7 +1439,6 @@
       .heroFrame{height:340px}
       .productMedia{height:320px}
       .aboutFeatures{grid-template-columns:1fr}
-      .heroBlinkBadge{width:94px;font-size:.8rem}
       .heroMedia{min-height:220px}
       .heroFrame{height:250px;max-width:260px}
       .productMedia{height:200px}
@@ -1485,6 +1483,8 @@
     </div>
   </header>
 
+  <a class="heroBlinkBadge" href="#products" aria-label="הזמינו עכשיו ועברו למוצרים">הזמינו עכשיו</a>
+
   <aside class="cart" id="cart">
     <div class="cartHead">
       <h3>הסל שלך</h3>
@@ -1518,7 +1518,6 @@
           </div>
 
           <div class="heroMedia">
-            <a class="heroBlinkBadge" href="#products" aria-label="הזמינו עכשיו ועברו למוצרים">הזמינו עכשיו</a>
             <div class="heroFrame">
               <img id="heroRabbiImg" src="הרב1.jpg" alt="תמונת רב">
             </div>
