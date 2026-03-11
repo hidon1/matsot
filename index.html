@@ -146,7 +146,8 @@
     }
 
     .nav a,
-    .cartTrigger{
+    .cartTrigger,
+    .mobileMenuTrigger{
       padding:10px 14px;
       border-radius:14px;
       border:1px solid rgba(44,33,23,.15);
@@ -154,11 +155,15 @@
       font-weight:700;
       cursor:pointer;
       transition:transform .22s ease,box-shadow .22s ease,background .22s ease;
+      font-family:inherit;
+      font-size:1rem;
+      color:inherit;
     }
 
     .nav a:hover,
     .nav a.active,
-    .cartTrigger:hover{
+    .cartTrigger:hover,
+    .mobileMenuTrigger:hover{
       transform:translateY(-2px);
       box-shadow:0 10px 24px rgba(0,0,0,.12);
       background:#fff;
@@ -169,6 +174,8 @@
       align-items:center;
       gap:8px;
     }
+
+    .mobileMenuTrigger{display:none}
 
     .btn{
       border:none;
@@ -1273,34 +1280,59 @@
     }
 
     @media (max-width:820px){
-      .topbar{position:static}
+      .topbar{position:sticky}
       .topbarInner{
         min-height:auto;
         padding:10px 0 12px;
         display:grid;
-        grid-template-columns:1fr;
-        gap:10px;
+        grid-template-columns:auto 1fr auto;
+        align-items:center;
+        gap:8px;
       }
 
-      .logoLink{justify-content:center}
+      .logoLink{min-width:auto}
+      .logoImg{height:46px}
 
-      .nav{
-        display:grid;
-        grid-template-columns:repeat(6,minmax(0,1fr));
-        width:100%;
-        gap:6px;
-      }
-
-      .nav a,.cartTrigger{
-        text-align:center;
-        padding:12px 6px;
-        font-size:.95rem;
-        min-height:52px;
+      .mobileMenuTrigger,
+      .cartTrigger{
+        min-width:112px;
+        min-height:46px;
         display:grid;
         place-items:center;
+        padding:10px 8px;
+        font-size:.92rem;
+        text-align:center;
       }
 
-      .topActions{display:none}
+      .mobileMenuTrigger{display:grid}
+
+      .nav{
+        position:absolute;
+        top:100%;
+        right:12px;
+        left:12px;
+        display:none;
+        grid-template-columns:1fr;
+        gap:8px;
+        background:rgba(255,252,245,.98);
+        border:1px solid rgba(87,58,23,.17);
+        border-radius:16px;
+        padding:10px;
+        box-shadow:0 14px 28px rgba(0,0,0,.12);
+      }
+
+      .topbar.menu-open .nav{display:grid}
+
+      .nav a{
+        width:100%;
+        text-align:center;
+      }
+
+      .topActions{
+        display:flex;
+        gap:8px;
+      }
+
       .heroShell{padding:18px}
     }
 
@@ -1335,16 +1367,19 @@
           <img class="logoImg" src="1.png" alt="לוגו מצות אבהתנא">
         </a>
 
-        <nav class="nav" aria-label="תפריט ראשי">
+        <button class="mobileMenuTrigger" id="mobileMenuTrigger" type="button" aria-expanded="false" aria-controls="mainNav">☰ תפריט</button>
+
+        <nav class="nav" id="mainNav" aria-label="תפריט ראשי">
           <a class="active" href="#home">דף הבית</a>
           <a href="#products">המוצרים שלנו</a>
           <a href="#gallery">הגלריה</a>
           <a href="#about">מי אנחנו</a>
           <a href="#contact">צור קשר</a>
-          <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
         </nav>
 
-        <div class="topActions"></div>
+        <div class="topActions">
+          <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
+        </div>
       </div>
     </div>
   </header>
@@ -2173,7 +2208,11 @@
       }
     });
 
-    document.getElementById('openCartTop').addEventListener('click',openCart);
+    document.getElementById('openCartTop').addEventListener('click',()=>{
+      openCart();
+      topbar.classList.remove('menu-open');
+      mobileMenuTrigger.setAttribute('aria-expanded','false');
+    });
     document.getElementById('closeCart').addEventListener('click',closeCart);
     overlay.addEventListener('click',closeCart);
 
@@ -2229,10 +2268,20 @@
       }
     });
 
+    const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
+    const topbar = document.querySelector('.topbar');
+
+    mobileMenuTrigger.addEventListener('click',()=>{
+      const opened = topbar.classList.toggle('menu-open');
+      mobileMenuTrigger.setAttribute('aria-expanded',String(opened));
+    });
+
     document.querySelectorAll('.nav a').forEach(link=>{
       link.addEventListener('click',()=>{
         document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('active'));
         link.classList.add('active');
+        topbar.classList.remove('menu-open');
+        mobileMenuTrigger.setAttribute('aria-expanded','false');
       });
     });
 
