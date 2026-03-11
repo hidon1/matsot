@@ -952,7 +952,7 @@
     }
 
     .aboutFeature{
-      --feature-swap-height:240px;
+      --feature-swap-height:128px;
       position:relative;
       border-radius:22px;
       overflow:hidden;
@@ -976,8 +976,21 @@
       background:linear-gradient(180deg,#fff8ee,#f4e4c7);
       border:1px solid rgba(160,116,49,.18);
       border-radius:22px;
-      padding:18px;
+      padding:14px 16px;
       box-shadow:0 14px 28px rgba(73,48,17,.08);
+    }
+
+    .aboutFeature .aboutFeatureFace:first-child{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      gap:8px;
+    }
+
+    .aboutFeature .aboutFeatureFace:first-child p{
+      display:none;
     }
 
     .aboutFeatureFace::before{
@@ -996,16 +1009,18 @@
       justify-content:center;
       text-align:center;
       color:#4b3319;
-      line-height:1.9;
+      line-height:1.55;
       font-weight:700;
       margin-top:0;
       background:linear-gradient(180deg,#f9edd8,#efd7ab);
+      font-size:.96rem;
+      padding:14px;
     }
 
     .aboutFeature h3{
-      margin:0 0 8px;
+      margin:0;
       color:#6b451a;
-      font-size:1.32rem;
+      font-size:1.24rem;
       font-weight:900;
     }
 
@@ -1532,7 +1547,7 @@
       .heroFrame{height:340px}
       .productMedia{height:320px}
       .aboutFeatures{grid-template-columns:1fr}
-      .aboutFeature{--feature-swap-height:260px}
+      .aboutFeature{--feature-swap-height:118px}
       .heroMedia{min-height:220px}
       .heroFrame{height:250px;max-width:260px}
       .productCard{border-radius:18px}
