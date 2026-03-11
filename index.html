@@ -107,33 +107,45 @@
     }
 
     .topbar{
-      position:sticky;
-      top:0;
-      z-index:100;
-      background:linear-gradient(180deg,rgba(241,220,178,.62),rgba(223,190,126,.52));
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid rgba(0,0,0,.07);
-      box-shadow:0 12px 28px rgba(0,0,0,.08);
+      position:relative;
+      z-index:40;
+      margin:0 auto;
+      width:min(1200px,100% - clamp(20px,4vw,64px));
+      height:clamp(260px,38vw,410px);
+      border-radius:0 0 32px 32px;
+      overflow:hidden;
+      box-shadow:0 22px 46px rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.38);
+      isolation:isolate;
+    }
+
+    .topbar::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(20,13,8,.05),rgba(20,13,8,.28) 72%,rgba(20,13,8,.48)),
+        url("‏‏לכידה.PNG") center top / cover no-repeat;
+      z-index:-2;
+    }
+
+    .topbar::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,transparent 38%,rgba(0,0,0,.32));
+      z-index:-1;
     }
 
     .topbarInner{
-      min-height:88px;
+      position:absolute;
+      left:clamp(14px,2.8vw,34px);
+      right:clamp(14px,2.8vw,34px);
+      bottom:clamp(14px,2.8vw,28px);
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-    }
-
-    .logoLink{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:120px;
-    }
-
-    .logoImg{
-      height:58px;
-      filter:drop-shadow(0 10px 15px rgba(0,0,0,.18));
+      justify-content:flex-start;
+      align-items:flex-end;
+      gap:12px;
     }
 
     .nav{
@@ -141,8 +153,14 @@
       gap:8px;
       align-items:center;
       justify-content:center;
-      flex:1;
       flex-wrap:wrap;
+      max-width:min(100%,900px);
+      padding:10px;
+      border-radius:18px;
+      background:rgba(19,12,9,.34);
+      backdrop-filter:blur(7px);
+      border:1px solid rgba(255,255,255,.24);
+      box-shadow:0 12px 28px rgba(0,0,0,.2);
     }
 
     .nav a,
@@ -150,14 +168,14 @@
     .mobileMenuTrigger{
       padding:10px 14px;
       border-radius:14px;
-      border:1px solid rgba(44,33,23,.15);
-      background:rgba(255,255,255,.68);
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.18);
       font-weight:700;
       cursor:pointer;
       transition:transform .22s ease,box-shadow .22s ease,background .22s ease;
       font-family:inherit;
       font-size:1rem;
-      color:inherit;
+      color:#fff;
     }
 
     .nav a:hover,
@@ -165,14 +183,8 @@
     .cartTrigger:hover,
     .mobileMenuTrigger:hover{
       transform:translateY(-2px);
-      box-shadow:0 10px 24px rgba(0,0,0,.12);
-      background:#fff;
-    }
-
-    .topActions{
-      display:flex;
-      align-items:center;
-      gap:8px;
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+      background:rgba(255,255,255,.36);
     }
 
     .mobileMenuTrigger{display:none}
@@ -1280,18 +1292,19 @@
     }
 
     @media (max-width:820px){
-      .topbar{position:sticky}
+      .topbar{
+        width:min(1200px,100% - 20px);
+        border-radius:0 0 24px 24px;
+      }
       .topbarInner{
-        min-height:auto;
-        padding:10px 0 12px;
+        left:10px;
+        right:10px;
+        bottom:10px;
         display:grid;
-        grid-template-columns:auto 1fr auto;
-        align-items:center;
+        grid-template-columns:1fr;
+        align-items:end;
         gap:8px;
       }
-
-      .logoLink{min-width:auto}
-      .logoImg{height:46px}
 
       .mobileMenuTrigger,
       .cartTrigger{
@@ -1308,9 +1321,9 @@
 
       .nav{
         position:absolute;
-        top:100%;
-        right:12px;
-        left:12px;
+        left:0;
+        right:0;
+        bottom:calc(100% + 8px);
         display:none;
         grid-template-columns:1fr;
         gap:8px;
@@ -1326,11 +1339,9 @@
       .nav a{
         width:100%;
         text-align:center;
-      }
-
-      .topActions{
-        display:flex;
-        gap:8px;
+        color:var(--ink);
+        background:rgba(255,255,255,.9);
+        border-color:rgba(62,44,24,.2);
       }
 
       .heroShell{padding:18px}
@@ -1363,10 +1374,6 @@
   <header class="topbar">
     <div class="wrap">
       <div class="topbarInner">
-        <a class="logoLink" href="#home" aria-label="לוגו">
-          <img class="logoImg" src="1.png" alt="לוגו מצות אבהתנא">
-        </a>
-
         <button class="mobileMenuTrigger" id="mobileMenuTrigger" type="button" aria-expanded="false" aria-controls="mainNav">☰ תפריט</button>
 
         <nav class="nav" id="mainNav" aria-label="תפריט ראשי">
@@ -1377,9 +1384,7 @@
           <a href="#contact">צור קשר</a>
         </nav>
 
-        <div class="topActions">
-          <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
-        </div>
+        <button class="cartTrigger" id="openCartTop" type="button">🛒 סל קניות (<span id="cartCount">0</span>)</button>
       </div>
     </div>
   </header>
