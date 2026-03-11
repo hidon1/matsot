@@ -68,7 +68,7 @@
 
     a{text-decoration:none;color:inherit}
     img{max-width:100%}
-    .wrap{max-width:1680px;margin:0 auto;padding:0 clamp(16px,2.2vw,34px)}
+    .wrap{max-width:1320px;margin:0 auto;padding:0 clamp(18px,3.2vw,54px)}
 
     @keyframes pulse{
       0%{transform:scale(1)}
@@ -443,6 +443,8 @@
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
       gap:12px;
+      max-width:1080px;
+      margin:0 auto;
     }
 
     .trustItem{
@@ -502,9 +504,11 @@
     .productsGrid{
       display:grid;
       grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:20px;
+      gap:16px;
       align-items:stretch;
       width:100%;
+      max-width:1120px;
+      margin:0 auto;
     }
 
     .productCard{
@@ -614,25 +618,35 @@
     }
 
     .galleryWrap{
-      position:relative;
-      padding:0 46px;
+      max-width:1120px;
+      margin:0 auto;
+    }
+
+    .galleryViewport{
       overflow:hidden;
       border-radius:22px;
+      border:1px solid rgba(126,89,40,.2);
+      box-shadow:0 14px 32px rgba(56,37,14,.12);
+      background:rgba(255,252,246,.8);
+      padding:14px;
     }
 
     .galleryTrack{
       display:flex;
-      gap:14px;
-      transition:transform .85s cubic-bezier(.25,.8,.25,1);
+      transition:transform .75s cubic-bezier(.25,.8,.25,1);
       will-change:transform;
     }
 
+    .gallerySlide{
+      min-width:100%;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+
     .galleryItem{
-      flex:0 0 calc((100% - 24px) / 3);
-      display:flex;
-      flex-direction:column;
       position:relative;
-      border-radius:20px;
+      border-radius:18px;
       overflow:hidden;
       box-shadow:var(--shadow);
       background:rgba(255,250,240,.55);
@@ -645,7 +659,7 @@
       width:100%;
       aspect-ratio:4/3;
       object-fit:cover;
-      transition:transform .9s ease, filter .9s ease;
+      transition:transform .7s ease, filter .7s ease;
     }
 
     .galleryItem:hover img{
@@ -653,62 +667,33 @@
       filter:saturate(1.05);
     }
 
+    .galleryActions{
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
     .galleryControl{
-      position:absolute;
-      top:50%;
-      transform:translateY(-50%);
-      width:42px;
+      width:auto;
+      min-width:120px;
       height:42px;
       border:none;
       border-radius:999px;
-      background:rgba(255,255,255,.92);
-      box-shadow:0 8px 16px rgba(0,0,0,.18);
-      font-size:1.35rem;
+      background:rgba(255,255,255,.94);
+      box-shadow:0 8px 16px rgba(0,0,0,.12);
+      font-size:1rem;
+      font-weight:700;
       cursor:pointer;
-      z-index:4;
       display:grid;
       place-items:center;
-      padding:0;
+      padding:0 18px;
     }
 
-    .galleryControl.prev{right:6px}
-    .galleryControl.next{left:6px}
-
-    .miniShowcase{
-      overflow:hidden;
-      border-radius:18px;
-      border:none;
-      box-shadow:none;
-      background:transparent;
-      padding:0;
-      max-width:none;
-      margin:0 auto;
-    }
-
-    .miniShowcaseTrack{
-      display:flex;
-      gap:0;
-      transition:transform .8s cubic-bezier(.4,0,.2,1);
-      will-change:transform;
-    }
-
-    .miniShowcaseItem{
-      flex:0 0 100%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      overflow:hidden;
-      border-radius:18px;
-      border:1px solid rgba(125,87,31,.16);
-      box-shadow:0 14px 30px rgba(56,36,14,.12);
-      background:transparent;
-    }
-
-    .miniShowcaseItem img{
-      display:block;
-      width:100%;
-      max-height:560px;
-      object-fit:cover;
+    .galleryPageLabel{
+      font-weight:700;
+      color:#4e381e;
     }
 
     .lightbox{
@@ -1322,9 +1307,8 @@
     @media (max-width:640px){
       .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
       .sectionHead h2{font-size:1.55rem}
-      .galleryWrap{padding:0 28px}
-      .galleryItem{flex-basis:calc((100% - 14px) / 2)}
-      .galleryControl{width:44px;height:44px;font-size:1.25rem;display:grid}
+      .gallerySlide{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .galleryControl{min-width:100px;height:40px;font-size:.95rem}
       .lightboxNav{
         width:42px;
         height:42px;
@@ -1487,17 +1471,17 @@
       </div>
 
       <div class="galleryWrap">
-        <button class="galleryControl prev" type="button" id="galleryPrev" aria-label="הקודם">›</button>
-        <div class="galleryTrack" id="galleryTrack"></div>
-        <button class="galleryControl next" type="button" id="galleryNext" aria-label="הבא">‹</button>
+        <div class="galleryViewport">
+          <div class="galleryTrack" id="galleryTrack"></div>
+        </div>
+        <div class="galleryActions">
+          <button class="galleryControl prev" type="button" id="galleryPrev" aria-label="הקודם">⟶ הקודם</button>
+          <span class="galleryPageLabel" id="galleryPageLabel">1 / 1</span>
+          <button class="galleryControl next" type="button" id="galleryNext" aria-label="הבא">הבא ⟵</button>
+        </div>
       </div>
     </section>
 
-    <section class="reveal">
-      <div class="miniShowcase" aria-label="תמונות מתחלפות">
-        <div class="miniShowcaseTrack" id="miniShowcaseTrack"></div>
-      </div>
-    </section>
 
     <section id="about" class="reveal">
       <div class="sectionHead">
@@ -1886,19 +1870,12 @@
       {src:'הרב3.jpg',alt:'הרב 3'}
     ];
 
-    const miniShowcaseItems = [
-      {src:'גלריה/IMG-20240301-WA0041-300x225.webp',alt:'תמונת אווירה 1'},
-      {src:'גלריה/IMG-20240301-WA0050-225x300.webp',alt:'תמונת אווירה 2'},
-      {src:'גלריה/IMG-20240301-WA0077-225x300.webp',alt:'תמונת אווירה 3'},
-      {src:'גלריה/IMG-20240301-WA0078-225x300.webp',alt:'תמונת אווירה 4'}
-    ];
 
     const DELIVERY_FEE = 30;
 
     const productsGrid = document.getElementById('productsGrid');
     const galleryTrack = document.getElementById('galleryTrack');
     const customersGrid = document.getElementById('customersGrid');
-    const miniShowcaseTrack = document.getElementById('miniShowcaseTrack');
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
     const cartCount = document.getElementById('cartCount');
@@ -1916,10 +1893,8 @@
 
     const cart = new Map();
     let lightboxIndex = 0;
-    let galleryStartIndex = 4;
-    let galleryAutoSlide;
-    let miniShowcaseStartIndex = 1;
-    let miniShowcaseAutoSlide;
+    let galleryPageIndex = 0;
+    const GALLERY_PAGE_SIZE = 4;
 
 
     function renderProducts(){
@@ -1962,66 +1937,45 @@
       });
     }
 
-    function getSlideStep(track){
-      const first = track.firstElementChild;
-      if(!first) return 0;
-      const styles = getComputedStyle(track);
-      const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
-      return first.getBoundingClientRect().width + gap;
+    function getGalleryPages(){
+      const pages = [];
+      for(let i = 0; i < galleryItems.length; i += GALLERY_PAGE_SIZE){
+        pages.push(galleryItems.slice(i,i + GALLERY_PAGE_SIZE));
+      }
+      return pages;
+    }
+
+    function updateGalleryLabel(){
+      const label = document.getElementById('galleryPageLabel');
+      const totalPages = getGalleryPages().length;
+      label.textContent = `${galleryPageIndex + 1} / ${totalPages}`;
     }
 
     function renderGallery(){
-      const extendedItems = [
-        ...galleryItems.slice(-4),
-        ...galleryItems,
-        ...galleryItems.slice(0,4)
-      ];
+      const pages = getGalleryPages();
 
-      galleryTrack.innerHTML = extendedItems.map((item,index)=>{
-        const originalIndex = (index - 4 + galleryItems.length) % galleryItems.length;
-        return `
-          <article class="galleryItem" data-gallery-index="${originalIndex}">
-            <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
-          </article>
-        `;
-      }).join('');
+      galleryTrack.innerHTML = pages.map((page,pageIndex)=>`
+        <div class="gallerySlide" data-page-index="${pageIndex}">
+          ${page.map(item=>`
+            <article class="galleryItem" data-gallery-index="${galleryItems.indexOf(item)}">
+              <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
+            </article>
+          `).join('')}
+        </div>
+      `).join('');
 
       galleryTrack.querySelectorAll('.galleryItem').forEach(el=>{
         el.addEventListener('click',()=>openLightbox(Number(el.dataset.galleryIndex)));
       });
 
-      const step = getSlideStep(galleryTrack);
-      galleryTrack.style.transition = 'none';
-      galleryTrack.style.transform = `translateX(${-galleryStartIndex * step}px)`;
-      requestAnimationFrame(()=>{
-        galleryTrack.style.transition = 'transform .85s cubic-bezier(.25,.8,.25,1)';
-      });
+      moveGallery(0);
     }
 
     function moveGallery(step = 1){
-      const slideStep = getSlideStep(galleryTrack);
-      if(!slideStep) return;
-      galleryStartIndex += step;
-      galleryTrack.style.transform = `translateX(${-galleryStartIndex * slideStep}px)`;
-
-      galleryTrack.addEventListener('transitionend',function onEnd(){
-        galleryTrack.removeEventListener('transitionend',onEnd);
-
-        if(galleryStartIndex >= galleryItems.length + 4){
-          galleryStartIndex = 4;
-        }else if(galleryStartIndex < 4){
-          galleryStartIndex = galleryItems.length + 3;
-        }else{
-          return;
-        }
-
-        const resetStep = getSlideStep(galleryTrack);
-        galleryTrack.style.transition = 'none';
-        galleryTrack.style.transform = `translateX(${-galleryStartIndex * resetStep}px)`;
-        requestAnimationFrame(()=>{
-          galleryTrack.style.transition = 'transform .85s cubic-bezier(.25,.8,.25,1)';
-        });
-      },{once:true});
+      const pages = getGalleryPages();
+      galleryPageIndex = (galleryPageIndex + step + pages.length) % pages.length;
+      galleryTrack.style.transform = `translateX(${-galleryPageIndex * 100}%)`;
+      updateGalleryLabel();
     }
 
     function setupGallery(){
@@ -2030,75 +1984,7 @@
 
       prevBtn.addEventListener('click',()=>moveGallery(-1));
       nextBtn.addEventListener('click',()=>moveGallery(1));
-
-      function startGalleryAutoSlide(){
-        if(galleryAutoSlide) clearInterval(galleryAutoSlide);
-        galleryAutoSlide = setInterval(()=>moveGallery(1),4200);
-      }
-
-      startGalleryAutoSlide();
-
-      galleryTrack.addEventListener('mouseenter',()=>{
-        if(galleryAutoSlide) clearInterval(galleryAutoSlide);
-      });
-
-      galleryTrack.addEventListener('mouseleave',()=>startGalleryAutoSlide());
-      window.addEventListener('resize',renderGallery);
-    }
-
-    function renderMiniShowcase(){
-      const extendedItems = [
-        miniShowcaseItems[miniShowcaseItems.length - 1],
-        ...miniShowcaseItems,
-        miniShowcaseItems[0]
-      ];
-
-      miniShowcaseTrack.innerHTML = extendedItems.map(item=>`
-        <article class="miniShowcaseItem">
-          <img src="${item.src}" alt="${item.alt}" loading="eager" decoding="async">
-        </article>
-      `).join('');
-
-      const step = getSlideStep(miniShowcaseTrack);
-      miniShowcaseTrack.style.transition = 'none';
-      miniShowcaseTrack.style.transform = `translateX(${-miniShowcaseStartIndex * step}px)`;
-      requestAnimationFrame(()=>{
-        miniShowcaseTrack.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
-      });
-    }
-
-    function moveMiniShowcase(step = 1){
-      const slideStep = getSlideStep(miniShowcaseTrack);
-      if(!slideStep) return;
-
-      miniShowcaseStartIndex += step;
-      miniShowcaseTrack.style.transform = `translateX(${-miniShowcaseStartIndex * slideStep}px)`;
-
-      miniShowcaseTrack.addEventListener('transitionend',function onEnd(){
-        miniShowcaseTrack.removeEventListener('transitionend',onEnd);
-
-        if(miniShowcaseStartIndex >= miniShowcaseItems.length + 1){
-          miniShowcaseStartIndex = 1;
-        }else if(miniShowcaseStartIndex <= 0){
-          miniShowcaseStartIndex = miniShowcaseItems.length;
-        }else{
-          return;
-        }
-
-        const resetStep = getSlideStep(miniShowcaseTrack);
-        miniShowcaseTrack.style.transition = 'none';
-        miniShowcaseTrack.style.transform = `translateX(${-miniShowcaseStartIndex * resetStep}px)`;
-        requestAnimationFrame(()=>{
-          miniShowcaseTrack.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
-        });
-      },{once:true});
-    }
-
-    function setupMiniShowcase(){
-      renderMiniShowcase();
-      if(miniShowcaseAutoSlide) clearInterval(miniShowcaseAutoSlide);
-      miniShowcaseAutoSlide = setInterval(()=>moveMiniShowcase(1),3000);
-      window.addEventListener('resize',renderMiniShowcase);
+      window.addEventListener('resize',()=>moveGallery(0));
     }
 
     function openLightbox(index){
@@ -2351,13 +2237,11 @@
     });
 
     preloadImages(galleryItems);
-    preloadImages(miniShowcaseItems);
 
     renderProducts();
     renderCustomers();
     renderGallery();
     setupGallery();
-    setupMiniShowcase();
     renderCart();
     startHeroSlideshow();
     setupTerms();
