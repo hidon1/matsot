@@ -68,7 +68,7 @@
 
     a{text-decoration:none;color:inherit}
     img{max-width:100%}
-    .wrap{max-width:1240px;margin:0 auto;padding:0 clamp(14px,3vw,24px)}
+    .wrap{max-width:1680px;margin:0 auto;padding:0 clamp(16px,2.2vw,34px)}
 
     @keyframes pulse{
       0%{transform:scale(1)}
@@ -405,7 +405,7 @@
 
     .certBack{display:none;}
 
-    section{padding:28px 0}
+    section{padding:32px 0}
 
     .sectionHead{
       text-align:center;
@@ -615,7 +615,7 @@
 
     .galleryWrap{
       position:relative;
-      padding:0 28px;
+      padding:0 46px;
       overflow:hidden;
       border-radius:22px;
     }
@@ -628,7 +628,7 @@
     }
 
     .galleryItem{
-      flex:0 0 calc((100% - 42px) / 4);
+      flex:0 0 calc((100% - 24px) / 3);
       display:flex;
       flex-direction:column;
       position:relative;
@@ -643,7 +643,7 @@
     .galleryItem img{
       display:block;
       width:100%;
-      aspect-ratio:1/1;
+      aspect-ratio:4/3;
       object-fit:cover;
       transition:transform .9s ease, filter .9s ease;
     }
@@ -657,13 +657,13 @@
       position:absolute;
       top:50%;
       transform:translateY(-50%);
-      width:28px;
-      height:28px;
+      width:42px;
+      height:42px;
       border:none;
       border-radius:999px;
       background:rgba(255,255,255,.92);
       box-shadow:0 8px 16px rgba(0,0,0,.18);
-      font-size:1rem;
+      font-size:1.35rem;
       cursor:pointer;
       z-index:4;
       display:grid;
@@ -671,8 +671,8 @@
       padding:0;
     }
 
-    .galleryControl.prev{right:2px}
-    .galleryControl.next{left:2px}
+    .galleryControl.prev{right:6px}
+    .galleryControl.next{left:6px}
 
     .miniShowcase{
       overflow:hidden;
@@ -681,7 +681,7 @@
       box-shadow:none;
       background:transparent;
       padding:0;
-      max-width:760px;
+      max-width:none;
       margin:0 auto;
     }
 
@@ -707,7 +707,7 @@
     .miniShowcaseItem img{
       display:block;
       width:100%;
-      max-height:420px;
+      max-height:560px;
       object-fit:cover;
     }
 
@@ -1333,9 +1333,9 @@
     @media (max-width:640px){
       .productsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
       .sectionHead h2{font-size:1.55rem}
-      .galleryWrap{padding:0 22px}
+      .galleryWrap{padding:0 28px}
       .galleryItem{flex-basis:calc((100% - 14px) / 2)}
-      .galleryControl{width:24px;height:24px;font-size:.84rem;display:grid}
+      .galleryControl{width:34px;height:34px;font-size:1rem;display:grid}
       .lightboxNav{
         width:42px;
         height:42px;
