@@ -957,32 +957,35 @@
     }
 
     .aboutFeature{
-      --feature-swap-height:128px;
+      --feature-swap-height:270px;
       position:relative;
+      perspective:1200px;
       border-radius:22px;
-      overflow:hidden;
       min-height:var(--feature-swap-height);
     }
 
     .aboutFeatureInner{
       position:relative;
       width:100%;
-      height:calc(var(--feature-swap-height) * 2);
-      transition:transform .72s cubic-bezier(.22,.62,.31,1);
+      min-height:var(--feature-swap-height);
+      transform-style:preserve-3d;
+      transition:transform .82s cubic-bezier(.22,.62,.31,1);
     }
 
     .aboutFeature:hover .aboutFeatureInner{
-      transform:translateY(calc(var(--feature-swap-height) * -1));
+      transform:rotateY(180deg);
     }
 
     .aboutFeatureFace{
-      position:relative;
-      min-height:var(--feature-swap-height);
+      position:absolute;
+      inset:0;
+      min-height:100%;
       background:linear-gradient(180deg,#fff8ee,#f4e4c7);
       border:1px solid rgba(160,116,49,.18);
       border-radius:22px;
-      padding:14px 16px;
+      padding:20px 28px 24px;
       box-shadow:0 14px 28px rgba(73,48,17,.08);
+      backface-visibility:hidden;
     }
 
     .aboutFeature .aboutFeatureFace:first-child{
@@ -995,7 +998,7 @@
     }
 
     .aboutFeature .aboutFeatureFace:first-child p{
-      display:none;
+      display:block;
     }
 
     .aboutFeatureFace::before{
@@ -1014,27 +1017,26 @@
       justify-content:center;
       text-align:center;
       color:#4b3319;
-      line-height:1.55;
+      line-height:1.8;
       font-weight:700;
-      margin-top:0;
       background:linear-gradient(180deg,#f9edd8,#efd7ab);
-      font-size:.96rem;
-      padding:14px;
+      font-size:1.1rem;
+      transform:rotateY(180deg);
     }
 
     .aboutFeature h3{
       margin:0;
       color:#6b451a;
-      font-size:1.24rem;
+      font-size:2.05rem;
       font-weight:900;
     }
 
     .aboutFeature p{
       margin:0;
       color:#4d3821;
-      line-height:1.8;
+      line-height:1.65;
       font-weight:700;
-      font-size:1.03rem;
+      font-size:1.9rem;
     }
 
     .aboutRibbon{
@@ -1558,7 +1560,7 @@
       .heroFrame{height:340px}
       .productMedia{height:320px}
       .aboutFeatures{grid-template-columns:1fr}
-      .aboutFeature{--feature-swap-height:118px}
+      .aboutFeature{--feature-swap-height:230px}
       .heroMedia{min-height:220px}
       .heroFrame{height:250px;max-width:260px}
       .productCard{border-radius:18px}
