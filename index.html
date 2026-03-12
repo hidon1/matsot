@@ -2880,7 +2880,7 @@
       });
     },{threshold:.12});
 
-    const GOOGLE_SCRIPT_URL = '';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyM5RoSAfS8meabiANw0Ao4bMtWHd1QfYw8onQcKzmT1GI9K6rGXwzvgtBCMOABJ8koIg/exec';
     const contactForm = document.getElementById('contactForm');
     const contactNotice = document.createElement('div');
     contactNotice.className = 'contactNotice';
@@ -2896,21 +2896,21 @@
       const formData = Object.fromEntries(new FormData(e.target).entries());
 
       try{
-        if(!GOOGLE_SCRIPT_URL){
-          contactNotice.textContent = 'כדי שטופס יצירת הקשר ישלח בפועל, צריך להזין ב־GOOGLE_SCRIPT_URL כתובת של Google Apps Script.';
-          contactNotice.classList.add('show');
-          return;
-        }
-
         await fetch(GOOGLE_SCRIPT_URL,{
           method:'POST',
           mode:'no-cors',
+          headers:{
+            'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'
+          },
           body:new URLSearchParams(formData)
         });
 
         contactNotice.textContent = 'ההודעה נשלחה בהצלחה. נחזור אליכם בהקדם.';
         contactNotice.classList.add('show');
         e.target.reset();
+      } catch {
+        contactNotice.textContent = 'אירעה שגיאה בשליחת ההודעה. נסו שוב בעוד כמה דקות.';
+        contactNotice.classList.add('show');
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
