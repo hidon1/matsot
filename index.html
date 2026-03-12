@@ -832,6 +832,33 @@
       filter:saturate(1.08);
     }
 
+    .youtubeRecommendation{
+      margin-top:22px;
+      border-radius:20px;
+      padding:14px;
+      background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,247,233,.94));
+      border:1px solid rgba(126,89,40,.2);
+      box-shadow:0 16px 30px rgba(56,37,14,.12);
+      max-width:760px;
+      margin-inline:auto;
+    }
+
+    .youtubeRecommendation iframe{
+      width:100%;
+      border:0;
+      border-radius:14px;
+      display:block;
+      aspect-ratio:16/9;
+      background:#000;
+    }
+
+    .youtubeRecommendationCaption{
+      margin:10px 4px 0;
+      text-align:center;
+      font-weight:700;
+      color:#4e381e;
+    }
+
     .lightbox{
       position:fixed;
       inset:0;
@@ -1756,6 +1783,17 @@
         <div class="galleryActions">
           <button class="galleryControl" type="button" id="videoMore">הצג עוד</button>
           <span class="galleryPageLabel" id="videoPageLabel">0 / 0</span>
+        </div>
+
+        <div class="youtubeRecommendation reveal">
+          <iframe
+            src="https://www.youtube.com/embed/Ux0lPdOIeWw"
+            title="המלצת הרב הגאון יגאל כהן שליט\"א"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+          <p class="youtubeRecommendationCaption">המלצת הרב הגאון יגאל כהן שליט"א.</p>
         </div>
       </div>
     </section>
