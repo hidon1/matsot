@@ -39,45 +39,6 @@
       position:relative;
     }
 
-    .backgroundCarousel{
-      position:fixed;
-      inset:0;
-      overflow:hidden;
-      pointer-events:none;
-      z-index:-3;
-    }
-
-    .backgroundSlide{
-      position:absolute;
-      inset:0;
-      background-position:center;
-      background-size:cover;
-      background-repeat:no-repeat;
-      transform:translateX(115%);
-      opacity:0;
-      filter:saturate(1.08);
-      will-change:transform,opacity;
-    }
-
-    .backgroundSlide.active{
-      transform:translateX(0);
-      opacity:.28;
-    }
-
-    .backgroundSlide.transitioning{
-      transition:transform .95s cubic-bezier(.22,.75,.18,1),opacity .95s ease;
-    }
-
-    .backgroundSlide.exit-left{
-      transform:translateX(-115%);
-      opacity:0;
-    }
-
-    .backgroundSlide.enter-right{
-      transform:translateX(0);
-      opacity:.28;
-    }
-
     body.modal-open{
       overflow:hidden;
       touch-action:none;
@@ -898,6 +859,59 @@
       color:#4e381e;
     }
 
+    .rabbisBannerSection{
+      max-width:1120px;
+      margin:26px auto 0;
+      padding:0 4px;
+    }
+
+    .rabbisBannerWrap{
+      position:relative;
+      border-radius:24px;
+      border:1px solid rgba(126,89,40,.24);
+      box-shadow:0 18px 36px rgba(56,37,14,.16);
+      overflow:hidden;
+      min-height:clamp(220px,34vw,330px);
+      background:#f6ebd2;
+    }
+
+    .rabbisBannerSlide{
+      position:absolute;
+      inset:0;
+      background-position:center;
+      background-size:cover;
+      background-repeat:no-repeat;
+      transform:translateX(115%);
+      opacity:0;
+      will-change:transform,opacity;
+    }
+
+    .rabbisBannerSlide.active{
+      transform:translateX(0);
+      opacity:1;
+    }
+
+    .rabbisBannerSlide.transitioning{
+      transition:transform .95s cubic-bezier(.22,.75,.18,1),opacity .95s ease;
+    }
+
+    .rabbisBannerSlide.exit-left{
+      transform:translateX(-115%);
+      opacity:0;
+    }
+
+    .rabbisBannerSlide.enter-right{
+      transform:translateX(0);
+      opacity:1;
+    }
+
+    .rabbisBannerCaption{
+      margin:10px 6px 0;
+      text-align:center;
+      font-weight:700;
+      color:#4e381e;
+    }
+
     .lightbox{
       position:fixed;
       inset:0;
@@ -1616,6 +1630,7 @@
       .galleryTrack{grid-template-columns:repeat(2,minmax(0,1fr))}
       .galleryControl{min-width:100px;height:40px;font-size:.95rem}
       .videoTrack{grid-template-columns:1fr}
+      .rabbisBannerWrap{min-height:210px}
       .lightboxNav{
         width:42px;
         height:42px;
@@ -1656,11 +1671,6 @@
   </style>
 </head>
 <body class="page-enter">
-  <div class="backgroundCarousel" aria-hidden="true">
-    <div class="backgroundSlide active" data-bg-slide="0"></div>
-    <div class="backgroundSlide" data-bg-slide="1"></div>
-  </div>
-
   <header class="topbar">
     <div class="wrap">
       <div class="topbarInner">
@@ -1838,6 +1848,14 @@
           ></iframe>
           <p class="youtubeRecommendationCaption">המלצת הרב הגאון יגאל כהן שליט"א.</p>
         </div>
+      </div>
+
+      <div class="rabbisBannerSection reveal" aria-label="באנר מתחלף של תמונות">
+        <div class="rabbisBannerWrap" aria-hidden="true">
+          <div class="rabbisBannerSlide active" data-rabbis-slide="0"></div>
+          <div class="rabbisBannerSlide" data-rabbis-slide="1"></div>
+        </div>
+        <p class="rabbisBannerCaption">רגעים נבחרים מהאפייה ומההשגחה.</p>
       </div>
     </section>
 
@@ -2736,16 +2754,16 @@
       document.querySelectorAll('.reveal, .revealLong').forEach(el=>observer.observe(el));
     }
 
-    function setupBackgroundCarousel(){
-      const slides = [...document.querySelectorAll('[data-bg-slide]')];
+    function setupRabbisBannerCarousel(){
+      const slides = [...document.querySelectorAll('[data-rabbis-slide]')];
       if(slides.length < 2){
         return;
       }
 
       const images = [
-        'הרב3שקוף.png',
-        'לאפה.webp',
-        'הרב2שקוף.png'
+        'הרב1.jpg',
+        'הרב2.jpg',
+        'הרב3.jpg'
       ];
 
       let imageIndex = 0;
@@ -2920,7 +2938,7 @@
     setupInitialIntro();
     observeReveals();
     setupSmoothScroll();
-    setupBackgroundCarousel();
+    setupRabbisBannerCarousel();
   </script>
 
   <script src="https://cdn.enable.co.il/licenses/enable-L54377l6sbnmaph3-0326-80470/init.js"></script>
