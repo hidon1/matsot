@@ -1984,6 +1984,7 @@
       <div>
         <h3 style="margin:0 0 8px">מידע חשוב ושירות</h3>
         <p style="margin:0">© כל הזכויות שמורות למצות אבהתנא.</p>
+        <p style="margin:8px 0 0">אתר נבנה על ידי י.ז.מ. אתרים, לפרטים <a href="https://hidon1.github.io/a/" target="_blank" rel="noopener noreferrer">לחץ כאן</a>.</p>
       </div>
 
       <div class="footerLinks">
@@ -2292,6 +2293,7 @@
       {src:'גלריה/בדיקת המצות (4).jpeg',alt:'בדיקת המצות (4)',title:'בדיקת המצות (4)',category:'נוספים'},
       {src:'גלריה/במשקל.jpeg',alt:'במשקל',title:'במשקל',category:'נוספים'},
       {src:'גלריה/הרב אבוטבול עם המצות.jpeg',alt:'הרב אבוטבול עם המצות',title:'הרב אבוטבול עם המצות',category:'נוספים'},
+      {src:'גלריה/הרב זמיר.jpeg',alt:'הרב זמיר',title:'הרב הגאון זמיר כהן שליטא',category:'נוספים'},
       {src:'גלריה/סיור במאפיה (1).jpeg',alt:'סיור במאפיה (1)',title:'סיור במאפיה (1)',category:'נוספים'},
       {src:'גלריה/סיור במאפיה (2).jpeg',alt:'סיור במאפיה (2)',title:'סיור במאפיה (2)',category:'נוספים'},
       {src:'גלריה/סיור במאפיה (3).jpeg',alt:'סיור במאפיה (3)',title:'סיור במאפיה (3)',category:'נוספים'},
@@ -2401,6 +2403,10 @@
       return 12;
     }
 
+    function cleanGalleryTitle(title){
+      return title.replace(/\s*\(\d+\)\s*$/,'').trim();
+    }
+
     function renderGallery(){
       const pageSize = getGalleryPageSize();
       if(galleryVisibleCount === 0){
@@ -2420,7 +2426,7 @@
         return `${categoryTitle}
         <article class="galleryItem reveal" data-gallery-index="${index}">
           <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
-          <p class="galleryMeta">${item.title}</p>
+          <p class="galleryMeta">${cleanGalleryTitle(item.title)}</p>
         </article>`;
       }).join('');
 
@@ -2516,7 +2522,7 @@
 
     function renderLightbox(){
       const item = galleryItems[lightboxIndex];
-      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}"><p class="lightboxMeta">${item.title}</p>`;
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}"><p class="lightboxMeta">${cleanGalleryTitle(item.title)}</p>`;
     }
 
     function moveLightbox(step){
