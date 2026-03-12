@@ -75,6 +75,33 @@
     img{max-width:100%}
     .wrap{max-width:1320px;margin:0 auto;padding:0 clamp(18px,3.2vw,54px)}
 
+    .whatsappFloat{
+      position:fixed;
+      left:clamp(14px,2vw,28px);
+      bottom:clamp(14px,2vw,28px);
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:#25d366;
+      color:#fff;
+      display:grid;
+      place-items:center;
+      box-shadow:0 16px 28px rgba(0,0,0,.25);
+      z-index:900;
+      transition:transform .2s ease,filter .2s ease;
+    }
+
+    .whatsappFloat:hover{
+      transform:translateY(-3px) scale(1.04);
+      filter:brightness(1.06);
+    }
+
+    .whatsappFloat svg{
+      width:34px;
+      height:34px;
+      display:block;
+    }
+
     @keyframes pulse{
       0%{transform:scale(1)}
       50%{transform:scale(1.04)}
@@ -1667,10 +1694,33 @@
         opacity:1;
         transform:none;
       }
+
+      .whatsappFloat{
+        width:56px;
+        height:56px;
+      }
+
+      .whatsappFloat svg{
+        width:30px;
+        height:30px;
+      }
     }
   </style>
 </head>
 <body class="page-enter">
+  <a
+    class="whatsappFloat"
+    href="https://wa.me/972500000000"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="פתיחת וואטסאפ לשיחה"
+    title="שלחו לנו הודעה בוואטסאפ"
+  >
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <path fill="currentColor" d="M16.05 3C8.88 3 3.06 8.82 3.06 15.99c0 2.53.74 4.99 2.13 7.09L3 29l6.13-2.13a12.9 12.9 0 0 0 6.92 2.01h.01c7.17 0 12.99-5.82 12.99-12.99C29.05 8.82 23.23 3 16.05 3zm0 23.75h-.01a10.7 10.7 0 0 1-5.44-1.49l-.39-.23-3.64 1.27 1.2-3.75-.25-.39a10.74 10.74 0 0 1-1.65-5.74c0-5.93 4.82-10.75 10.75-10.75S26.37 10.5 26.37 16.43c0 5.93-4.82 10.75-10.74 10.75zm5.9-8.05c-.32-.16-1.9-.94-2.19-1.05-.29-.11-.5-.16-.71.16-.21.32-.82 1.05-1.01 1.27-.18.21-.37.24-.69.08-.32-.16-1.34-.49-2.55-1.56-.94-.84-1.58-1.87-1.76-2.19-.18-.32-.02-.49.14-.65.14-.14.32-.37.47-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.71-1.72-.98-2.35-.25-.61-.5-.53-.71-.54h-.61c-.21 0-.56.08-.84.4-.29.32-1.11 1.08-1.11 2.63s1.14 3.04 1.29 3.24c.16.21 2.23 3.4 5.41 4.77.76.33 1.35.53 1.82.68.77.24 1.47.2 2.03.12.62-.09 1.9-.78 2.17-1.53.26-.75.26-1.4.18-1.53-.08-.13-.29-.21-.61-.37z"/>
+    </svg>
+  </a>
+
   <header class="topbar">
     <div class="wrap">
       <div class="topbarInner">
