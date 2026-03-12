@@ -39,6 +39,45 @@
       position:relative;
     }
 
+    .backgroundCarousel{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:-3;
+    }
+
+    .backgroundSlide{
+      position:absolute;
+      inset:0;
+      background-position:center;
+      background-size:cover;
+      background-repeat:no-repeat;
+      transform:translateX(115%);
+      opacity:0;
+      filter:saturate(1.08);
+      will-change:transform,opacity;
+    }
+
+    .backgroundSlide.active{
+      transform:translateX(0);
+      opacity:.28;
+    }
+
+    .backgroundSlide.transitioning{
+      transition:transform .95s cubic-bezier(.22,.75,.18,1),opacity .95s ease;
+    }
+
+    .backgroundSlide.exit-left{
+      transform:translateX(-115%);
+      opacity:0;
+    }
+
+    .backgroundSlide.enter-right{
+      transform:translateX(0);
+      opacity:.28;
+    }
+
     body.modal-open{
       overflow:hidden;
       touch-action:none;
@@ -1617,6 +1656,10 @@
   </style>
 </head>
 <body class="page-enter">
+  <div class="backgroundCarousel" aria-hidden="true">
+    <div class="backgroundSlide active" data-bg-slide="0"></div>
+    <div class="backgroundSlide" data-bg-slide="1"></div>
+  </div>
 
   <header class="topbar">
     <div class="wrap">
@@ -2693,6 +2736,51 @@
       document.querySelectorAll('.reveal, .revealLong').forEach(el=>observer.observe(el));
     }
 
+    function setupBackgroundCarousel(){
+      const slides = [...document.querySelectorAll('[data-bg-slide]')];
+      if(slides.length < 2){
+        return;
+      }
+
+      const images = [
+        'הרב3שקוף.png',
+        'לאפה.webp',
+        'הרב2שקוף.png'
+      ];
+
+      let imageIndex = 0;
+      let activeSlideIndex = 0;
+
+      slides[0].style.backgroundImage = `url("${images[0]}")`;
+
+      setInterval(()=>{
+        const currentSlide = slides[activeSlideIndex];
+        const nextSlideIndex = (activeSlideIndex + 1) % slides.length;
+        const nextSlide = slides[nextSlideIndex];
+
+        imageIndex = (imageIndex + 1) % images.length;
+        nextSlide.style.backgroundImage = `url("${images[imageIndex]}")`;
+
+        nextSlide.classList.remove('active','exit-left','enter-right');
+        currentSlide.classList.remove('active','exit-left','enter-right');
+
+        nextSlide.classList.add('transitioning');
+        currentSlide.classList.add('transitioning');
+
+        void nextSlide.offsetWidth;
+
+        nextSlide.classList.add('enter-right');
+        currentSlide.classList.add('exit-left');
+
+        setTimeout(()=>{
+          currentSlide.classList.remove('active','exit-left','transitioning');
+          nextSlide.classList.remove('enter-right','transitioning');
+          nextSlide.classList.add('active');
+          activeSlideIndex = nextSlideIndex;
+        },980);
+      },4000);
+    }
+
     const observer = new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
@@ -2832,6 +2920,7 @@
     setupInitialIntro();
     observeReveals();
     setupSmoothScroll();
+    setupBackgroundCarousel();
   </script>
 
   <script src="https://cdn.enable.co.il/licenses/enable-L54377l6sbnmaph3-0326-80470/init.js"></script>
