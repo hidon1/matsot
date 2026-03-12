@@ -870,8 +870,8 @@
       border-radius:0;
       border:none;
       box-shadow:none;
-      overflow:visible;
-      min-height:clamp(220px,34vw,330px);
+      overflow:hidden;
+      height:clamp(220px,34vw,330px);
       background:transparent;
     }
 
@@ -1630,7 +1630,7 @@
       .galleryTrack{grid-template-columns:repeat(2,minmax(0,1fr))}
       .galleryControl{min-width:100px;height:40px;font-size:.95rem}
       .videoTrack{grid-template-columns:1fr}
-      .rabbisBannerWrap{min-height:210px}
+      .rabbisBannerWrap{height:210px}
       .lightboxNav{
         width:42px;
         height:42px;
@@ -2762,7 +2762,6 @@
 
       const images = [
         'הרב1שקוף.png',
-        'הרב2שקוף.png',
         'הרב3שקוף.png',
         'לאפה.webp'
       ];
