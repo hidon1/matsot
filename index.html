@@ -2382,26 +2382,6 @@
     ];
 
 
-    const category2 = 'תהליך אפיית מצות מצווה אבהתנא';
-    const category3 = 'גדולי ישראל בהכנת מצות המצווה';
-    const galleryCategoryOverrides = {
-      36: category2,
-      37: category2,
-      38: category3,
-      39: category2,
-      40: category2,
-      53: category2,
-      54: category3
-    };
-
-    galleryItems.forEach((item,index)=>{
-      const displayNumber = index + 1;
-      const forcedCategory = galleryCategoryOverrides[displayNumber];
-      if(forcedCategory){
-        item.category = forcedCategory;
-      }
-    });
-
     const customerLogos = [
       {src:'לקוחות/אושר עד.webp',alt:'אושר עד'},
       {src:'לקוחות/אשפר-300x300.webp',alt:'אשפר'},
@@ -2416,7 +2396,7 @@
     ];
 
 
-    const DELIVERY_FEE = 30;
+    const DELIVERY_FEE = 40;
 
     const productsGrid = document.getElementById('productsGrid');
     const galleryTrack = document.getElementById('galleryTrack');
