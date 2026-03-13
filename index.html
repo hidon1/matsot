@@ -41,7 +41,6 @@
 
     body.modal-open{
       overflow:hidden;
-      touch-action:none;
     }
 
     body::before{
@@ -2484,10 +2483,6 @@
       return window.innerWidth <= 640 ? 4 : 8;
     }
 
-    function getGalleryLoadSize(){
-      return 12;
-    }
-
     function renderGallery(){
       const pageSize = getGalleryPageSize();
       if(galleryVisibleCount === 0){
@@ -2528,7 +2523,7 @@
     }
 
     function showMoreGallery(){
-      galleryVisibleCount += getGalleryLoadSize();
+      galleryVisibleCount = galleryItems.length;
       renderGallery();
     }
 
@@ -2579,7 +2574,7 @@
     }
 
     function showMoreVideos(){
-      videoVisibleCount += 2;
+      videoVisibleCount = videoItems.length;
       renderVideos();
     }
 
