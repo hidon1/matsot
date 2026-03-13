@@ -151,6 +151,24 @@
       }
     }
 
+    @keyframes topbarDropIn{
+      0%{
+        opacity:0;
+        transform:translateY(-88px) scale(.97);
+        filter:blur(5px);
+      }
+      70%{
+        opacity:1;
+        transform:translateY(12px) scale(1.01);
+        filter:blur(0);
+      }
+      100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+      }
+    }
+
     .intro-animate{
       opacity:0;
       transform:translateY(28px) scale(.985);
@@ -159,6 +177,17 @@
 
     .intro-animate.is-intro-visible{
       animation:pageFloatIn 1s ease forwards;
+    }
+
+    .intro-drop{
+      opacity:0;
+      transform:translateY(-88px) scale(.97);
+      filter:blur(5px);
+      transform-origin:top center;
+    }
+
+    .intro-drop.is-intro-visible{
+      animation:topbarDropIn 1.35s cubic-bezier(.21,.95,.29,1) forwards;
     }
 
     .reveal{
@@ -2562,19 +2591,26 @@
     }
 
     function setupInitialIntro(){
-      const introElements = document.querySelectorAll('.topbar, .heroBlinkBadge, main, .siteFooter');
+      const dropElements = document.querySelectorAll('.topbar, .topbar .nav a, .topbar .cartTrigger, .topbar .mobileMenuTrigger');
+      const introElements = document.querySelectorAll('.heroBlinkBadge, main, .siteFooter');
+
+      dropElements.forEach(el=>el.classList.add('intro-drop'));
       introElements.forEach(el=>el.classList.add('intro-animate'));
 
       requestAnimationFrame(()=>{
+        dropElements.forEach(el=>el.classList.add('is-intro-visible'));
         introElements.forEach(el=>el.classList.add('is-intro-visible'));
       });
 
       setTimeout(()=>{
+        dropElements.forEach(el=>{
+          el.classList.remove('intro-drop','is-intro-visible');
+        });
         introElements.forEach(el=>{
           el.classList.remove('intro-animate','is-intro-visible');
         });
         document.body.classList.remove('page-enter');
-      },1100);
+      },1500);
     }
 
     function showMoreVideos(){
