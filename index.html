@@ -24,6 +24,7 @@
       --dark:#2b1c0f;
       --cream:#f8f1e4;
       --success:#2f6b3b;
+      --page-bg-image:url("ChatGPT Image Mar 11, 2026, 12_00_05 AM.png");
     }
 
     *{box-sizing:border-box}
@@ -34,9 +35,13 @@
       color:var(--ink);
       background:
         linear-gradient(180deg,rgba(245,234,210,.62),rgba(224,201,156,.64)),
-        url("ChatGPT Image Mar 11, 2026, 12_00_05 AM.png") center top / cover fixed no-repeat;
+        var(--page-bg-image) center top / cover fixed no-repeat;
       min-height:100vh;
       position:relative;
+    }
+
+    body.gallery-background{
+      --page-bg-image:url("רקע שדה.png");
     }
 
     body.modal-open{
@@ -2885,6 +2890,25 @@
       },4000);
     }
 
+    function setupGalleryBackgroundSwap(){
+      const gallerySection = document.getElementById('gallery');
+      if(!gallerySection || !('IntersectionObserver' in window)){
+        return;
+      }
+
+      const toggleGalleryBg = isInView=>{
+        document.body.classList.toggle('gallery-background',isInView);
+      };
+
+      const galleryObserver = new IntersectionObserver(entries=>{
+        entries.forEach(entry=>{
+          toggleGalleryBg(entry.isIntersecting);
+        });
+      },{threshold:.35});
+
+      galleryObserver.observe(gallerySection);
+    }
+
     const observer = new IntersectionObserver(entries=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
@@ -3025,6 +3049,7 @@
     observeReveals();
     setupSmoothScroll();
     setupRabbisBannerCarousel();
+    setupGalleryBackgroundSwap();
   </script>
 
   <script src="https://cdn.enable.co.il/licenses/enable-L54377l6sbnmaph3-0326-80470/init.js"></script>
