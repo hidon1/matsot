@@ -2591,7 +2591,7 @@
     }
 
     function setupInitialIntro(){
-      const dropElements = document.querySelectorAll('.topbar, .topbar .nav a, .topbar .cartTrigger, .topbar .mobileMenuTrigger');
+      const dropElements = document.querySelectorAll('.topbar .nav a, .topbar .cartTrigger, .topbar .mobileMenuTrigger');
       const introElements = document.querySelectorAll('.heroBlinkBadge, main, .siteFooter');
 
       dropElements.forEach(el=>el.classList.add('intro-drop'));
@@ -2928,21 +2928,19 @@
 
     function setupGalleryBackgroundSwap(){
       const gallerySection = document.getElementById('gallery');
-      if(!gallerySection || !('IntersectionObserver' in window)){
+      if(!gallerySection){
         return;
       }
 
-      const toggleGalleryBg = isInView=>{
-        document.body.classList.toggle('gallery-background',isInView);
+      const updateGalleryBackground = ()=>{
+        const galleryTop = gallerySection.getBoundingClientRect().top + window.scrollY;
+        const shouldShowGalleryBackground = window.scrollY + (window.innerHeight * .25) >= galleryTop;
+        document.body.classList.toggle('gallery-background',shouldShowGalleryBackground);
       };
 
-      const galleryObserver = new IntersectionObserver(entries=>{
-        entries.forEach(entry=>{
-          toggleGalleryBg(entry.isIntersecting);
-        });
-      },{threshold:.35});
-
-      galleryObserver.observe(gallerySection);
+      updateGalleryBackground();
+      window.addEventListener('scroll',updateGalleryBackground,{passive:true});
+      window.addEventListener('resize',updateGalleryBackground);
     }
 
     const observer = new IntersectionObserver(entries=>{
