@@ -2381,6 +2381,27 @@
       {src:'וידיאו/פיקוח מהשדה.mp4',title:'פיקוח גדולי ישראל מהשדה'}
     ];
 
+
+    const category2 = 'תהליך אפיית מצות מצווה אבהתנא';
+    const category3 = 'גדולי ישראל בהכנת מצות המצווה';
+    const galleryCategoryOverrides = {
+      36: category2,
+      37: category2,
+      38: category3,
+      39: category2,
+      40: category2,
+      53: category2,
+      54: category3
+    };
+
+    galleryItems.forEach((item,index)=>{
+      const displayNumber = index + 1;
+      const forcedCategory = galleryCategoryOverrides[displayNumber];
+      if(forcedCategory){
+        item.category = forcedCategory;
+      }
+    });
+
     const customerLogos = [
       {src:'לקוחות/אושר עד.webp',alt:'אושר עד'},
       {src:'לקוחות/אשפר-300x300.webp',alt:'אשפר'},
@@ -2530,7 +2551,7 @@
             <source src="${item.src}" type="video/mp4">
             הדפדפן לא תומך בהצגת וידאו.
           </video>
-          <p class="galleryMeta">${index + 1}</p>
+          <p class="galleryMeta">${item.title}</p>
         </article>
       `).join('');
 
