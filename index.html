@@ -2472,14 +2472,6 @@
       return 12;
     }
 
-    function cleanGalleryTitle(title){
-      return title.replace(/\s*\(\d+\)\s*$/,'').trim();
-    }
-
-    function buildGalleryLabel(item,categoryIndex){
-      return `${item.category} ${categoryIndex}`;
-    }
-
     function renderGallery(){
       const pageSize = getGalleryPageSize();
       if(galleryVisibleCount === 0){
@@ -2491,19 +2483,17 @@
       const visibleItems = galleryItems.slice(0,visible);
 
       let currentCategory = '';
-      let categoryIndex = 0;
       galleryTrack.innerHTML = visibleItems.map((item,index)=>{
         const isNewCategory = item.category !== currentCategory;
         const categoryTitle = isNewCategory
           ? `<h3 class="galleryCategoryTitle">${item.category}</h3>`
           : '';
-        categoryIndex = isNewCategory ? 1 : categoryIndex + 1;
         currentCategory = item.category;
-        const imageLabel = buildGalleryLabel(item,categoryIndex);
+        const imageNumber = index + 1;
         return `${categoryTitle}
         <article class="galleryItem reveal" data-gallery-index="${index}">
-          <img src="${item.src}" alt="${imageLabel}" loading="lazy" decoding="async">
-          <p class="galleryMeta">${imageLabel}</p>
+          <img src="${item.src}" alt="תמונה ${imageNumber}" loading="lazy" decoding="async">
+          <p class="galleryMeta">${imageNumber}</p>
         </article>`;
       }).join('');
 
@@ -2536,13 +2526,13 @@
       const visibleItems = videoItems.slice(0,visible);
       const videoTrack = document.getElementById('videoTrack');
 
-      videoTrack.innerHTML = visibleItems.map(item=>`
+      videoTrack.innerHTML = visibleItems.map((item,index)=>`
         <article class="videoCard reveal">
           <video controls preload="metadata">
             <source src="${item.src}" type="video/mp4">
             הדפדפן לא תומך בהצגת וידאו.
           </video>
-          <p class="galleryMeta">${item.title}</p>
+          <p class="galleryMeta">${index + 1}</p>
         </article>
       `).join('');
 
