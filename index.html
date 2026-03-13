@@ -78,7 +78,7 @@
     .whatsappFloat{
       position:fixed;
       left:clamp(14px,2vw,28px);
-      bottom:clamp(36px,4vw,56px);
+      bottom:clamp(54px,5.6vw,84px);
       width:62px;
       height:62px;
       border-radius:50%;
@@ -1705,13 +1705,13 @@
       .whatsappFloat{
         left:12px;
         bottom:84px;
-        width:44px;
-        height:44px;
+        width:52px;
+        height:52px;
       }
 
       .whatsappFloat svg{
-        width:22px;
-        height:22px;
+        width:26px;
+        height:26px;
       }
 
       #enable-toolbar-trigger,
@@ -1720,10 +1720,11 @@
       .enable-open-btn,
       .enable-open,
       [data-enable-button]{
-        transform:scale(.82) !important;
+        transform:scale(.74) !important;
         transform-origin:bottom left !important;
         left:10px !important;
-        bottom:10px !important;
+        bottom:8px !important;
+        opacity:.92 !important;
       }
     }
   </style>
@@ -2478,6 +2479,10 @@
       return title.replace(/\s*\(\d+\)\s*$/,'').trim();
     }
 
+    function buildGalleryLabel(item,categoryIndex){
+      return `${item.category} ${categoryIndex}`;
+    }
+
     function renderGallery(){
       const pageSize = getGalleryPageSize();
       if(galleryVisibleCount === 0){
@@ -2489,14 +2494,19 @@
       const visibleItems = galleryItems.slice(0,visible);
 
       let currentCategory = '';
+      let categoryIndex = 0;
       galleryTrack.innerHTML = visibleItems.map((item,index)=>{
-        const categoryTitle = item.category !== currentCategory
+        const isNewCategory = item.category !== currentCategory;
+        const categoryTitle = isNewCategory
           ? `<h3 class="galleryCategoryTitle">${item.category}</h3>`
           : '';
+        categoryIndex = isNewCategory ? 1 : categoryIndex + 1;
         currentCategory = item.category;
+        const imageLabel = buildGalleryLabel(item,categoryIndex);
         return `${categoryTitle}
         <article class="galleryItem reveal" data-gallery-index="${index}">
-          <img src="${item.src}" alt="${item.alt}" loading="lazy" decoding="async">
+          <img src="${item.src}" alt="${imageLabel}" loading="lazy" decoding="async">
+          <p class="galleryMeta">${imageLabel}</p>
         </article>`;
       }).join('');
 
@@ -2592,7 +2602,7 @@
 
     function renderLightbox(){
       const item = galleryItems[lightboxIndex];
-      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}"><p class="lightboxMeta">${cleanGalleryTitle(item.title)}</p>`;
+      lightboxMedia.innerHTML = `<img src="${item.src}" alt="${item.alt}">`;
     }
 
     function moveLightbox(step){
