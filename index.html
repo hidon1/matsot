@@ -2305,7 +2305,7 @@
       }
     ];
 
-    const galleryItems = [
+    const galleryItemsRaw = [
       {src:'גלריה/בשדה (1).jpeg',alt:'בשדה (1)',title:'הגאון הגדול רבי אהרון אבוטבול בקצירת החיטים למצות מצווה (1)',category:'הגאון הגדול רבי אהרון אבוטבול בקצירת החיטים למצות מצווה'},
       {src:'גלריה/בשדה (2).jpeg',alt:'בשדה (2)',title:'בשדה (2)',category:'הגאון הגדול רבי אהרון אבוטבול בקצירת החיטים למצות מצווה'},
       {src:'גלריה/בשדה (3).jpeg',alt:'בשדה (3)',title:'בשדה (3)',category:'הגאון הגדול רבי אהרון אבוטבול בקצירת החיטים למצות מצווה'},
@@ -2367,6 +2367,23 @@
       {src:'גלריה/סיור במאפיה (4).jpeg',alt:'סיור במאפיה (4)',title:'סיור במאפיה (4)',category:'פיקוח גדולי ישראל בעת טחינת החיטים למצות אבהתנא'},
       {src:'גלריה/סיור במאפיה (5).jpeg',alt:'סיור במאפיה (5)',title:'סיור במאפיה (5)',category:'פיקוח גדולי ישראל בעת טחינת החיטים למצות אבהתנא'}
     ];
+
+    function mergeGalleryItemsByCategory(items){
+      const grouped = new Map();
+      const categoryOrder = [];
+
+      items.forEach(item=>{
+        if(!grouped.has(item.category)){
+          grouped.set(item.category,[]);
+          categoryOrder.push(item.category);
+        }
+        grouped.get(item.category).push(item);
+      });
+
+      return categoryOrder.flatMap(category=>grouped.get(category));
+    }
+
+    const galleryItems = mergeGalleryItemsByCategory(galleryItemsRaw);
 
     const videoItems = [
       {src:'וידיאו/בהכנת המצות.mp4',title:'הכנת מצות מצווה'},
