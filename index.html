@@ -78,7 +78,7 @@
     .whatsappFloat{
       position:fixed;
       left:clamp(14px,2vw,28px);
-      bottom:clamp(14px,2vw,28px);
+      bottom:clamp(36px,4vw,56px);
       width:62px;
       height:62px;
       border-radius:50%;
@@ -100,6 +100,13 @@
       width:34px;
       height:34px;
       display:block;
+    }
+
+    .storageNotice{
+      margin-top:10px;
+      color:#c10000;
+      font-weight:700;
+      line-height:1.45;
     }
 
     @keyframes pulse{
@@ -1698,13 +1705,13 @@
       .whatsappFloat{
         left:12px;
         bottom:84px;
-        width:50px;
-        height:50px;
+        width:44px;
+        height:44px;
       }
 
       .whatsappFloat svg{
-        width:26px;
-        height:26px;
+        width:22px;
+        height:22px;
       }
 
       #enable-toolbar-trigger,
@@ -2089,6 +2096,7 @@
               <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום</label>
               <label><input type="radio" name="deliveryType" value="delivery"> משלוח (+30 ₪)</label>
             </div>
+            <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
           </div>
 
           <div class="full deliveryFields" id="deliveryFields" hidden>
