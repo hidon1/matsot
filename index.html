@@ -2554,11 +2554,8 @@
         return;
       }
 
-      const subdistrict = getRecordSubdistrict(selectedRecord) || 'לא ידוע';
       const fee = isCenterRecord(selectedRecord) ? DELIVERY_CENTER_FEE : DELIVERY_OTHER_FEE;
-      const areaLabel = fee === DELIVERY_CENTER_FEE ? 'מרכז' : 'מחוץ למרכז';
-      const cityName = getRecordCityName(selectedRecord);
-      deliveryCityHint.textContent = `${cityName} – נפה ${subdistrict} (${areaLabel}): ${fee}₪`;
+      deliveryCityHint.textContent = `מחיר משלוח סופי: ${fee}₪`;
     }
 
     function hydrateCities(records){
