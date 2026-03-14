@@ -1476,6 +1476,13 @@
 
     .deliveryFields[hidden]{display:none}
 
+    .deliveryCityHint{
+      display:block;
+      margin-top:6px;
+      color:#5f4c37;
+      font-size:.92rem;
+    }
+
     .termsConfirm{
       margin-top:12px;
       padding:10px 12px;
@@ -2141,7 +2148,7 @@
             <label>אופן קבלת ההזמנה</label>
             <div class="radioRow">
               <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3)</label>
-              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40₪)</label>
+              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/65₪, תלוי מרחק)</label>
             </div>
             <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
           </div>
@@ -2149,7 +2156,9 @@
           <div class="full deliveryFields" id="deliveryFields" hidden>
             <div>
               <label for="deliveryCity">עיר למשלוח</label>
-              <input id="deliveryCity" name="deliveryCity">
+              <input id="deliveryCity" name="deliveryCity" list="deliveryCityOptions" autocomplete="off" placeholder="התחילו להקליד שם עיר">
+              <datalist id="deliveryCityOptions"></datalist>
+              <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: 40/65₪ (תלוי מרחק).</small>
             </div>
             <div>
               <label for="deliveryStreet">רחוב למשלוח</label>
@@ -2460,7 +2469,12 @@
     ];
 
 
-    const DELIVERY_FEE = 40;
+    const DELIVERY_CENTER_FEE = 40;
+    const DELIVERY_OTHER_FEE = 65;
+    const CITY_DATA_API_URL = 'https://data.gov.il/api/3/action/datastore_search?resource_id=5c78e9fa-c2e2-4771-93ff-7f400a12f7ba&limit=5000';
+    const CENTER_SUBDISTRICTS = new Set([
+      'נתניה','חדרה','השרון','פתח תקווה','רמלה','רחובות','תל אביב','חולון','רמת גן','רמלה לוד','אשקלון'
+    ]);
 
     const productsGrid = document.getElementById('productsGrid');
     const galleryTrack = document.getElementById('galleryTrack');
@@ -2475,6 +2489,9 @@
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
+    const deliveryCityInput = document.getElementById('deliveryCity');
+    const deliveryCityOptions = document.getElementById('deliveryCityOptions');
+    const deliveryCityHint = document.getElementById('deliveryCityHint');
     const termsApprove = document.getElementById('termsApprove');
     const lightbox = document.getElementById('lightbox');
     const lightboxMedia = document.getElementById('lightboxMedia');
@@ -2484,6 +2501,97 @@
     let lightboxIndex = 0;
     let galleryVisibleCount = 0;
     let videoVisibleCount = 0;
+    let cityRecords = [];
+    let cityLookup = new Map();
+
+
+    function normalizeText(value){
+      return String(value || '').trim().replace(/\s+/g,' ');
+    }
+
+    function getRecordCityName(record){
+      return normalizeText(record['שם_ישוב'] || record['שם_ישוב_לועזי'] || record['שם ישוב']);
+    }
+
+    function getRecordSubdistrict(record){
+      return normalizeText(record['שם_נפה'] || record['שם נפה']);
+    }
+
+    function isCenterRecord(record){
+      const subdistrict = getRecordSubdistrict(record);
+      return subdistrict && CENTER_SUBDISTRICTS.has(subdistrict);
+    }
+
+    function getSelectedCityRecord(){
+      const city = normalizeText(deliveryCityInput.value);
+      if(!city){
+        return null;
+      }
+      return cityLookup.get(city);
+    }
+
+    function getDeliveryFee(){
+      if(!isDeliverySelected()){
+        return 0;
+      }
+      const selectedRecord = getSelectedCityRecord();
+      if(!selectedRecord){
+        return DELIVERY_OTHER_FEE;
+      }
+      return isCenterRecord(selectedRecord) ? DELIVERY_CENTER_FEE : DELIVERY_OTHER_FEE;
+    }
+
+    function updateDeliveryCityHint(){
+      if(!isDeliverySelected()){
+        deliveryCityHint.textContent = `מחיר משלוח: ${DELIVERY_CENTER_FEE}/${DELIVERY_OTHER_FEE}₪ (תלוי מרחק).`;
+        return;
+      }
+
+      const selectedRecord = getSelectedCityRecord();
+      if(!selectedRecord){
+        deliveryCityHint.textContent = `מחיר משלוח: ${DELIVERY_OTHER_FEE}₪ (ברירת מחדל עד בחירת עיר מהרשימה).`;
+        return;
+      }
+
+      const subdistrict = getRecordSubdistrict(selectedRecord) || 'לא ידוע';
+      const fee = isCenterRecord(selectedRecord) ? DELIVERY_CENTER_FEE : DELIVERY_OTHER_FEE;
+      const areaLabel = fee === DELIVERY_CENTER_FEE ? 'מרכז' : 'מחוץ למרכז';
+      const cityName = getRecordCityName(selectedRecord);
+      deliveryCityHint.textContent = `${cityName} – נפה ${subdistrict} (${areaLabel}): ${fee}₪`;
+    }
+
+    function hydrateCities(records){
+      cityRecords = records.filter(record=>getRecordCityName(record));
+      cityLookup = new Map();
+
+      const uniqueCities = [...new Set(cityRecords.map(record=>getRecordCityName(record)))].sort((a,b)=>a.localeCompare(b,'he'));
+      uniqueCities.forEach(city=>{
+        const firstRecord = cityRecords.find(record=>getRecordCityName(record) === city);
+        cityLookup.set(city,firstRecord);
+      });
+
+      deliveryCityOptions.innerHTML = uniqueCities.map(city=>`<option value="${city}"></option>`).join('');
+      updateDeliveryCityHint();
+      updateCheckoutSummary();
+    }
+
+    async function loadCities(){
+      try{
+        const response = await fetch(CITY_DATA_API_URL);
+        if(!response.ok){
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const payload = await response.json();
+        const records = payload?.result?.records;
+        if(!Array.isArray(records)){
+          throw new Error('Invalid records payload');
+        }
+        hydrateCities(records);
+      } catch(err){
+        console.error('Failed to load cities for delivery autocomplete:',err);
+        deliveryCityHint.textContent = `לא ניתן לטעון את רשימת הערים כרגע. מחיר משלוח זמני: ${DELIVERY_OTHER_FEE}₪.`;
+      }
+    }
 
 
     function renderProducts(){
@@ -2738,7 +2846,7 @@
 
     function updateCheckoutSummary(){
       const productsTotal = getCartTotal();
-      const shipping = isDeliverySelected() ? DELIVERY_FEE : 0;
+      const shipping = getDeliveryFee();
       const total = productsTotal + shipping;
       checkoutSummary.textContent = `סה״כ לתשלום: ${total} ₪ (מוצרים: ${productsTotal} ₪, משלוח: ${shipping} ₪)`;
 
@@ -2749,6 +2857,8 @@
         const field = document.getElementById(id);
         field.required = deliverySelected;
       });
+
+      updateDeliveryCityHint();
     }
 
     function startHeroSlideshow(){
@@ -3075,6 +3185,13 @@
     [...checkoutForm.elements.deliveryType].forEach(radio=>{
       radio.addEventListener('change',updateCheckoutSummary);
     });
+
+    deliveryCityInput.addEventListener('input',()=>{
+      updateDeliveryCityHint();
+      updateCheckoutSummary();
+    });
+
+    loadCities();
 
     function updateCheckoutSubmitState(){
       const btn = checkoutForm.querySelector('button[type="submit"]');
