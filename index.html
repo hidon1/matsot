@@ -2796,10 +2796,59 @@
         }
       }
 
+      const nestedScrollableSelectors = '.cart.open, .checkoutFormCard, .paymentModal.open, .termsModal.open, .termsCard';
+
+      function canUseNativeScroll(event){
+        const direction = Math.sign(event.deltaY);
+        if(!direction){
+          return false;
+        }
+
+        const targetElement = event.target instanceof Element ? event.target : event.target?.parentElement;
+        if(!targetElement){
+          return false;
+        }
+
+        const scrollableAncestor = targetElement.closest(nestedScrollableSelectors);
+        if(!scrollableAncestor){
+          return false;
+        }
+
+        let node = targetElement;
+        while(node && node !== document.body){
+          if(!(node instanceof HTMLElement)){
+            node = node.parentElement;
+            continue;
+          }
+
+          const style = getComputedStyle(node);
+          const overflowY = style.overflowY;
+          const isScrollable = (overflowY === 'auto' || overflowY === 'scroll' || overflowY === 'overlay') && node.scrollHeight > node.clientHeight;
+
+          if(isScrollable){
+            if(direction > 0 && node.scrollTop + node.clientHeight < node.scrollHeight - 1){
+              return true;
+            }
+            if(direction < 0 && node.scrollTop > 1){
+              return true;
+            }
+          }
+
+          if(node === scrollableAncestor){
+            break;
+          }
+
+          node = node.parentElement;
+        }
+
+        return false;
+      }
+
       window.addEventListener('wheel',event=>{
-        if(event.ctrlKey){
+        if(event.ctrlKey || canUseNativeScroll(event)){
           return;
         }
+
         event.preventDefault();
         targetY += event.deltaY;
         targetY = Math.max(0,Math.min(targetY,maxScroll()));
