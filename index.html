@@ -40,9 +40,22 @@
       position:relative;
     }
 
-    body.gallery-background{
-      --page-bg-image:url("רקע בשדה.png");
+    .bgSwapLayer{
+      position:fixed;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(245,234,210,.56),rgba(224,201,156,.58)),
+        url("רקע בשדה.png") center top / cover fixed no-repeat;
+      opacity:0;
+      transition:opacity 10s ease-in-out;
+      pointer-events:none;
+      z-index:-2;
     }
+
+    body.background-alt .bgSwapLayer{
+      opacity:1;
+    }
+
 
     body.modal-open{
       overflow:hidden;
@@ -1763,6 +1776,7 @@
   </style>
 </head>
 <body class="page-enter">
+  <div class="bgSwapLayer" aria-hidden="true"></div>
   <a
     class="whatsappFloat"
     href="https://wa.me/972537777207"
@@ -2926,21 +2940,12 @@
       },4000);
     }
 
-    function setupGalleryBackgroundSwap(){
-      const gallerySection = document.getElementById('gallery');
-      if(!gallerySection){
-        return;
-      }
+    function setupBackgroundSwapTimer(){
+      const swapClassName = 'background-alt';
 
-      const updateGalleryBackground = ()=>{
-        const galleryTop = gallerySection.getBoundingClientRect().top + window.scrollY;
-        const shouldShowGalleryBackground = window.scrollY + (window.innerHeight * .25) >= galleryTop;
-        document.body.classList.toggle('gallery-background',shouldShowGalleryBackground);
-      };
-
-      updateGalleryBackground();
-      window.addEventListener('scroll',updateGalleryBackground,{passive:true});
-      window.addEventListener('resize',updateGalleryBackground);
+      setInterval(()=>{
+        document.body.classList.toggle(swapClassName);
+      },20000);
     }
 
     const observer = new IntersectionObserver(entries=>{
@@ -3083,7 +3088,7 @@
     observeReveals();
     setupSmoothScroll();
     setupRabbisBannerCarousel();
-    setupGalleryBackgroundSwap();
+    setupBackgroundSwapTimer();
   </script>
 
   <script src="https://cdn.enable.co.il/licenses/enable-L54377l6sbnmaph3-0326-80470/init.js"></script>
