@@ -1493,7 +1493,6 @@
 
     .overlay.open{display:block}
 
-    .paymentModal,
     .termsModal{
       position:fixed;
       inset:0;
@@ -1506,23 +1505,26 @@
       overflow-y:auto;
     }
 
-    .paymentModal.open,
     .termsModal.open{display:flex}
 
-    .paymentCard{
-      width:min(920px,95vw);
+    .checkoutSection{
+      margin:22px auto 0;
+      width:min(980px,100%);
       display:grid;
-      gap:8px;
-      max-height:100%;
-      overflow:hidden;
+      gap:10px;
+      animation:pageFloatIn .45s ease;
     }
 
-    .paymentHead{
+    .checkoutTopBar{
       display:flex;
       justify-content:space-between;
       align-items:center;
-      color:#fff;
       gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .checkoutTopBar h2{
+      margin:0;
     }
 
     .checkoutFormCard{
@@ -1531,8 +1533,6 @@
       padding:18px;
       border:1px solid rgba(0,0,0,.14);
       box-shadow:0 16px 34px rgba(0,0,0,.22);
-      max-height:min(78vh,720px);
-      overflow:auto;
       -webkit-overflow-scrolling:touch;
     }
 
@@ -1606,7 +1606,7 @@
 
     .paymentFrame{
       display:block;
-      width:min(920px,95vw);
+      width:100%;
       height:min(620px,86vh);
       min-height:520px;
       border:none;
@@ -1617,7 +1617,7 @@
 
     .paymentStage{
       position:relative;
-      width:min(920px,95vw);
+      width:100%;
       min-height:min(620px,86vh);
       isolation:isolate;
     }
@@ -1868,9 +1868,7 @@
       .productTagline{font-size:.78rem;line-height:1.2}
       .productFlour{font-size:.8rem;line-height:1.2}
       .price{font-size:1rem}
-      .paymentModal{align-items:flex-start}
-      .paymentCard{width:min(920px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
-      .checkoutFormCard{max-height:calc(100vh - 120px)}
+      .checkoutTopBar{align-items:flex-start}
       .reveal,
       .revealLong{
         opacity:1;
@@ -2256,14 +2254,13 @@
   </footer>
 
 
-  <div class="paymentModal" id="paymentModal" aria-hidden="true">
-    <div class="paymentCard">
-      <div class="paymentHead">
-        <strong>רכישה מאובטחת</strong>
-        <button class="btn alt" type="button" id="closePayment">סגור</button>
-      </div>
+  <section class="checkoutSection" id="checkoutSection" hidden>
+    <div class="checkoutTopBar">
+      <h2>רכישה מאובטחת</h2>
+      <button class="btn alt" type="button" id="closePayment">חזרה לחנות</button>
+    </div>
 
-      <form class="checkoutFormCard" id="checkoutForm">
+    <form class="checkoutFormCard" id="checkoutForm">
         <h3>לפני תשלום – פרטי הזמנה</h3>
         <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
 
@@ -2318,23 +2315,22 @@
 
         <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
         <button class="btn" type="submit">המשך לרכישה</button>
-      </form>
+    </form>
 
-      <div class="paymentStage" id="paymentStage" hidden>
-        <iframe
-          class="paymentFrame"
-          id="paymentFrame"
-          title="מערכת סליקה"
-          src="about:blank"
-          loading="eager"
-          allow="payment *; fullscreen"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
-        <div class="paymentStatus" id="paymentStatus" hidden role="status" aria-live="polite"></div>
-      </div>
+    <div class="paymentStage" id="paymentStage" hidden>
+      <iframe
+        class="paymentFrame"
+        id="paymentFrame"
+        title="מערכת סליקה"
+        src="about:blank"
+        loading="eager"
+        allow="payment *; fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
+      <div class="paymentStatus" id="paymentStatus" hidden role="status" aria-live="polite"></div>
     </div>
-  </div>
+  </section>
 
   <div class="termsModal" id="termsModal" aria-hidden="true">
     <div class="termsCard">
@@ -2645,7 +2641,7 @@
     const cartCount = document.getElementById('cartCount');
     const cartEl = document.getElementById('cart');
     const overlay = document.getElementById('overlay');
-    const paymentModal = document.getElementById('paymentModal');
+    const checkoutSection = document.getElementById('checkoutSection');
     const paymentFrame = document.getElementById('paymentFrame');
     const paymentStage = document.getElementById('paymentStage');
     const paymentStatus = document.getElementById('paymentStatus');
@@ -2667,6 +2663,10 @@
     let cityRecords = [];
     let cityLookup = new Map();
     let paymentLoadTimeoutId = null;
+
+    function scrollToCheckoutSection(){
+      checkoutSection.scrollIntoView({behavior:'smooth',block:'start'});
+    }
 
     // חיבור טרנזילה: טרמינל e4979.
     const TRANZILA_SUPPLIER = 'e4979';
@@ -2975,7 +2975,7 @@
     }
 
     function syncBodyScrollLock(){
-      const hasModal = cartEl.classList.contains('open') || paymentModal.classList.contains('open') || lightbox.classList.contains('open') || document.getElementById('termsModal').classList.contains('open');
+      const hasModal = cartEl.classList.contains('open') || lightbox.classList.contains('open') || document.getElementById('termsModal').classList.contains('open');
       document.body.classList.toggle('modal-open',hasModal);
     }
 
@@ -3259,7 +3259,7 @@
         }
       }
 
-      const nestedScrollableSelectors = '.cart.open, .checkoutFormCard, .paymentModal.open, .termsModal.open, .termsCard';
+      const nestedScrollableSelectors = '.cart.open, .checkoutFormCard, .termsModal.open, .termsCard';
 
       function canUseNativeScroll(event){
         const direction = Math.sign(event.deltaY);
@@ -3515,29 +3515,27 @@
     overlay.addEventListener('click',closeCart);
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
-      paymentModal.classList.add('open');
+      checkoutSection.hidden = false;
       paymentStage.hidden = true;
       checkoutForm.hidden = false;
       setPaymentStatus('');
       clearPaymentLoadTimeout();
       paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = '';
       updateCheckoutSummary();
       closeCart();
+      scrollToCheckoutSection();
       syncBodyScrollLock();
     });
 
     document.getElementById('closePayment').addEventListener('click',()=>{
-      paymentModal.classList.remove('open');
+      checkoutSection.hidden = true;
+      paymentStage.hidden = true;
+      checkoutForm.hidden = false;
       clearPaymentLoadTimeout();
+      paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = '';
       syncBodyScrollLock();
-    });
-
-    paymentModal.addEventListener('click',e=>{
-      if(e.target === paymentModal){
-        paymentModal.classList.remove('open');
-        clearPaymentLoadTimeout();
-        syncBodyScrollLock();
-      }
     });
 
     [...checkoutForm.elements.deliveryType].forEach(radio=>{
@@ -3570,6 +3568,7 @@
       renderPaymentFrame();
       paymentStage.hidden = false;
       checkoutForm.hidden = true;
+      scrollToCheckoutSection();
     });
 
     paymentFrame.addEventListener('load',()=>{
