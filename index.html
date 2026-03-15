@@ -1611,6 +1611,54 @@
       border-radius:18px;
       box-shadow:0 20px 44px rgba(0,0,0,.35);
       background:#fff;
+      opacity:0;
+      transform:translateY(8px);
+      transition:opacity .35s ease,transform .35s ease;
+      display:block;
+    }
+
+    .paymentFrame.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .paymentFrameWrap{
+      position:relative;
+      width:min(920px,95vw);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 20px 44px rgba(0,0,0,.35);
+    }
+
+    .paymentFrameWrap[hidden]{display:none}
+
+    .paymentFrameLoading{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      gap:10px;
+      background:linear-gradient(180deg,#fbf7ef,#f2e6ce);
+      color:#4f3617;
+      font-weight:700;
+      z-index:1;
+      text-align:center;
+      padding:16px;
+    }
+
+    .paymentFrameLoading[hidden]{display:none}
+
+    .paymentLoaderDot{
+      width:42px;
+      height:42px;
+      border:4px solid rgba(110,76,34,.25);
+      border-top-color:#7f561f;
+      border-radius:50%;
+      animation:spinLoader .85s linear infinite;
+    }
+
+    @keyframes spinLoader{
+      to{transform:rotate(360deg)}
     }
 
     .termsCard{
@@ -2288,15 +2336,20 @@
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
 
-      <iframe
-        class="paymentFrame"
-        id="paymentFrame"
-        hidden
-        title="מערכת סליקה"
-        referrerpolicy="no-referrer"
-        sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
-        src="about:blank">
-      </iframe>
+      <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
+        <div class="paymentFrameLoading" id="paymentFrameLoading" hidden>
+          <div class="paymentLoaderDot" aria-hidden="true"></div>
+          <div>טוענים את עמוד הסליקה בצורה מאובטחת בתוך האתר…</div>
+        </div>
+        <iframe
+          class="paymentFrame"
+          id="paymentFrame"
+          title="מערכת סליקה"
+          referrerpolicy="no-referrer"
+          sandbox="allow-forms allow-scripts allow-same-origin"
+          src="about:blank">
+        </iframe>
+      </div>
     </div>
   </div>
 
@@ -2611,6 +2664,8 @@
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
+    const paymentFrameWrap = document.getElementById('paymentFrameWrap');
+    const paymentFrameLoading = document.getElementById('paymentFrameLoading');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -3096,6 +3151,11 @@
       return false;
     }
 
+    function setPaymentLoadingState(isLoading){
+      paymentFrame.classList.remove('visible');
+      paymentFrameLoading.hidden = !isLoading;
+    }
+
     function renderCart(){
       let total = 0;
       let items = 0;
@@ -3448,8 +3508,11 @@
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      paymentFrame.hidden = true;
+      paymentFrameWrap.hidden = true;
       checkoutForm.hidden = false;
+      paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = '';
+      setPaymentLoadingState(false);
       updateCheckoutSummary();
       closeCart();
       syncBodyScrollLock();
@@ -3495,12 +3558,18 @@
         return;
       }
       const openedTranzila = renderPaymentFrame();
-      paymentFrame.hidden = openedTranzila;
+      paymentFrameWrap.hidden = false;
       checkoutForm.hidden = openedTranzila;
+      setPaymentLoadingState(openedTranzila);
       if(!openedTranzila){
-        paymentFrame.hidden = false;
+        paymentFrame.classList.add('visible');
         checkoutForm.hidden = true;
       }
+    });
+
+    paymentFrame.addEventListener('load',()=>{
+      setPaymentLoadingState(false);
+      paymentFrame.classList.add('visible');
     });
 
     document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
