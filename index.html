@@ -2026,10 +2026,6 @@
             בחרו מוצרים, הוסיפו לסל, וסיימו רכישה מהירה עם אפשרות למשלוח או איסוף עצמי.
           </p>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
-          <a class="btn" href="#products">לצפייה בכל המוצרים</a>
-          <a class="btn alt" href="#contact">להזמנה טלפונית / וואטסאפ</a>
-        </div>
       </div>
     </section>
 
@@ -2582,6 +2578,11 @@
     const CENTER_SUBDISTRICTS = new Set([
       'נתניה','חדרה','השרון','פתח תקווה','רמלה','רחובות','תל אביב','חולון','רמת גן','רמלה לוד','אשקלון','ירושלים'
     ]);
+    const DISCOUNT_DELIVERY_CITIES = new Set([
+      'מודיעין עילית','קרית ספר','קריית ספר','חשמונאים','מתתיהו','נעלה','ניל"י','נילי','פדואל',
+      'ביתר עילית','אפרת','קריית ארבע','קרית ארבע','אלון שבות','אלעזר','ראש צורים','נווה דניאל',
+      'כפר עציון','בת עין','מגדל עוז'
+    ]);
 
     const productsGrid = document.getElementById('productsGrid');
     const galleryTrack = document.getElementById('galleryTrack');
@@ -2625,6 +2626,11 @@
     }
 
     function isCenterRecord(record){
+      const cityName = getRecordCityName(record);
+      if(cityName && DISCOUNT_DELIVERY_CITIES.has(cityName)){
+        return true;
+      }
+
       const subdistrict = getRecordSubdistrict(record);
       return subdistrict && CENTER_SUBDISTRICTS.has(subdistrict);
     }
