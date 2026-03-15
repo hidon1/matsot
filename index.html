@@ -2293,6 +2293,8 @@
         id="paymentFrame"
         hidden
         title="מערכת סליקה"
+        referrerpolicy="no-referrer"
+        sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
         src="about:blank">
       </iframe>
     </div>
@@ -3057,6 +3059,20 @@
       return `${TRANZILA_IFRAME_URL}${separator}${params.toString()}`;
     }
 
+    function isTrustedTranzilaUrl(url){
+      if(!url){
+        return false;
+      }
+
+      try{
+        const parsedUrl = new URL(url,window.location.origin);
+        const expectedBaseUrl = new URL(TRANZILA_IFRAME_URL,window.location.origin);
+        return parsedUrl.protocol === 'https:' && parsedUrl.host === expectedBaseUrl.host;
+      }catch(_error){
+        return false;
+      }
+    }
+
     function buildPaymentFallbackSrcdoc(payload){
       const addressLine = payload.deliveryType === 'משלוח'
         ? `${payload.deliveryCity}, ${payload.deliveryStreet} ${payload.deliveryHouseNumber}`
@@ -3069,11 +3085,7 @@
       const payload = buildOrderPayload();
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
-      if(tranzilaUrl){
-        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
-        if(!popup){
-          window.location.href = tranzilaUrl;
-        }
+      if(isTrustedTranzilaUrl(tranzilaUrl)){
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
         return true;
