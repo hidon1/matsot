@@ -2250,7 +2250,7 @@
             <label>אופן קבלת ההזמנה</label>
             <div class="radioRow">
               <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3)</label>
-              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (עד אזור אשקלון 40₪, דרומית עד אזור באר שבע 65₪)</label>
+              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/60 ₪ תלוי מרחק)</label>
             </div>
             <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
           </div>
@@ -2260,7 +2260,7 @@
               <label for="deliveryCity">עיר למשלוח</label>
               <input id="deliveryCity" name="deliveryCity" list="deliveryCityOptions" autocomplete="off" placeholder="התחילו להקליד שם עיר">
               <datalist id="deliveryCityOptions"></datalist>
-              <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: עד אזור אשקלון 40₪, דרומית עד אזור באר שבע 65₪.</small>
+              <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: 40/60 ₪ תלוי מרחק.</small>
             </div>
             <div>
               <label for="deliveryStreet">רחוב למשלוח</label>
@@ -2573,7 +2573,7 @@
 
 
     const DELIVERY_CENTER_FEE = 40;
-    const DELIVERY_OTHER_FEE = 65;
+    const DELIVERY_OTHER_FEE = 60;
     const CITY_DATA_API_URL = 'https://data.gov.il/api/3/action/datastore_search?resource_id=5c78e9fa-c2e2-4771-93ff-7f400a12f7ba&limit=5000';
     const CENTER_SUBDISTRICTS = new Set([
       'נתניה','חדרה','השרון','פתח תקווה','רמלה','רחובות','תל אביב','חולון','רמת גן','רמלה לוד','אשקלון','ירושלים'
@@ -2587,10 +2587,17 @@
     ]);
     const NO_DELIVERY_SUBDISTRICTS = new Set(['גולן','אילת']);
     const NO_DELIVERY_CITIES = new Set([
-      'אילת','מצפה רמון','דימונה',
+      'אילת','אילות','חבל אילות',
+      'דימונה','ירוחם','מצפה רמון','שדה בוקר','מדרשת בן גוריון','מדרשת שדה בוקר',
+      'קטורה','יוטבתה','יהל','פארן','פרן','אילות','אליפז','באר אורה','גרופית','לוטן','נווה חריף',
+      'נאות סמדר','סמר','שיטים','צוקים','חצבה','עין יהב','עין יהב חצבה','ספיר','צופר',
       'קריית שמונה','קרית שמונה','מטולה','כפר גלעדי','מעיין ברוך','מרגליות','מנרה','משגב עם',
-      'שניר','דן','דפנה','הגושרים','שדה נחמיה','עמיר','כפר יובל','רמות נפתלי','יפתח','מלכיה'
+      'שניר','דן','דפנה','הגושרים','שדה נחמיה','עמיר','כפר יובל','רמות נפתלי','יפתח','מלכיה',
+      'קצרין','חד נס','רמות','אניעם','אליעד','אבני איתן','נוב','חיספין','יונתן','גשור','נטור','אודם',
+      'אל רום','מרום גולן','עין זיוון','אורטל','קלע אלון','מיצר','מבוא חמה','כפר חרוב','מעלה גמלא'
     ]);
+
+    const NO_DELIVERY_CITY_KEYWORDS = ['ערבה','גולן'];
 
     const productsGrid = document.getElementById('productsGrid');
     const galleryTrack = document.getElementById('galleryTrack');
@@ -2648,6 +2655,9 @@
       if(cityName && NO_DELIVERY_CITIES.has(cityName)){
         return true;
       }
+      if(cityName && NO_DELIVERY_CITY_KEYWORDS.some(keyword=>cityName.includes(keyword))){
+        return true;
+      }
 
       const subdistrict = getRecordSubdistrict(record);
       return subdistrict && NO_DELIVERY_SUBDISTRICTS.has(subdistrict);
@@ -2682,13 +2692,13 @@
 
     function updateDeliveryCityHint(){
       if(!isDeliverySelected()){
-        deliveryCityHint.textContent = 'מחיר משלוח: עד אזור אשקלון 40₪, דרומית עד אזור באר שבע 65₪.';
+        deliveryCityHint.textContent = 'מחיר משלוח: 40/60 ₪ תלוי מרחק.';
         return;
       }
 
       const selectedRecord = getSelectedCityRecord();
       if(!selectedRecord){
-        deliveryCityHint.textContent = 'מחיר משלוח משוער: 65₪ (ברירת מחדל עד בחירת עיר מהרשימה).';
+        deliveryCityHint.textContent = 'מחיר משלוח משוער: 60₪ (ברירת מחדל עד בחירת עיר מהרשימה).';
         updateCheckoutSubmitState();
         return;
       }
