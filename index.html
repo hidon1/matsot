@@ -2627,8 +2627,9 @@
     let cityRecords = [];
     let cityLookup = new Map();
 
-    // הדביקו כאן את קישור ה-iframe הפעיל של טרנזילה ברגע שהוא מוכן.
-    const TRANZILA_IFRAME_URL = '';
+    // חיבור טרנזילה: טרמינל e4979.
+    const TRANZILA_SUPPLIER = 'e4979';
+    const TRANZILA_IFRAME_URL = 'https://secure5.tranzila.com/cgi-bin/tranzila31.cgi';
 
     function normalizeText(value){
       return String(value || '').trim().replace(/\s+/g,' ');
@@ -3006,9 +3007,11 @@
       }
 
       const params = new URLSearchParams({
-        // שדות נפוצים לסליקה/חשבונית – ניתן להתאים לשמות המדויקים שתקבלו מטרנזילה.
+        // שדות נפוצים לסליקה/חשבונית – כולל קוד טרמינל טרנזילה.
+        supplier: TRANZILA_SUPPLIER,
         sum: String(payload.total),
         currency: 'ILS',
+        lang: 'il',
         contact: payload.fullName,
         email: payload.email,
         phone: payload.phone,
