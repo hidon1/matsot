@@ -2629,7 +2629,7 @@
 
     // חיבור טרנזילה: טרמינל e4979.
     const TRANZILA_SUPPLIER = 'e4979';
-    const TRANZILA_IFRAME_URL = 'https://directng.tranzila.com/eE4979@/iframenew.php';
+    const TRANZILA_IFRAME_URL = 'https://directng.tranzila.com/e4979/iframenew.php';
 
     function normalizeText(value){
       return String(value || '').trim().replace(/\s+/g,' ');
@@ -3006,26 +3006,47 @@
         return '';
       }
 
+      const [firstName = payload.fullName] = payload.fullName.split(' ').filter(Boolean);
+      const deliveryAddress = payload.deliveryType === 'משלוח'
+        ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
+        : 'איסוף עצמי';
+      const orderDescription = [
+        `סוג הזמנה: ${payload.deliveryType}`,
+        `פריטים: ${payload.orderSummary || 'לא צוינו פריטים'}`,
+        `עלות מוצרים: ${payload.productsTotal} ₪`,
+        `עלות משלוח: ${payload.shippingCost} ₪`,
+        `כתובת: ${payload.deliveryCity || '-'} ${deliveryAddress}`
+      ].join(' | ');
+
       const params = new URLSearchParams({
-        // שדות נפוצים לסליקה/חשבונית – כולל קוד טרמינל טרנזילה.
+        // שדות לפי הנחיות Tranzila ל-iframenew.
         supplier: TRANZILA_SUPPLIER,
         sum: String(payload.total),
-        currency: 'ILS',
+        currency: '1',
+        tranmode: 'A',
         lang: 'il',
+        company: 'מצות אבהתנא',
         contact: payload.fullName,
+        first_name: firstName,
         email: payload.email,
         phone: payload.phone,
+        country: 'ישראל',
+        zip: '0000000',
         city: payload.deliveryCity,
-        address: payload.deliveryStreet,
+        address: deliveryAddress,
         house: payload.deliveryHouseNumber,
         shipping: String(payload.shippingCost),
-        comments: `סוג הזמנה: ${payload.deliveryType}; פריטי הזמנה: ${payload.orderSummary}`,
+        pdesc: orderDescription,
+        comments: orderDescription,
         // שדות עזר לקידוד ברור בעברית בקבלה/מערכות צד-שרת:
         customer_name_he: payload.fullName,
+        customer_first_name_he: firstName,
         customer_email: payload.email,
+        order_currency_he: 'שקל',
         delivery_city_he: payload.deliveryCity,
         delivery_street_he: payload.deliveryStreet,
         delivery_house_number: payload.deliveryHouseNumber,
+        delivery_full_address_he: `${payload.deliveryCity} ${deliveryAddress}`.trim(),
         delivery_phone: payload.phone,
         shipping_cost: String(payload.shippingCost),
         order_items_he: payload.orderSummary,
