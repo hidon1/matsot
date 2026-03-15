@@ -1356,6 +1356,69 @@
       gap:14px;
     }
 
+    .faqList{
+      max-width:980px;
+      margin:0 auto;
+      display:grid;
+      gap:10px;
+    }
+
+    .faqItem{
+      background:#fff;
+      border:1px solid rgba(97,59,20,.2);
+      border-radius:16px;
+      box-shadow:0 10px 20px rgba(56,37,14,.08);
+      overflow:hidden;
+    }
+
+    .faqItem summary{
+      list-style:none;
+      cursor:pointer;
+      font-weight:800;
+      color:#4b2f10;
+      padding:14px 44px 14px 16px;
+      position:relative;
+      line-height:1.5;
+      background:linear-gradient(180deg,#fffdf9,#f7ecd9);
+    }
+
+    .faqItem summary::-webkit-details-marker{display:none}
+
+    .faqItem summary::before,
+    .faqItem summary::after{
+      content:"";
+      position:absolute;
+      inset-inline-end:18px;
+      top:50%;
+      width:14px;
+      height:2px;
+      background:#7a5320;
+      border-radius:999px;
+      transition:transform .2s ease;
+    }
+
+    .faqItem summary::after{
+      transform:translateY(-50%) rotate(90deg);
+    }
+
+    .faqItem summary::before{
+      transform:translateY(-50%);
+    }
+
+    .faqItem[open] summary::after{
+      transform:translateY(-50%) rotate(0deg);
+      opacity:0;
+    }
+
+    .faqAnswer{
+      margin:0;
+      padding:0 16px 16px;
+      color:#4b3720;
+      line-height:1.75;
+      font-weight:500;
+      background:#fff;
+    }
+
     .customerCard{
       background:#fff;
       border:1px solid rgba(97,59,20,.18);
@@ -1945,6 +2008,7 @@
           <a href="#products">המוצרים שלנו</a>
           <a href="#gallery">הגלריה</a>
           <a href="#about">מי אנחנו</a>
+          <a href="#faq">שאלות ותשובות</a>
           <a href="#contact">צור קשר</a>
         </nav>
 
@@ -2221,6 +2285,65 @@
 
       <div class="subSectionTitle revealLong"><span>ניתן להשיג גם בחנויות</span></div>
       <div class="customersGrid" id="customersGrid"></div>
+    </section>
+
+    <section id="faq" class="reveal">
+      <div class="sectionHead">
+        <h2>שאלות ותשובות</h2>
+        <p>ריכזנו עבורכם תשובות ברורות לפי הנוסח המקובל, בלחיצה על כל שאלה התשובה נפתחת במקום.</p>
+      </div>
+
+      <div class="faqList">
+        <details class="faqItem">
+          <summary>1. מה הן מצות לאפות?</summary>
+          <p class="faqAnswer">מצות לאפות הן מצות דקות ורכות הנאפות בצורה מסורתית, בדומה ללחם שטוח. בקהילות רבות בארצות המזרח נהגו לאפות מצות בצורה זו במשך דורות רבים. מצות אלו נאפות מקמח ומים בלבד תוך הקפדה מלאה על כל כללי ההלכה של אפיית מצות לפסח.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>2. מה ההבדל בין מצות קשות למצות לאפות?</summary>
+          <p class="faqAnswer">ההבדל העיקרי הוא במרקם. מצות קשות נאפות בצורה שגורמת להן להיות פריכות ויבשות יותר, ואילו מצות לאפות נאפות כך שהן נשארות רכות וגמישות, בדומה ללחם דק.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>3. האם מצות לאפות כשרות לפסח?</summary>
+          <p class="faqAnswer">כן. כאשר האפייה נעשית תחת פיקוח הלכתי ובהקפדה מלאה על כל כללי ההלכה – מצות לאפות כשרות לפסח בדיוק כמו כל מצה אחרת.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>4. האם מצות לאפות כשרות למהדרין?</summary>
+          <p class="faqAnswer">כן. כאשר האפייה נעשית תחת השגחה מהודרת ובהקפדה על כל כללי ההלכה, ניתן למצוא מצות לאפות גם ברמת כשרות למהדרין.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>5. האם ניתן לצאת ידי חובה בליל הסדר עם מצות רכות?</summary>
+          <p class="faqAnswer">כן. כאשר המצות נאפו כהלכה מקמח ומים בלבד ובהקפדה מלאה על כל כללי אפיית מצות לפסח, ניתן לצאת בהן ידי חובה בליל הסדר כמו בכל מצה אחרת. יחד עם זאת, קיימים מנהגים שונים בקהילות שונות, ויש הנוהגים לפעול לפי מנהג המשפחה או הוראת רב.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>6. ממה עשויות מצות?</summary>
+          <p class="faqAnswer">מצות נאפות משני רכיבים בלבד: קמח ומים. על פי ההלכה יש להקפיד שתהליך הלישה והאפייה יתבצע במהירות ובזהירות כדי למנוע חימוץ.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>7. למה אוכלים מצות בפסח?</summary>
+          <p class="faqAnswer">אכילת מצות בפסח היא מצווה מהתורה לזכר יציאת מצרים, כאשר בני ישראל יצאו בחיפזון ולא הספיקו להחמיץ את הבצק.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>8. מה ההבדל בין מצה רגילה למצה שמורה?</summary>
+          <p class="faqAnswer">מצה שמורה היא מצה שהקמח שלה נשמר בקפידה משעת הקציר או הטחינה כדי למנוע מגע עם מים לפני האפייה. מצות אלו משמשות בדרך כלל למצוות אכילת מצה בליל הסדר.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>9. איך נאפות מצות לפסח?</summary>
+          <p class="faqAnswer">המצות נאפות בתהליך מהיר שבו לשים את הבצק מקמח ומים בלבד ומיד אופים אותו בתנור חם. לפי ההלכה, מרגע ערבוב הקמח והמים ועד סיום האפייה לא יעברו יותר מ־18 דקות.</p>
+        </details>
+
+        <details class="faqItem">
+          <summary>10. איך ניתן להזמין מצות לאפות באתר?</summary>
+          <p class="faqAnswer">ניתן להזמין את המצות ישירות דרך האתר בצורה פשוטה ונוחה. בוחרים את סוג המצות הרצוי, מוסיפים לסל הקניות ומבצעים הזמנה בצורה מאובטחת. לאחר מכן ההזמנה מטופלת ונשלחת בהתאם לפרטי המשלוח.</p>
+        </details>
+      </div>
     </section>
 
     <section id="contact" class="reveal">
