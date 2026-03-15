@@ -2250,7 +2250,7 @@
             <label>אופן קבלת ההזמנה</label>
             <div class="radioRow">
               <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3)</label>
-              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/60 ₪ תלוי מרחק)</label>
+              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/65 ₪ תלוי מרחק)</label>
             </div>
             <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
           </div>
@@ -2260,7 +2260,7 @@
               <label for="deliveryCity">עיר למשלוח</label>
               <input id="deliveryCity" name="deliveryCity" list="deliveryCityOptions" autocomplete="off" placeholder="התחילו להקליד שם עיר">
               <datalist id="deliveryCityOptions"></datalist>
-              <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: 40/60 ₪ תלוי מרחק.</small>
+              <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: 40/65 ₪ תלוי מרחק.</small>
             </div>
             <div>
               <label for="deliveryStreet">רחוב למשלוח</label>
@@ -2293,7 +2293,7 @@
         id="paymentFrame"
         hidden
         title="מערכת סליקה"
-        srcdoc="<!doctype html><html lang='he' dir='rtl'><head><meta charset='utf-8'><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);display:grid;place-items:center;height:100vh;color:#3b2d1c}div{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:24px;max-width:540px;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:0;line-height:1.7}</style></head><body><div><h2>מערכת סליקה בבנייה</h2><p>כאן יופיע אייפרם של מערכת הסליקה שלך. כרגע זהו מסך זמני.</p></div></body></html>">
+        src="about:blank">
       </iframe>
     </div>
   </div>
@@ -2573,7 +2573,7 @@
 
 
     const DELIVERY_CENTER_FEE = 40;
-    const DELIVERY_OTHER_FEE = 60;
+    const DELIVERY_OTHER_FEE = 65;
     const CITY_DATA_API_URL = 'https://data.gov.il/api/3/action/datastore_search?resource_id=5c78e9fa-c2e2-4771-93ff-7f400a12f7ba&limit=5000';
     const CENTER_SUBDISTRICTS = new Set([
       'נתניה','חדרה','השרון','פתח תקווה','רמלה','רחובות','תל אביב','חולון','רמת גן','רמלה לוד','אשקלון','ירושלים'
@@ -2627,6 +2627,8 @@
     let cityRecords = [];
     let cityLookup = new Map();
 
+    // הדביקו כאן את קישור ה-iframe הפעיל של טרנזילה ברגע שהוא מוכן.
+    const TRANZILA_IFRAME_URL = '';
 
     function normalizeText(value){
       return String(value || '').trim().replace(/\s+/g,' ');
@@ -2692,13 +2694,13 @@
 
     function updateDeliveryCityHint(){
       if(!isDeliverySelected()){
-        deliveryCityHint.textContent = 'מחיר משלוח: 40/60 ₪ תלוי מרחק.';
+        deliveryCityHint.textContent = 'מחיר משלוח: 40/65 ₪ תלוי מרחק.';
         return;
       }
 
       const selectedRecord = getSelectedCityRecord();
       if(!selectedRecord){
-        deliveryCityHint.textContent = 'מחיר משלוח משוער: 60₪ (ברירת מחדל עד בחירת עיר מהרשימה).';
+        deliveryCityHint.textContent = 'מחיר משלוח משוער: 65₪ (ברירת מחדל עד בחירת עיר מהרשימה).';
         updateCheckoutSubmitState();
         return;
       }
@@ -2965,6 +2967,92 @@
         const product = products.find(p=>p.id === id);
         return sum + (product ? product.price * qty : 0);
       },0);
+    }
+
+    function getCartLineItemsSummary(){
+      return [...cart.entries()].map(([id,qty])=>{
+        const product = products.find(p=>p.id === id);
+        if(!product){
+          return null;
+        }
+        return `${product.name} × ${qty}`;
+      }).filter(Boolean).join(', ');
+    }
+
+    function buildOrderPayload(){
+      const productsTotal = getCartTotal();
+      const shipping = getDeliveryFee();
+      const total = productsTotal + shipping;
+      const deliverySelected = isDeliverySelected();
+
+      return {
+        fullName: normalizeText(checkoutForm.elements.fullName.value),
+        email: normalizeText(checkoutForm.elements.customerEmail.value),
+        phone: deliverySelected ? normalizeText(checkoutForm.elements.deliveryPhone.value) : '',
+        deliveryType: deliverySelected ? 'משלוח' : 'איסוף עצמי',
+        deliveryCity: deliverySelected ? normalizeText(checkoutForm.elements.deliveryCity.value) : '',
+        deliveryStreet: deliverySelected ? normalizeText(checkoutForm.elements.deliveryStreet.value) : '',
+        deliveryHouseNumber: deliverySelected ? normalizeText(checkoutForm.elements.deliveryHouseNumber.value) : '',
+        shippingCost: shipping,
+        productsTotal,
+        total,
+        orderSummary: getCartLineItemsSummary()
+      };
+    }
+
+    function buildTranzilaIframeUrl(payload){
+      if(!TRANZILA_IFRAME_URL){
+        return '';
+      }
+
+      const params = new URLSearchParams({
+        // שדות נפוצים לסליקה/חשבונית – ניתן להתאים לשמות המדויקים שתקבלו מטרנזילה.
+        sum: String(payload.total),
+        currency: 'ILS',
+        contact: payload.fullName,
+        email: payload.email,
+        phone: payload.phone,
+        city: payload.deliveryCity,
+        address: payload.deliveryStreet,
+        house: payload.deliveryHouseNumber,
+        shipping: String(payload.shippingCost),
+        comments: `סוג הזמנה: ${payload.deliveryType}; פריטי הזמנה: ${payload.orderSummary}`,
+        // שדות עזר לקידוד ברור בעברית בקבלה/מערכות צד-שרת:
+        customer_name_he: payload.fullName,
+        customer_email: payload.email,
+        delivery_city_he: payload.deliveryCity,
+        delivery_street_he: payload.deliveryStreet,
+        delivery_house_number: payload.deliveryHouseNumber,
+        delivery_phone: payload.phone,
+        shipping_cost: String(payload.shippingCost),
+        order_items_he: payload.orderSummary,
+        products_total: String(payload.productsTotal)
+      });
+
+      const separator = TRANZILA_IFRAME_URL.includes('?') ? '&' : '?';
+      return `${TRANZILA_IFRAME_URL}${separator}${params.toString()}`;
+    }
+
+    function buildPaymentFallbackSrcdoc(payload){
+      const addressLine = payload.deliveryType === 'משלוח'
+        ? `${payload.deliveryCity}, ${payload.deliveryStreet} ${payload.deliveryHouseNumber}`
+        : 'איסוף עצמי מהחנות';
+
+      return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);padding:20px;color:#3b2d1c}section{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:20px;max-width:760px;margin:0 auto;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:8px 0;line-height:1.6}ul{margin:8px 0 0;padding-inline-start:20px}li{margin:6px 0}code{background:#f3ecdf;padding:2px 6px;border-radius:6px}</style></head><body><section><h2>חיבור טרנזילה מוכן להגדרה</h2><p>ברגע שתעדכנו בקוד את <code>TRANZILA_IFRAME_URL</code>, האייפריים יפתח את טרנזילה עם כל פרטי ההזמנה.</p><p><strong>סכום לתשלום:</strong> ${payload.total} ₪ (מוצרים: ${payload.productsTotal} ₪, משלוח: ${payload.shippingCost} ₪)</p><p><strong>לקוח:</strong> ${payload.fullName} | ${payload.email}</p><p><strong>כתובת/אופן קבלה:</strong> ${addressLine}</p><p><strong>טלפון למשלוח:</strong> ${payload.phone || 'לא רלוונטי'}</p><p><strong>פריטים:</strong> ${payload.orderSummary || 'לא נבחרו מוצרים'}</p><hr><p style="margin-bottom:0"><strong>שדות שמוכנים להעברה לטרנזילה (בעברית):</strong></p><ul><li>סכום כולל לתשלום + פירוט עלות משלוח.</li><li>שם מלא ומייל לקוח.</li><li>בסוג משלוח: עיר, רחוב, מספר בית וטלפון.</li><li>פירוט פריטים להזמנה כדי שיופיע בקבלה.</li></ul></section></body></html>`;
+    }
+
+    function renderPaymentFrame(){
+      const payload = buildOrderPayload();
+      const tranzilaUrl = buildTranzilaIframeUrl(payload);
+
+      if(tranzilaUrl){
+        paymentFrame.srcdoc = '';
+        paymentFrame.src = tranzilaUrl;
+        return;
+      }
+
+      paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = buildPaymentFallbackSrcdoc(payload);
     }
 
     function renderCart(){
@@ -3364,6 +3452,7 @@
         updateCheckoutSubmitState();
         return;
       }
+      renderPaymentFrame();
       paymentFrame.hidden = false;
       checkoutForm.hidden = true;
     });
