@@ -1711,24 +1711,56 @@
 
     .siteFooter{
       margin-top:30px;
-      background:linear-gradient(180deg,#dce7ec,#cddbe3);
-      border-top:1px solid rgba(20,41,56,.18);
-      padding:22px 0;
-      color:#223544;
+      background:linear-gradient(90deg,#120800 0%,#2b1403 42%,#1a0b01 100%);
+      border-top:1px solid rgba(247,209,135,.2);
+      padding:28px 0;
+      color:#d2b06a;
+    }
+
+    .siteFooter a{
+      color:#e3c07a;
+      text-decoration:underline;
+      text-underline-offset:4px;
+      font-weight:700;
+    }
+
+    .siteFooter a:hover{
+      color:#f5d18a;
     }
 
     .footerInner{
-      display:grid;
-      grid-template-columns:minmax(0,1fr) auto auto;
-      gap:10px 22px;
-      align-items:end;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:20px 28px;
+    }
+
+    .footerInfo h3,
+    .footerAddress p{
+      margin:0 0 10px;
+      font-size:clamp(1.05rem,1.4vw,1.32rem);
+      color:#efd198;
+    }
+
+    .footerInfo p,
+    .footerAddress p:last-child{
+      margin:0;
+      font-size:clamp(.95rem,1.2vw,1.14rem);
+      line-height:1.7;
+    }
+
+    .footerAddress{
+      display:flex;
+      align-items:flex-end;
+      gap:24px;
+      flex-wrap:wrap;
     }
 
     .footerLinks{
       display:flex;
       flex-wrap:wrap;
-      gap:10px 18px;
-      font-weight:600;
+      gap:8px 24px;
+      font-size:clamp(1rem,1.2vw,1.15rem);
     }
 
     .mobileStickyCta{
@@ -1884,7 +1916,15 @@
       }
       .checkoutGrid{grid-template-columns:1fr}
       .deliveryFields{grid-template-columns:1fr}
-      .footerInner{grid-template-columns:1fr}
+      .footerInner{
+        flex-direction:column-reverse;
+        align-items:flex-start;
+      }
+      .footerAddress{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
+      }
       .mobileStickyCta{display:none !important}
       body{padding-bottom:0}
       .heroFrame{height:340px}
@@ -2331,18 +2371,19 @@
 
   <footer class="siteFooter">
     <div class="wrap footerInner">
-      <div>
-        <h3 style="margin:0 0 8px">מידע חשוב ושירות</h3>
-        <p style="margin:0">© כל הזכויות שמורות למצות אבהתנא.</p>
-        <p style="margin:8px 0 0">אתר נבנה על ידי י.ז.מ. אתרים, לפרטים <a href="https://yazamatarem.click" target="_blank" rel="noopener noreferrer">לחץ כאן</a>.</p>
+      <div class="footerAddress">
+        <div class="footerLinks">
+          <a href="#" class="openTerms">תקנון האתר</a>
+          <a href="#products">המוצרים שלנו</a>
+          <a href="#contact">צור קשר</a>
+        </div>
+        <p><strong>כתובת:</strong> סמטת התבור 3, פתח תקווה</p>
       </div>
 
-      <div class="footerLinks">
-        <a href="#" class="openTerms">תקנון האתר</a>
-      </div>
-
-      <div>
-        <p style="margin:0"><strong>כתובת:</strong> סמטת התבור 3, פתח תקווה</p>
+      <div class="footerInfo">
+        <h3>מידע חשוב ושירות</h3>
+        <p>© כל הזכויות שמורות למצות אבהתנא.</p>
+        <p>אתר נבנה על ידי י.ז.מ. אתרים, לפרטים <a href="https://yazamatarem.click" target="_blank" rel="noopener noreferrer">לחץ כאן</a>.</p>
       </div>
     </div>
   </footer>
