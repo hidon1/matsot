@@ -1636,6 +1636,13 @@
       font-size:.92rem;
     }
 
+    .deliveryDateNotice{
+      margin:6px 0 0;
+      color:#5f4c37;
+      font-size:.92rem;
+      font-weight:700;
+    }
+
     .termsConfirm{
       margin-top:12px;
       padding:10px 12px;
@@ -2366,8 +2373,9 @@
           <div class="full">
             <label>אופן קבלת ההזמנה</label>
             <div class="radioRow">
-              <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3)</label>
+              <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3, ללא עלות)</label>
               <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/65 ₪ תלוי מרחק)</label>
+              <p id="deliveryDateNotice" class="deliveryDateNotice" hidden>המצות יסופקו בין התאריכים 25/3 לשלישי ל-28/3</p>
             </div>
             <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
           </div>
@@ -2732,6 +2740,7 @@
     const deliveryCityInput = document.getElementById('deliveryCity');
     const deliveryCityOptions = document.getElementById('deliveryCityOptions');
     const deliveryCityHint = document.getElementById('deliveryCityHint');
+    const deliveryDateNotice = document.getElementById('deliveryDateNotice');
     const termsApprove = document.getElementById('termsApprove');
     const lightbox = document.getElementById('lightbox');
     const lightboxMedia = document.getElementById('lightboxMedia');
@@ -3242,6 +3251,7 @@
 
       const deliverySelected = isDeliverySelected();
       deliveryFields.hidden = !deliverySelected;
+      deliveryDateNotice.hidden = !deliverySelected;
 
       ['deliveryCity','deliveryStreet','deliveryHouseNumber','deliveryPhone'].forEach(id=>{
         const field = document.getElementById(id);
