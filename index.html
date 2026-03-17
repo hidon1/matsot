@@ -3248,6 +3248,10 @@
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
       if(tranzilaUrl){
+        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
+        if(!popup){
+          window.location.href = tranzilaUrl;
+        }
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
         return true;
@@ -3657,9 +3661,13 @@
         updateCheckoutSubmitState();
         return;
       }
-      renderPaymentFrame();
-      paymentFrame.hidden = false;
-      checkoutForm.hidden = true;
+      const openedTranzila = renderPaymentFrame();
+      paymentFrame.hidden = openedTranzila;
+      checkoutForm.hidden = openedTranzila;
+      if(!openedTranzila){
+        paymentFrame.hidden = false;
+        checkoutForm.hidden = true;
+      }
     });
 
     document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
