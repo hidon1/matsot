@@ -1588,21 +1588,6 @@
       gap:10px;
     }
 
-    .paymentHeadTitle{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-
-    .paymentHeadTitle strong{
-      font-size:clamp(1.2rem,2vw,1.5rem);
-    }
-
-    .paymentHeadTitle span{
-      color:rgba(255,255,255,.84);
-      font-size:.95rem;
-    }
-
     .checkoutFormCard{
       background:#fff;
       border-radius:18px;
@@ -1689,21 +1674,13 @@
       color:#3d2e1d;
     }
 
-    .paymentFrameWrap{
-      background:#fff;
-      border-radius:18px;
-      border:1px solid rgba(0,0,0,.14);
-      box-shadow:0 20px 44px rgba(0,0,0,.35);
-      overflow:hidden;
-      min-height:min(620px,86vh);
-    }
-
     .paymentFrame{
-      width:100%;
+      width:min(920px,95vw);
       height:min(620px,86vh);
       border:none;
+      border-radius:18px;
+      box-shadow:0 20px 44px rgba(0,0,0,.35);
       background:#fff;
-      display:block;
     }
 
     .termsCard{
@@ -2419,11 +2396,8 @@
   <div class="paymentModal" id="paymentModal" aria-hidden="true">
     <div class="paymentCard">
       <div class="paymentHead">
-        <div class="paymentHeadTitle">
-          <strong>רכישה מאובטחת</strong>
-          <span>עמוד התשלום נפתח בתוך האתר לצורך חוויית רכישה רציפה.</span>
-        </div>
-        <button class="btn alt" type="button" id="closePayment" aria-label="סגור">✕</button>
+        <strong>רכישה מאובטחת</strong>
+        <button class="btn alt" type="button" id="closePayment">סגור</button>
       </div>
 
       <form class="checkoutFormCard" id="checkoutForm">
@@ -2485,16 +2459,13 @@
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
 
-      <div class="paymentFrameWrap" hidden id="paymentFrameWrap">
-        <iframe
-          class="paymentFrame"
-          id="paymentFrame"
-          title="מערכת סליקה"
-          sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation"
-          allowtransparency="true"
-          src="about:blank">
-        </iframe>
-      </div>
+      <iframe
+        class="paymentFrame"
+        id="paymentFrame"
+        hidden
+        title="מערכת סליקה"
+        src="about:blank">
+      </iframe>
     </div>
   </div>
 
@@ -2819,7 +2790,6 @@
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
-    const paymentFrameWrap = document.getElementById('paymentFrameWrap');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -3287,6 +3257,10 @@
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
       if(tranzilaUrl){
+        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
+        if(!popup){
+          window.location.href = tranzilaUrl;
+        }
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
         return true;
@@ -3650,9 +3624,7 @@
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      paymentFrameWrap.hidden = true;
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = '';
+      paymentFrame.hidden = true;
       checkoutForm.hidden = false;
       updateCheckoutSummary();
       closeCart();
@@ -3661,20 +3633,12 @@
 
     document.getElementById('closePayment').addEventListener('click',()=>{
       paymentModal.classList.remove('open');
-      paymentFrameWrap.hidden = true;
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = '';
-      checkoutForm.hidden = false;
       syncBodyScrollLock();
     });
 
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
         paymentModal.classList.remove('open');
-        paymentFrameWrap.hidden = true;
-        paymentFrame.src = 'about:blank';
-        paymentFrame.srcdoc = '';
-        checkoutForm.hidden = false;
         syncBodyScrollLock();
       }
     });
@@ -3706,9 +3670,13 @@
         updateCheckoutSubmitState();
         return;
       }
-      renderPaymentFrame();
-      paymentFrameWrap.hidden = false;
-      checkoutForm.hidden = true;
+      const openedTranzila = renderPaymentFrame();
+      paymentFrame.hidden = openedTranzila;
+      checkoutForm.hidden = openedTranzila;
+      if(!openedTranzila){
+        paymentFrame.hidden = false;
+        checkoutForm.hidden = true;
+      }
     });
 
     document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
