@@ -3152,13 +3152,18 @@
       },0);
     }
 
+    function formatShekelAmount(amount){
+      return `${amount} ש"ח`;
+    }
+
     function getCartLineItemsSummary(){
       return [...cart.entries()].map(([id,qty])=>{
         const product = products.find(p=>p.id === id);
         if(!product){
           return null;
         }
-        return `${product.displayBrand}, ${product.name} × ${qty}`;
+        const lineTotal = product.price * qty;
+        return `${product.displayBrand}, ${product.name} × ${qty} (${formatShekelAmount(product.price)} ליחידה, סה"כ ${formatShekelAmount(lineTotal)})`;
       }).filter(Boolean).join(', ');
     }
 
@@ -3195,8 +3200,8 @@
       const orderDescription = [
         `סוג הזמנה: ${payload.deliveryType}`,
         `פריטים: ${payload.orderSummary || 'לא צוינו פריטים'}`,
-        `עלות מוצרים: ${payload.productsTotal} ₪`,
-        `עלות משלוח: ${payload.shippingCost} ₪`,
+        `עלות מוצרים: ${formatShekelAmount(payload.productsTotal)}`,
+        `עלות משלוח: ${formatShekelAmount(payload.shippingCost)}`,
         `כתובת: ${payload.deliveryCity || '-'} ${deliveryAddress}`
       ].join(' | ');
 
@@ -3224,7 +3229,7 @@
         customer_name_he: payload.fullName,
         customer_first_name_he: firstName,
         customer_email: payload.email,
-        order_currency_he: 'שקל',
+        order_currency_he: 'ש"ח',
         delivery_city_he: payload.deliveryCity,
         delivery_street_he: payload.deliveryStreet,
         delivery_house_number: payload.deliveryHouseNumber,
