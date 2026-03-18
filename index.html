@@ -1683,31 +1683,6 @@
       background:#fff;
     }
 
-    .paymentSuccessBanner{
-      position:fixed;
-      top:18px;
-      left:50%;
-      transform:translateX(-50%) translateY(-16px);
-      width:min(92vw,540px);
-      padding:14px 18px;
-      border-radius:16px;
-      background:rgba(47,107,59,.96);
-      color:#fff;
-      box-shadow:0 18px 34px rgba(0,0,0,.22);
-      z-index:1500;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .24s ease,transform .24s ease;
-      text-align:center;
-      font-weight:700;
-      line-height:1.5;
-    }
-
-    .paymentSuccessBanner.show{
-      opacity:1;
-      transform:translateX(-50%) translateY(0);
-    }
-
     .termsCard{
       position:relative;
       width:min(880px,95vw);
@@ -2418,8 +2393,6 @@
   </footer>
 
 
-  <div class="paymentSuccessBanner" id="paymentSuccessBanner" role="status" aria-live="polite"></div>
-
   <div class="paymentModal" id="paymentModal" aria-hidden="true">
     <div class="paymentCard">
       <div class="paymentHead">
@@ -2817,7 +2790,6 @@
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
-    const paymentSuccessBanner = document.getElementById('paymentSuccessBanner');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -2840,9 +2812,6 @@
     // חיבור טרנזילה: טרמינל e4979.
     const TRANZILA_SUPPLIER = 'e4979';
     const TRANZILA_IFRAME_URL = 'https://directng.tranzila.com/e4979/iframenew.php';
-    const PAYMENT_STATUS_QUERY_KEY = 'paymentStatus';
-    const PAYMENT_SUCCESS_STATUS = 'success';
-    let paymentSuccessBannerTimeout = null;
 
     function normalizeText(value){
       return String(value || '').trim().replace(/\s+/g,' ');
@@ -3219,13 +3188,6 @@
       };
     }
 
-    function buildPaymentReturnUrl(status){
-      const url = new URL(window.location.href);
-      url.searchParams.set(PAYMENT_STATUS_QUERY_KEY,status);
-      url.hash = '#payment-success';
-      return url.toString();
-    }
-
     function buildTranzilaIframeUrl(payload){
       if(!TRANZILA_IFRAME_URL){
         return '';
@@ -3242,7 +3204,6 @@
         `עלות משלוח: ${formatShekelAmount(payload.shippingCost)}`,
         `כתובת: ${payload.deliveryCity || '-'} ${deliveryAddress}`
       ].join(' | ');
-      const successUrl = buildPaymentReturnUrl(PAYMENT_SUCCESS_STATUS);
 
       const params = new URLSearchParams({
         // שדות לפי הנחיות Tranzila ל-iframenew.
@@ -3276,10 +3237,7 @@
         delivery_phone: payload.phone,
         shipping_cost: String(payload.shippingCost),
         order_items_he: payload.orderSummary,
-        products_total: String(payload.productsTotal),
-        success_url: successUrl,
-        fail_url: buildPaymentReturnUrl('failed'),
-        error_url: buildPaymentReturnUrl('failed')
+        products_total: String(payload.productsTotal)
       });
 
       const separator = TRANZILA_IFRAME_URL.includes('?') ? '&' : '?';
@@ -3294,56 +3252,15 @@
       return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);padding:20px;color:#3b2d1c}section{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:20px;max-width:760px;margin:0 auto;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:8px 0;line-height:1.6}ul{margin:8px 0 0;padding-inline-start:20px}li{margin:6px 0}code{background:#f3ecdf;padding:2px 6px;border-radius:6px}</style></head><body><section><h2>חיבור טרנזילה מוכן להגדרה</h2><p>האייפריים משמש כאן רק כגיבוי למקרה שקישור הסליקה לא זמין.</p><p><strong>סכום לתשלום:</strong> ${payload.total} ₪ (מוצרים: ${payload.productsTotal} ₪, משלוח: ${payload.shippingCost} ₪)</p><p><strong>לקוח:</strong> ${payload.fullName} | ${payload.email}</p><p><strong>כתובת/אופן קבלה:</strong> ${addressLine}</p><p><strong>טלפון למשלוח:</strong> ${payload.phone || 'לא רלוונטי'}</p><p><strong>פריטים:</strong> ${payload.orderSummary || 'לא נבחרו מוצרים'}</p><hr><p style="margin-bottom:0"><strong>שדות שמוכנים להעברה לטרנזילה (בעברית):</strong></p><ul><li>סכום כולל לתשלום + פירוט עלות משלוח.</li><li>שם מלא ומייל לקוח.</li><li>בסוג משלוח: עיר, רחוב, מספר בית וטלפון.</li><li>פירוט פריטים להזמנה כדי שיופיע בקבלה.</li></ul></section></body></html>`;
     }
 
-    function showPaymentSuccessBanner(){
-      paymentSuccessBanner.textContent = 'העסקה בוצעה בהצלחה, תודה רבה שקניתם אצלנו.';
-      paymentSuccessBanner.classList.add('show');
-      clearTimeout(paymentSuccessBannerTimeout);
-      paymentSuccessBannerTimeout = setTimeout(()=>{
-        paymentSuccessBanner.classList.remove('show');
-      },5000);
-    }
-
-    function closePaymentModal(){
-      paymentModal.classList.remove('open');
-      paymentFrame.hidden = true;
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = '';
-      checkoutForm.hidden = false;
-      syncBodyScrollLock();
-    }
-
-    function handleSuccessfulPayment(){
-      cart.clear();
-      renderCart();
-      checkoutForm.reset();
-      checkoutForm.querySelector('input[name="deliveryType"][value="pickup"]').checked = true;
-      updateCheckoutSummary();
-      updateCheckoutSubmitState();
-      closePaymentModal();
-      showPaymentSuccessBanner();
-    }
-
-    function syncPaymentStatusFromUrl(currentUrl = window.location.href){
-      const url = new URL(currentUrl,window.location.origin);
-      const status = url.searchParams.get(PAYMENT_STATUS_QUERY_KEY);
-      if(status !== PAYMENT_SUCCESS_STATUS){
-        return false;
-      }
-
-      handleSuccessfulPayment();
-      url.searchParams.delete(PAYMENT_STATUS_QUERY_KEY);
-      if(url.hash === '#payment-success'){
-        url.hash = '';
-      }
-      window.history.replaceState({},'',url.toString());
-      return true;
-    }
-
     function renderPaymentFrame(){
       const payload = buildOrderPayload();
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
       if(tranzilaUrl){
+        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
+        if(!popup){
+          window.location.href = tranzilaUrl;
+        }
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
         return true;
@@ -3714,11 +3631,15 @@
       syncBodyScrollLock();
     });
 
-    document.getElementById('closePayment').addEventListener('click',closePaymentModal);
+    document.getElementById('closePayment').addEventListener('click',()=>{
+      paymentModal.classList.remove('open');
+      syncBodyScrollLock();
+    });
 
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
-        closePaymentModal();
+        paymentModal.classList.remove('open');
+        syncBodyScrollLock();
       }
     });
 
@@ -3750,25 +3671,13 @@
         return;
       }
       const openedTranzila = renderPaymentFrame();
-      paymentFrame.hidden = false;
-      checkoutForm.hidden = true;
+      paymentFrame.hidden = openedTranzila;
+      checkoutForm.hidden = openedTranzila;
       if(!openedTranzila){
         paymentFrame.hidden = false;
         checkoutForm.hidden = true;
       }
     });
-
-    paymentFrame.addEventListener('load',()=>{
-      try{
-        syncPaymentStatusFromUrl(paymentFrame.contentWindow?.location?.href);
-      } catch(err){
-        if(!(err instanceof DOMException)){
-          console.error('Failed to inspect payment iframe location:',err);
-        }
-      }
-    });
-
-    syncPaymentStatusFromUrl();
 
     document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
     document.getElementById('lightboxPrev').addEventListener('click',()=>moveLightbox(-1));
