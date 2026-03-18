@@ -1573,7 +1573,7 @@
     .termsModal.open{display:flex}
 
     .paymentCard{
-      width:min(920px,95vw);
+      width:min(1040px,96vw);
       display:grid;
       gap:8px;
       max-height:100%;
@@ -1674,12 +1674,49 @@
       color:#3d2e1d;
     }
 
-    .paymentFrame{
-      width:min(920px,95vw);
-      height:min(620px,86vh);
-      border:none;
-      border-radius:18px;
+    .paymentFrameShell{
+      width:min(1040px,96vw);
+      background:#fff;
+      border-radius:24px;
+      border:1px solid rgba(0,0,0,.14);
       box-shadow:0 20px 44px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+
+    .paymentFrameBanner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:16px 20px;
+      background:linear-gradient(135deg,#f8f1e4,#ead6b2);
+      border-bottom:1px solid rgba(0,0,0,.08);
+    }
+
+    .paymentFrameBanner strong{
+      display:block;
+      margin-bottom:4px;
+      color:#3b2d1c;
+    }
+
+    .paymentFrameBanner p{
+      margin:0;
+      color:#5f4c37;
+      line-height:1.5;
+      font-size:.96rem;
+    }
+
+    .paymentFrameActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .paymentFrame{
+      width:100%;
+      height:min(700px,78vh);
+      border:none;
+      display:block;
       background:#fff;
     }
 
@@ -1947,8 +1984,12 @@
       .productFlour{font-size:.8rem;line-height:1.2}
       .price{font-size:1rem}
       .paymentModal{align-items:flex-start}
-      .paymentCard{width:min(920px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
+      .paymentCard{width:min(1040px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
       .checkoutFormCard{max-height:calc(100vh - 120px)}
+      .paymentFrameShell{width:min(1040px,100%)}
+      .paymentFrameBanner{align-items:flex-start;flex-direction:column}
+      .paymentFrameActions{width:100%}
+      .paymentFrameActions .btn{flex:1 1 220px}
       .reveal,
       .revealLong{
         opacity:1;
@@ -2459,13 +2500,23 @@
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
 
-      <iframe
-        class="paymentFrame"
-        id="paymentFrame"
-        hidden
-        title="מערכת סליקה"
-        src="about:blank">
-      </iframe>
+      <div class="paymentFrameShell" id="paymentFrameShell" hidden>
+        <div class="paymentFrameBanner">
+          <div>
+            <strong>תשלום מאובטח בתוך האתר</strong>
+            <p>הטופס נפתח בתוך iFrame של טרנזילה בלבד. פרטי האשראי מוזנים ישירות בדף הסליקה של טרנזילה ואינם נשמרים באתר.</p>
+          </div>
+          <div class="paymentFrameActions">
+            <button class="btn alt" type="button" id="editCheckout">חזרה לפרטי ההזמנה</button>
+          </div>
+        </div>
+        <iframe
+          class="paymentFrame"
+          id="paymentFrame"
+          title="מערכת סליקה"
+          src="about:blank">
+        </iframe>
+      </div>
     </div>
   </div>
 
@@ -2790,6 +2841,7 @@
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
+    const paymentFrameShell = document.getElementById('paymentFrameShell');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -3256,12 +3308,9 @@
       const payload = buildOrderPayload();
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
+      paymentFrame.srcdoc = '';
+
       if(tranzilaUrl){
-        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
-        if(!popup){
-          window.location.href = tranzilaUrl;
-        }
-        paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
         return true;
       }
@@ -3624,7 +3673,7 @@
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      paymentFrame.hidden = true;
+      paymentFrameShell.hidden = true;
       checkoutForm.hidden = false;
       updateCheckoutSummary();
       closeCart();
@@ -3634,6 +3683,11 @@
     document.getElementById('closePayment').addEventListener('click',()=>{
       paymentModal.classList.remove('open');
       syncBodyScrollLock();
+    });
+
+    document.getElementById('editCheckout').addEventListener('click',()=>{
+      paymentFrameShell.hidden = true;
+      checkoutForm.hidden = false;
     });
 
     paymentModal.addEventListener('click',e=>{
@@ -3670,13 +3724,9 @@
         updateCheckoutSubmitState();
         return;
       }
-      const openedTranzila = renderPaymentFrame();
-      paymentFrame.hidden = openedTranzila;
-      checkoutForm.hidden = openedTranzila;
-      if(!openedTranzila){
-        paymentFrame.hidden = false;
-        checkoutForm.hidden = true;
-      }
+      renderPaymentFrame();
+      paymentFrameShell.hidden = false;
+      checkoutForm.hidden = true;
     });
 
     document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
