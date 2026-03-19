@@ -1572,9 +1572,9 @@
     .termsModal.open{display:flex}
 
     .paymentCard{
-      width:min(1080px,96vw);
+      width:min(920px,95vw);
       display:grid;
-      gap:10px;
+      gap:8px;
       max-height:100%;
       overflow:hidden;
     }
@@ -1593,29 +1593,9 @@
       padding:18px;
       border:1px solid rgba(0,0,0,.14);
       box-shadow:0 16px 34px rgba(0,0,0,.22);
-      max-height:min(40vh,420px);
+      max-height:min(78vh,720px);
       overflow:auto;
       -webkit-overflow-scrolling:touch;
-    }
-
-    .paymentIntro{
-      background:rgba(255,255,255,.94);
-      border:1px solid rgba(97,59,20,.15);
-      border-radius:18px;
-      box-shadow:0 14px 30px rgba(0,0,0,.16);
-      padding:14px 18px;
-      color:#3d2e1d;
-    }
-
-    .paymentIntro strong{
-      display:block;
-      font-size:1.02rem;
-      margin-bottom:6px;
-    }
-
-    .paymentIntro p{
-      margin:0;
-      line-height:1.6;
     }
 
     .checkoutGrid{
@@ -1693,23 +1673,13 @@
       color:#3d2e1d;
     }
 
-    .paymentFrameWrap{
-      position:relative;
-      background:#fff;
-      border-radius:18px;
-      border:1px solid rgba(97,59,20,.18);
-      box-shadow:0 20px 44px rgba(0,0,0,.22);
-      overflow:hidden;
-      min-height:640px;
-    }
-
     .paymentFrame{
-      width:100%;
-      height:min(72vh,760px);
-      min-height:640px;
+      width:min(920px,95vw);
+      height:min(620px,86vh);
       border:none;
+      border-radius:18px;
+      box-shadow:0 20px 44px rgba(0,0,0,.35);
       background:#fff;
-      display:block;
     }
 
     .termsCard{
@@ -2429,11 +2399,6 @@
         <button class="btn alt" type="button" id="closePayment">סגור</button>
       </div>
 
-      <div class="paymentIntro">
-        <strong>התשלום נטען בתוך האתר במסגרת מאובטחת של טרנזילה</strong>
-        <p>לא תיפתח כרטיסייה חדשה ולא תהיה יציאה מהעמוד. לאחר לחיצה על המשך לרכישה, טופס הסליקה המאובטח ייטען כאן למטה בתוך iframe בהתאם להנחיות Tranzila.</p>
-      </div>
-
       <form class="checkoutFormCard" id="checkoutForm">
         <h3>לפני תשלום – פרטי הזמנה</h3>
         <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
@@ -2493,16 +2458,13 @@
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
 
-      <div class="paymentFrameWrap">
-        <iframe
-          class="paymentFrame"
-          id="paymentFrame"
-          name="tranzilaPaymentFrame"
-          title="מערכת סליקה"
-          allowpaymentrequest="true"
-          src="about:blank">
-        </iframe>
-      </div>
+      <iframe
+        class="paymentFrame"
+        id="paymentFrame"
+        hidden
+        title="מערכת סליקה"
+        src="about:blank">
+      </iframe>
     </div>
   </div>
 
@@ -2847,7 +2809,8 @@
     let cityLookup = new Map();
 
     // חיבור טרנזילה: טרמינל e4979.
-    const TRANZILA_IFRAME_URL = 'https://direct.tranzila.com/e4979/iframenew.php';
+    const TRANZILA_SUPPLIER = 'e4979';
+    const TRANZILA_IFRAME_URL = 'https://directng.tranzila.com/e4979/iframenew.php';
 
     function normalizeText(value){
       return String(value || '').trim().replace(/\s+/g,' ');
@@ -3224,7 +3187,11 @@
       };
     }
 
-    function buildTranzilaFormFields(payload){
+    function buildTranzilaIframeUrl(payload){
+      if(!TRANZILA_IFRAME_URL){
+        return '';
+      }
+
       const [firstName = payload.fullName] = payload.fullName.split(' ').filter(Boolean);
       const deliveryAddress = payload.deliveryType === 'משלוח'
         ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
@@ -3237,36 +3204,31 @@
         `כתובת: ${payload.deliveryCity || '-'} ${deliveryAddress}`
       ].join(' | ');
 
-      return {
+      const params = new URLSearchParams({
         // שדות לפי הנחיות Tranzila ל-iframenew.
+        supplier: TRANZILA_SUPPLIER,
         sum: String(payload.total),
         currency: '1',
         tranmode: 'A',
         lang: 'il',
         company: 'מצות אבהתנא',
         contact: payload.fullName,
+        first_name: firstName,
         email: payload.email,
         phone: payload.phone,
+        country: 'ישראל',
+        zip: '0000000',
         city: payload.deliveryCity,
         address: deliveryAddress,
         house: payload.deliveryHouseNumber,
-        accessibility: '2',
+        shipping: String(payload.shippingCost),
         pdesc: orderDescription,
         comments: orderDescription,
-        nologo: '1',
-        trBgColor: 'FFF9F0',
-        trTextColor: '3B2D1C',
-        trButtonColor: 'C79A3C',
-        buttonLabel: 'לתשלום מאובטח',
-        success_url_address: `${window.location.origin}${window.location.pathname}?payment=success`,
-        fail_url_address: `${window.location.origin}${window.location.pathname}?payment=failed`,
-        notify_url_address: `${window.location.origin}${window.location.pathname}?payment=notify`,
         // שדות עזר לקידוד ברור בעברית בקבלה/מערכות צד-שרת:
         customer_name_he: payload.fullName,
         customer_first_name_he: firstName,
         customer_email: payload.email,
         order_currency_he: 'ש"ח',
-        delivery_type_he: payload.deliveryType,
         delivery_city_he: payload.deliveryCity,
         delivery_street_he: payload.deliveryStreet,
         delivery_house_number: payload.deliveryHouseNumber,
@@ -3275,38 +3237,10 @@
         shipping_cost: String(payload.shippingCost),
         order_items_he: payload.orderSummary,
         products_total: String(payload.productsTotal)
-      };
-    }
-
-    function submitTranzilaIframeForm(fields){
-      if(!TRANZILA_IFRAME_URL){
-        return false;
-      }
-
-      const tempForm = document.createElement('form');
-      tempForm.method = 'POST';
-      tempForm.action = TRANZILA_IFRAME_URL;
-      tempForm.target = 'tranzilaPaymentFrame';
-      tempForm.acceptCharset = 'UTF-8';
-      tempForm.style.display = 'none';
-      tempForm.autocomplete = 'off';
-      tempForm.noValidate = true;
-
-      Object.entries(fields).forEach(([name,value])=>{
-        if(value === undefined || value === null || value === ''){
-          return;
-        }
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = String(value);
-        tempForm.appendChild(input);
       });
 
-      document.body.appendChild(tempForm);
-      tempForm.submit();
-      tempForm.remove();
-      return true;
+      const separator = TRANZILA_IFRAME_URL.includes('?') ? '&' : '?';
+      return `${TRANZILA_IFRAME_URL}${separator}${params.toString()}`;
     }
 
     function buildPaymentFallbackSrcdoc(payload){
@@ -3319,10 +3253,15 @@
 
     function renderPaymentFrame(){
       const payload = buildOrderPayload();
-      const fields = buildTranzilaFormFields(payload);
+      const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
-      if(submitTranzilaIframeForm(fields)){
+      if(tranzilaUrl){
+        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
+        if(!popup){
+          window.location.href = tranzilaUrl;
+        }
         paymentFrame.srcdoc = '';
+        paymentFrame.src = tranzilaUrl;
         return true;
       }
 
@@ -3684,8 +3623,7 @@
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = buildPaymentFallbackSrcdoc(buildOrderPayload());
+      paymentFrame.hidden = true;
       checkoutForm.hidden = false;
       updateCheckoutSummary();
       closeCart();
@@ -3732,7 +3670,10 @@
         return;
       }
       const openedTranzila = renderPaymentFrame();
+      paymentFrame.hidden = openedTranzila;
+      checkoutForm.hidden = openedTranzila;
       if(!openedTranzila){
+        paymentFrame.hidden = false;
         checkoutForm.hidden = true;
       }
     });
