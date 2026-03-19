@@ -1673,69 +1673,6 @@
       color:#3d2e1d;
     }
 
-    .paymentShell{
-      background:linear-gradient(180deg,rgba(255,249,239,.98),rgba(243,231,205,.98));
-      border-radius:28px;
-      border:1px solid rgba(247,209,135,.55);
-      box-shadow:0 26px 60px rgba(0,0,0,.28);
-      overflow:hidden;
-    }
-
-    .paymentShell[hidden]{display:none}
-
-    .paymentBanner{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:18px;
-      padding:18px 20px;
-      background:linear-gradient(135deg,#5b3a12,#8a5a1d 56%,#c69445);
-      color:#fffaf1;
-      border-bottom:1px solid rgba(255,255,255,.18);
-    }
-
-    .paymentBannerTitle{
-      margin:0 0 6px;
-      font-size:1.2rem;
-      font-weight:800;
-    }
-
-    .paymentBannerText{
-      margin:0;
-      line-height:1.7;
-      color:rgba(255,250,241,.92);
-      font-size:.98rem;
-    }
-
-    .paymentBannerBadge{
-      flex-shrink:0;
-      align-self:center;
-      padding:10px 16px;
-      border-radius:999px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.24);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.24);
-      font-weight:800;
-      letter-spacing:.02em;
-      white-space:nowrap;
-    }
-
-    .paymentFrameWrap{
-      padding:18px;
-      background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,248,234,.95));
-    }
-
-    .paymentFrame{
-      display:block;
-      width:100%;
-      min-height:min(620px,70vh);
-      height:min(620px,70vh);
-      border:none;
-      border-radius:22px;
-      box-shadow:0 20px 44px rgba(65,41,13,.18);
-      background:#fff;
-    }
-
     .termsCard{
       position:relative;
       width:min(880px,95vw);
@@ -2002,10 +1939,6 @@
       .paymentModal{align-items:flex-start}
       .paymentCard{width:min(920px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
       .checkoutFormCard{max-height:calc(100vh - 120px)}
-      .paymentBanner{flex-direction:column;align-items:flex-start}
-      .paymentBannerBadge{align-self:flex-start}
-      .paymentFrameWrap{padding:12px}
-      .paymentFrame{min-height:62vh;height:62vh}
       .reveal,
       .revealLong{
         opacity:1;
@@ -2515,24 +2448,6 @@
         <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
-
-      <section class="paymentShell" id="paymentShell" hidden aria-label="באנר סליקה טרנסילבניה">
-        <div class="paymentBanner">
-          <div>
-            <h3 class="paymentBannerTitle">מעבירים אותך לטרנזילה</h3>
-            <p class="paymentBannerText">הסליקה תיפתח באותה כרטיסייה ותעביר אותך ישירות לעמוד התשלום של טרנזילה.</p>
-          </div>
-          <div class="paymentBannerBadge">Tranzila Secure I-frame</div>
-        </div>
-        <div class="paymentFrameWrap">
-          <iframe
-            class="paymentFrame"
-            id="paymentFrame"
-            title="מערכת סליקה"
-            src="about:blank">
-          </iframe>
-        </div>
-      </section>
     </div>
   </div>
 
@@ -2856,9 +2771,7 @@
     const cartEl = document.getElementById('cart');
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
-    const paymentFrame = document.getElementById('paymentFrame');
     const checkoutForm = document.getElementById('checkoutForm');
-    const paymentShell = document.getElementById('paymentShell');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
     const deliveryCityInput = document.getElementById('deliveryCity');
@@ -3312,13 +3225,7 @@
       return `${TRANZILA_IFRAME_URL}${separator}${params.toString()}`;
     }
 
-    function buildPaymentFallbackSrcdoc(payload){
-      const addressLine = payload.deliveryType === 'משלוח'
-        ? `${payload.deliveryCity}, ${payload.deliveryStreet} ${payload.deliveryHouseNumber}`
-        : 'איסוף עצמי מהחנות';
 
-      return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);padding:20px;color:#3b2d1c}section{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:20px;max-width:760px;margin:0 auto;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:8px 0;line-height:1.6}ul{margin:8px 0 0;padding-inline-start:20px}li{margin:6px 0}code{background:#f3ecdf;padding:2px 6px;border-radius:6px}</style></head><body><section><h2>חיבור טרנזילה מוכן להגדרה</h2><p>האייפריים משמש כאן רק כגיבוי למקרה שקישור הסליקה לא זמין.</p><p><strong>סכום לתשלום:</strong> ${payload.total} ₪ (מוצרים: ${payload.productsTotal} ₪, משלוח: ${payload.shippingCost} ₪)</p><p><strong>לקוח:</strong> ${payload.fullName} | ${payload.email}</p><p><strong>כתובת/אופן קבלה:</strong> ${addressLine}</p><p><strong>טלפון למשלוח:</strong> ${payload.phone || 'לא רלוונטי'}</p><p><strong>פריטים:</strong> ${payload.orderSummary || 'לא נבחרו מוצרים'}</p><hr><p style="margin-bottom:0"><strong>שדות שמוכנים להעברה לטרנזילה (בעברית):</strong></p><ul><li>סכום כולל לתשלום + פירוט עלות משלוח.</li><li>שם מלא ומייל לקוח.</li><li>בסוג משלוח: עיר, רחוב, מספר בית וטלפון.</li><li>פירוט פריטים להזמנה כדי שיופיע בקבלה.</li></ul></section></body></html>`;
-    }
 
     function redirectToPaymentPage(){
       const payload = buildOrderPayload();
@@ -3329,8 +3236,6 @@
         return true;
       }
 
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = buildPaymentFallbackSrcdoc(payload);
       return false;
     }
 
@@ -3687,8 +3592,6 @@
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      paymentShell.hidden = true;
-      paymentFrame.hidden = true;
       checkoutForm.hidden = false;
       updateCheckoutSummary();
       closeCart();
@@ -3697,9 +3600,6 @@
 
     document.getElementById('closePayment').addEventListener('click',()=>{
       paymentModal.classList.remove('open');
-      paymentShell.hidden = true;
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = '';
       checkoutForm.hidden = false;
       syncBodyScrollLock();
     });
@@ -3707,9 +3607,6 @@
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
         paymentModal.classList.remove('open');
-        paymentShell.hidden = true;
-        paymentFrame.src = 'about:blank';
-        paymentFrame.srcdoc = '';
         checkoutForm.hidden = false;
         syncBodyScrollLock();
       }
@@ -3742,12 +3639,9 @@
         updateCheckoutSubmitState();
         return;
       }
-      paymentShell.hidden = false;
-      paymentFrame.hidden = true;
-      checkoutForm.hidden = true;
       const redirectedToTranzila = redirectToPaymentPage();
       if(!redirectedToTranzila){
-        paymentFrame.hidden = false;
+        alert('קישור התשלום לטרנזילה אינו זמין כרגע. נסו שוב בעוד כמה דקות או צרו קשר טלפוני.');
       }
     });
 
