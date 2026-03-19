@@ -1609,18 +1609,9 @@
       box-shadow:0 16px 34px rgba(0,0,0,.22);
       overflow:hidden;
       height:min(82vh,900px);
-      display:grid;
-      grid-template-rows:auto 1fr;
     }
 
-    .paymentFrameNote{
-      margin:0;
-      padding:12px 16px;
-      background:#f8f1e3;
-      color:#5c4a1d;
-      border-bottom:1px solid rgba(0,0,0,.08);
-      font-size:.95rem;
-    }
+    .paymentFrameWrap[hidden]{display:none}
 
     .paymentFrame{
       width:100%;
@@ -2482,7 +2473,6 @@
       </form>
 
       <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
-        <p class="paymentFrameNote">עמוד התשלום נפתח כאן בתוך האתר. אם התשלום לא נטען, ניתן לסגור ולנסות שוב.</p>
         <iframe class="paymentFrame" id="paymentFrame" title="עמוד תשלום מאובטח"></iframe>
       </div>
     </div>
