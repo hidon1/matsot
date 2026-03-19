@@ -1579,6 +1579,10 @@
       overflow:hidden;
     }
 
+    .paymentCard.paymentFrameMode{
+      width:min(1100px,96vw);
+    }
+
     .paymentHead{
       display:flex;
       justify-content:space-between;
@@ -1596,6 +1600,34 @@
       max-height:min(78vh,720px);
       overflow:auto;
       -webkit-overflow-scrolling:touch;
+    }
+
+    .paymentFrameWrap{
+      background:#fff;
+      border-radius:18px;
+      border:1px solid rgba(0,0,0,.14);
+      box-shadow:0 16px 34px rgba(0,0,0,.22);
+      overflow:hidden;
+      height:min(82vh,900px);
+      display:grid;
+      grid-template-rows:auto 1fr;
+    }
+
+    .paymentFrameNote{
+      margin:0;
+      padding:12px 16px;
+      background:#f8f1e3;
+      color:#5c4a1d;
+      border-bottom:1px solid rgba(0,0,0,.08);
+      font-size:.95rem;
+    }
+
+    .paymentFrame{
+      width:100%;
+      height:100%;
+      min-height:520px;
+      border:0;
+      background:#fff;
     }
 
     .checkoutGrid{
@@ -2448,6 +2480,11 @@
         <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
+
+      <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
+        <p class="paymentFrameNote">עמוד התשלום נפתח כאן בתוך האתר. אם התשלום לא נטען, ניתן לסגור ולנסות שוב.</p>
+        <iframe class="paymentFrame" id="paymentFrame" title="עמוד תשלום מאובטח"></iframe>
+      </div>
     </div>
   </div>
 
@@ -2771,6 +2808,7 @@
     const cartEl = document.getElementById('cart');
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
+    const paymentCard = paymentModal.querySelector('.paymentCard');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -3227,16 +3265,27 @@
 
 
 
-    function redirectToPaymentPage(){
+    function openPaymentIframe(){
       const payload = buildOrderPayload();
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
-      if(tranzilaUrl){
-        window.location.assign(tranzilaUrl);
-        return true;
+      if(!tranzilaUrl){
+        return false;
       }
 
-      return false;
+      paymentFrame.src = tranzilaUrl;
+      checkoutForm.hidden = true;
+      paymentFrameWrap.hidden = false;
+      paymentCard.classList.add('paymentFrameMode');
+      syncBodyScrollLock();
+      return true;
+    }
+
+    function resetPaymentModalView(){
+      checkoutForm.hidden = false;
+      paymentFrameWrap.hidden = true;
+      paymentFrame.removeAttribute('src');
+      paymentCard.classList.remove('paymentFrameMode');
     }
 
     function renderCart(){
@@ -3590,9 +3639,12 @@
     document.getElementById('closeCart').addEventListener('click',closeCart);
     overlay.addEventListener('click',closeCart);
 
+    const paymentFrameWrap = document.getElementById('paymentFrameWrap');
+    const paymentFrame = document.getElementById('paymentFrame');
+
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      checkoutForm.hidden = false;
+      resetPaymentModalView();
       updateCheckoutSummary();
       closeCart();
       syncBodyScrollLock();
@@ -3600,14 +3652,14 @@
 
     document.getElementById('closePayment').addEventListener('click',()=>{
       paymentModal.classList.remove('open');
-      checkoutForm.hidden = false;
+      resetPaymentModalView();
       syncBodyScrollLock();
     });
 
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
         paymentModal.classList.remove('open');
-        checkoutForm.hidden = false;
+        resetPaymentModalView();
         syncBodyScrollLock();
       }
     });
@@ -3639,7 +3691,7 @@
         updateCheckoutSubmitState();
         return;
       }
-      const redirectedToTranzila = redirectToPaymentPage();
+      const redirectedToTranzila = openPaymentIframe();
       if(!redirectedToTranzila){
         alert('קישור התשלום לטרנזילה אינו זמין כרגע. נסו שוב בעוד כמה דקות או צרו קשר טלפוני.');
       }
