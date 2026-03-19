@@ -1572,19 +1572,43 @@
     .termsModal.open{display:flex}
 
     .paymentCard{
-      width:min(920px,95vw);
+      width:min(1120px,96vw);
       display:grid;
-      gap:8px;
-      max-height:100%;
+      gap:10px;
+      max-height:min(94vh,980px);
       overflow:hidden;
     }
 
     .paymentHead{
       display:flex;
       justify-content:space-between;
-      align-items:center;
+      align-items:flex-start;
       color:#fff;
       gap:10px;
+    }
+
+    .paymentHeadText{
+      display:grid;
+      gap:4px;
+    }
+
+    .paymentHeadTitle{
+      font-size:1.22rem;
+      font-weight:900;
+    }
+
+    .paymentHeadSubtitle{
+      color:rgba(255,255,255,.84);
+      font-size:.96rem;
+      line-height:1.5;
+    }
+
+    .paymentShell{
+      display:grid;
+      grid-template-columns:minmax(320px,420px) minmax(0,1fr);
+      gap:12px;
+      align-items:stretch;
+      min-height:min(78vh,780px);
     }
 
     .checkoutFormCard{
@@ -1673,13 +1697,43 @@
       color:#3d2e1d;
     }
 
+    .paymentFrameWrap{
+      position:relative;
+      min-height:min(78vh,780px);
+      background:linear-gradient(180deg,#fffdf9,#f5ead5);
+      border:1px solid rgba(97,59,20,.18);
+      border-radius:22px;
+      box-shadow:0 20px 44px rgba(0,0,0,.22);
+      overflow:hidden;
+    }
+
+    .paymentFrameWrap[hidden]{display:none}
+
+    .paymentFrameBadge{
+      position:absolute;
+      top:14px;
+      right:14px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      color:#5b3d17;
+      font-size:.88rem;
+      font-weight:800;
+      box-shadow:0 10px 24px rgba(0,0,0,.12);
+      backdrop-filter:blur(8px);
+    }
+
     .paymentFrame{
-      width:min(920px,95vw);
-      height:min(620px,86vh);
+      width:100%;
+      min-height:min(78vh,780px);
+      height:100%;
       border:none;
-      border-radius:18px;
-      box-shadow:0 20px 44px rgba(0,0,0,.35);
       background:#fff;
+      display:block;
     }
 
     .termsCard{
@@ -1915,6 +1969,9 @@
       }
       .checkoutGrid{grid-template-columns:1fr}
       .deliveryFields{grid-template-columns:1fr}
+      .paymentShell{grid-template-columns:1fr}
+      .paymentFrameWrap{min-height:68vh}
+      .paymentFrame{min-height:68vh}
       .footerInner{
         flex-direction:column-reverse;
         align-items:flex-start;
@@ -1946,8 +2003,12 @@
       .productFlour{font-size:.8rem;line-height:1.2}
       .price{font-size:1rem}
       .paymentModal{align-items:flex-start}
-      .paymentCard{width:min(920px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
-      .checkoutFormCard{max-height:calc(100vh - 120px)}
+      .paymentCard{width:min(1120px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
+      .paymentHead{flex-direction:column;align-items:flex-start}
+      .paymentShell{min-height:auto}
+      .checkoutFormCard{max-height:none}
+      .paymentFrameWrap{min-height:60vh}
+      .paymentFrame{min-height:60vh}
       .reveal,
       .revealLong{
         opacity:1;
@@ -2395,76 +2456,83 @@
   <div class="paymentModal" id="paymentModal" aria-hidden="true">
     <div class="paymentCard">
       <div class="paymentHead">
-        <strong>רכישה מאובטחת</strong>
+        <div class="paymentHeadText">
+          <strong class="paymentHeadTitle">רכישה מאובטחת בתוך האתר</strong>
+          <span class="paymentHeadSubtitle">חלון התשלום נפתח כבאנר רספונסיבי ונשאר זמין ונוח גם במובייל וגם בדסקטופ.</span>
+        </div>
         <button class="btn alt" type="button" id="closePayment">סגור</button>
       </div>
 
-      <form class="checkoutFormCard" id="checkoutForm">
-        <h3>לפני תשלום – פרטי הזמנה</h3>
-        <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
+      <div class="paymentShell">
+        <form class="checkoutFormCard" id="checkoutForm">
+          <h3>לפני תשלום – פרטי הזמנה</h3>
+          <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
 
-        <div class="checkoutGrid">
-          <div>
-            <label for="fullName">שם מלא</label>
-            <input id="fullName" name="fullName" required>
+          <div class="checkoutGrid">
+            <div>
+              <label for="fullName">שם מלא</label>
+              <input id="fullName" name="fullName" required>
+            </div>
+
+            <div>
+              <label for="customerEmail">מייל לקבלת קבלה</label>
+              <input id="customerEmail" name="customerEmail" type="email" required>
+            </div>
+
+            <div class="full">
+              <label>אופן קבלת ההזמנה</label>
+              <div class="radioRow">
+                <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3, ללא עלות)</label>
+                <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/65 ₪ תלוי מרחק)</label>
+                <p id="deliveryDateNotice" class="deliveryDateNotice" hidden>המצות יסופקו בין התאריכים 25/3 לשלישי ל-30/3</p>
+              </div>
+              <p class="deliveryDateNotice">באיסוף מהמקום מומלץ לתאם מראש בוואטסאפ או בטלפון <a href="tel:0537777207">0537777207</a>.</p>
+              <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
+            </div>
+
+            <div class="full deliveryFields" id="deliveryFields" hidden>
+              <div>
+                <label for="deliveryCity">עיר למשלוח</label>
+                <input id="deliveryCity" name="deliveryCity" list="deliveryCityOptions" autocomplete="off" placeholder="התחילו להקליד שם עיר">
+                <datalist id="deliveryCityOptions"></datalist>
+                <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: 40/65 ₪ תלוי מרחק.</small>
+              </div>
+              <div>
+                <label for="deliveryStreet">רחוב למשלוח</label>
+                <input id="deliveryStreet" name="deliveryStreet">
+              </div>
+              <div>
+                <label for="deliveryHouseNumber">מספר בית</label>
+                <input id="deliveryHouseNumber" name="deliveryHouseNumber" inputmode="numeric">
+              </div>
+              <div>
+                <label for="deliveryPhone">טלפון למשלוח</label>
+                <input id="deliveryPhone" name="deliveryPhone" type="tel">
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label for="customerEmail">מייל לקבלת קבלה</label>
-            <input id="customerEmail" name="customerEmail" type="email" required>
+          <div class="termsConfirm">
+            <label for="termsApprove">
+              <input id="termsApprove" name="termsApprove" type="checkbox" required>
+              <span>קראתי את <a href="#" class="termsLink openTerms">תקנון האתר</a> ואני מאשר אותו.</span>
+            </label>
           </div>
 
-          <div class="full">
-            <label>אופן קבלת ההזמנה</label>
-            <div class="radioRow">
-              <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3, ללא עלות)</label>
-              <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/65 ₪ תלוי מרחק)</label>
-              <p id="deliveryDateNotice" class="deliveryDateNotice" hidden>המצות יסופקו בין התאריכים 25/3 לשלישי ל-30/3</p>
-            </div>
-            <p class="deliveryDateNotice">באיסוף מהמקום מומלץ לתאם מראש בוואטסאפ או בטלפון <a href="tel:0537777207">0537777207</a>.</p>
-            <p class="storageNotice">עם קבלת המוצר יש לשמור אותו בהקפאה בלבד עפ&quot;י ההנחיות המופיעות על גבי המוצר!</p>
-          </div>
+          <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
+          <button class="btn" type="submit">המשך לרכישה</button>
+        </form>
 
-          <div class="full deliveryFields" id="deliveryFields" hidden>
-            <div>
-              <label for="deliveryCity">עיר למשלוח</label>
-              <input id="deliveryCity" name="deliveryCity" list="deliveryCityOptions" autocomplete="off" placeholder="התחילו להקליד שם עיר">
-              <datalist id="deliveryCityOptions"></datalist>
-              <small id="deliveryCityHint" class="deliveryCityHint">מחיר משלוח: 40/65 ₪ תלוי מרחק.</small>
-            </div>
-            <div>
-              <label for="deliveryStreet">רחוב למשלוח</label>
-              <input id="deliveryStreet" name="deliveryStreet">
-            </div>
-            <div>
-              <label for="deliveryHouseNumber">מספר בית</label>
-              <input id="deliveryHouseNumber" name="deliveryHouseNumber" inputmode="numeric">
-            </div>
-            <div>
-              <label for="deliveryPhone">טלפון למשלוח</label>
-              <input id="deliveryPhone" name="deliveryPhone" type="tel">
-            </div>
-          </div>
+        <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
+          <div class="paymentFrameBadge">🔒 תשלום מאובטח בהתאמה אוטומטית למסך</div>
+          <iframe
+            class="paymentFrame"
+            id="paymentFrame"
+            title="מערכת סליקה"
+            src="about:blank">
+          </iframe>
         </div>
-
-        <div class="termsConfirm">
-          <label for="termsApprove">
-            <input id="termsApprove" name="termsApprove" type="checkbox" required>
-            <span>קראתי את <a href="#" class="termsLink openTerms">תקנון האתר</a> ואני מאשר אותו.</span>
-          </label>
-        </div>
-
-        <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
-        <button class="btn" type="submit">המשך לרכישה</button>
-      </form>
-
-      <iframe
-        class="paymentFrame"
-        id="paymentFrame"
-        hidden
-        title="מערכת סליקה"
-        src="about:blank">
-      </iframe>
+      </div>
     </div>
   </div>
 
@@ -2789,6 +2857,7 @@
     const overlay = document.getElementById('overlay');
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
+    const paymentFrameWrap = document.getElementById('paymentFrameWrap');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -3256,17 +3325,17 @@
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
       if(tranzilaUrl){
-        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
-        if(!popup){
-          window.location.href = tranzilaUrl;
-        }
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
+        paymentFrameWrap.hidden = false;
+        checkoutForm.hidden = false;
         return true;
       }
 
       paymentFrame.src = 'about:blank';
       paymentFrame.srcdoc = buildPaymentFallbackSrcdoc(payload);
+      paymentFrameWrap.hidden = false;
+      checkoutForm.hidden = false;
       return false;
     }
 
@@ -3621,10 +3690,16 @@
     document.getElementById('closeCart').addEventListener('click',closeCart);
     overlay.addEventListener('click',closeCart);
 
+    function resetPaymentModal(){
+      paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = '';
+      paymentFrameWrap.hidden = true;
+      checkoutForm.hidden = false;
+    }
+
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
-      paymentFrame.hidden = true;
-      checkoutForm.hidden = false;
+      resetPaymentModal();
       updateCheckoutSummary();
       closeCart();
       syncBodyScrollLock();
@@ -3632,12 +3707,14 @@
 
     document.getElementById('closePayment').addEventListener('click',()=>{
       paymentModal.classList.remove('open');
+      resetPaymentModal();
       syncBodyScrollLock();
     });
 
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
         paymentModal.classList.remove('open');
+        resetPaymentModal();
         syncBodyScrollLock();
       }
     });
@@ -3669,12 +3746,9 @@
         updateCheckoutSubmitState();
         return;
       }
-      const openedTranzila = renderPaymentFrame();
-      paymentFrame.hidden = openedTranzila;
-      checkoutForm.hidden = openedTranzila;
-      if(!openedTranzila){
-        paymentFrame.hidden = false;
-        checkoutForm.hidden = true;
+      renderPaymentFrame();
+      if(window.innerWidth <= 900){
+        paymentFrameWrap.scrollIntoView({behavior:'smooth',block:'start'});
       }
     });
 
