@@ -1673,12 +1673,66 @@
       color:#3d2e1d;
     }
 
+    .paymentShell{
+      background:linear-gradient(180deg,rgba(255,249,239,.98),rgba(243,231,205,.98));
+      border-radius:28px;
+      border:1px solid rgba(247,209,135,.55);
+      box-shadow:0 26px 60px rgba(0,0,0,.28);
+      overflow:hidden;
+    }
+
+    .paymentShell[hidden]{display:none}
+
+    .paymentBanner{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      padding:18px 20px;
+      background:linear-gradient(135deg,#5b3a12,#8a5a1d 56%,#c69445);
+      color:#fffaf1;
+      border-bottom:1px solid rgba(255,255,255,.18);
+    }
+
+    .paymentBannerTitle{
+      margin:0 0 6px;
+      font-size:1.2rem;
+      font-weight:800;
+    }
+
+    .paymentBannerText{
+      margin:0;
+      line-height:1.7;
+      color:rgba(255,250,241,.92);
+      font-size:.98rem;
+    }
+
+    .paymentBannerBadge{
+      flex-shrink:0;
+      align-self:center;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.24);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.24);
+      font-weight:800;
+      letter-spacing:.02em;
+      white-space:nowrap;
+    }
+
+    .paymentFrameWrap{
+      padding:18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(255,248,234,.95));
+    }
+
     .paymentFrame{
-      width:min(920px,95vw);
-      height:min(620px,86vh);
+      display:block;
+      width:100%;
+      min-height:min(620px,70vh);
+      height:min(620px,70vh);
       border:none;
-      border-radius:18px;
-      box-shadow:0 20px 44px rgba(0,0,0,.35);
+      border-radius:22px;
+      box-shadow:0 20px 44px rgba(65,41,13,.18);
       background:#fff;
     }
 
@@ -1948,6 +2002,10 @@
       .paymentModal{align-items:flex-start}
       .paymentCard{width:min(920px,100%);margin:auto 0;max-height:calc(100vh - 20px)}
       .checkoutFormCard{max-height:calc(100vh - 120px)}
+      .paymentBanner{flex-direction:column;align-items:flex-start}
+      .paymentBannerBadge{align-self:flex-start}
+      .paymentFrameWrap{padding:12px}
+      .paymentFrame{min-height:62vh;height:62vh}
       .reveal,
       .revealLong{
         opacity:1;
@@ -2458,13 +2516,23 @@
         <button class="btn" type="submit">המשך לרכישה</button>
       </form>
 
-      <iframe
-        class="paymentFrame"
-        id="paymentFrame"
-        hidden
-        title="מערכת סליקה"
-        src="about:blank">
-      </iframe>
+      <section class="paymentShell" id="paymentShell" hidden aria-label="באנר סליקה טרנסילבניה">
+        <div class="paymentBanner">
+          <div>
+            <h3 class="paymentBannerTitle">תשלום מאובטח דרך טרנסילבניה</h3>
+            <p class="paymentBannerText">הסליקה נפתחת בתוך חלון מובנה ונקי באתר, כדי להשלים את ההזמנה בצורה מסודרת בלי לעבור לדף שקוף.</p>
+          </div>
+          <div class="paymentBannerBadge">Tranzila Secure I-frame</div>
+        </div>
+        <div class="paymentFrameWrap">
+          <iframe
+            class="paymentFrame"
+            id="paymentFrame"
+            title="מערכת סליקה"
+            src="about:blank">
+          </iframe>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -2790,6 +2858,7 @@
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
     const checkoutForm = document.getElementById('checkoutForm');
+    const paymentShell = document.getElementById('paymentShell');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
     const deliveryCityInput = document.getElementById('deliveryCity');
@@ -3619,6 +3688,7 @@
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
+      paymentShell.hidden = true;
       paymentFrame.hidden = true;
       checkoutForm.hidden = false;
       updateCheckoutSummary();
@@ -3628,12 +3698,20 @@
 
     document.getElementById('closePayment').addEventListener('click',()=>{
       paymentModal.classList.remove('open');
+      paymentShell.hidden = true;
+      paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = '';
+      checkoutForm.hidden = false;
       syncBodyScrollLock();
     });
 
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
         paymentModal.classList.remove('open');
+        paymentShell.hidden = true;
+        paymentFrame.src = 'about:blank';
+        paymentFrame.srcdoc = '';
+        checkoutForm.hidden = false;
         syncBodyScrollLock();
       }
     });
@@ -3666,11 +3744,11 @@
         return;
       }
       const openedTranzila = renderPaymentFrame();
-      paymentFrame.hidden = openedTranzila;
-      checkoutForm.hidden = openedTranzila;
+      paymentShell.hidden = false;
+      paymentFrame.hidden = false;
+      checkoutForm.hidden = true;
       if(!openedTranzila){
         paymentFrame.hidden = false;
-        checkoutForm.hidden = true;
       }
     });
 
