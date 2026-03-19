@@ -3256,10 +3256,6 @@
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
       if(tranzilaUrl){
-        const popup = window.open(tranzilaUrl,'_blank','noopener,noreferrer');
-        if(!popup){
-          window.location.href = tranzilaUrl;
-        }
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
         return true;
