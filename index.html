@@ -2519,8 +2519,8 @@
       <section class="paymentShell" id="paymentShell" hidden aria-label="באנר סליקה טרנסילבניה">
         <div class="paymentBanner">
           <div>
-            <h3 class="paymentBannerTitle">תשלום מאובטח דרך טרנסילבניה</h3>
-            <p class="paymentBannerText">הסליקה נפתחת בתוך חלון מובנה ונקי באתר, כדי להשלים את ההזמנה בצורה מסודרת בלי לעבור לדף שקוף.</p>
+            <h3 class="paymentBannerTitle">מעבירים אותך לטרנזילה</h3>
+            <p class="paymentBannerText">הסליקה תיפתח באותה כרטיסייה ותעביר אותך ישירות לעמוד התשלום של טרנזילה.</p>
           </div>
           <div class="paymentBannerBadge">Tranzila Secure I-frame</div>
         </div>
@@ -3320,13 +3320,12 @@
       return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);padding:20px;color:#3b2d1c}section{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:20px;max-width:760px;margin:0 auto;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:8px 0;line-height:1.6}ul{margin:8px 0 0;padding-inline-start:20px}li{margin:6px 0}code{background:#f3ecdf;padding:2px 6px;border-radius:6px}</style></head><body><section><h2>חיבור טרנזילה מוכן להגדרה</h2><p>האייפריים משמש כאן רק כגיבוי למקרה שקישור הסליקה לא זמין.</p><p><strong>סכום לתשלום:</strong> ${payload.total} ₪ (מוצרים: ${payload.productsTotal} ₪, משלוח: ${payload.shippingCost} ₪)</p><p><strong>לקוח:</strong> ${payload.fullName} | ${payload.email}</p><p><strong>כתובת/אופן קבלה:</strong> ${addressLine}</p><p><strong>טלפון למשלוח:</strong> ${payload.phone || 'לא רלוונטי'}</p><p><strong>פריטים:</strong> ${payload.orderSummary || 'לא נבחרו מוצרים'}</p><hr><p style="margin-bottom:0"><strong>שדות שמוכנים להעברה לטרנזילה (בעברית):</strong></p><ul><li>סכום כולל לתשלום + פירוט עלות משלוח.</li><li>שם מלא ומייל לקוח.</li><li>בסוג משלוח: עיר, רחוב, מספר בית וטלפון.</li><li>פירוט פריטים להזמנה כדי שיופיע בקבלה.</li></ul></section></body></html>`;
     }
 
-    function renderPaymentFrame(){
+    function redirectToPaymentPage(){
       const payload = buildOrderPayload();
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
       if(tranzilaUrl){
-        paymentFrame.srcdoc = '';
-        paymentFrame.src = tranzilaUrl;
+        window.location.assign(tranzilaUrl);
         return true;
       }
 
@@ -3743,11 +3742,11 @@
         updateCheckoutSubmitState();
         return;
       }
-      const openedTranzila = renderPaymentFrame();
       paymentShell.hidden = false;
-      paymentFrame.hidden = false;
+      paymentFrame.hidden = true;
       checkoutForm.hidden = true;
-      if(!openedTranzila){
+      const redirectedToTranzila = redirectToPaymentPage();
+      if(!redirectedToTranzila){
         paymentFrame.hidden = false;
       }
     });
