@@ -1604,11 +1604,17 @@
     }
 
     .paymentShell{
-      display:grid;
-      grid-template-columns:minmax(320px,420px) minmax(0,1fr);
-      gap:12px;
-      align-items:stretch;
+      display:block;
       min-height:min(78vh,780px);
+    }
+
+    .paymentStep{
+      display:none;
+      animation:pageFloatIn .35s ease;
+    }
+
+    .paymentStep.active{
+      display:block;
     }
 
     .checkoutFormCard{
@@ -1705,6 +1711,42 @@
       border-radius:22px;
       box-shadow:0 20px 44px rgba(0,0,0,.22);
       overflow:hidden;
+    }
+
+    .paymentStepBanner{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+      padding:18px 20px;
+      background:linear-gradient(135deg,rgba(243,226,190,.45),rgba(255,255,255,.92));
+      border:1px solid rgba(122,84,32,.15);
+      border-radius:20px;
+    }
+
+    .paymentStepBanner strong{
+      display:block;
+      font-size:1.05rem;
+      margin-bottom:6px;
+    }
+
+    .paymentStepBanner span{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .paymentActions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:16px;
+    }
+
+    .paymentActions .btn{
+      min-width:180px;
     }
 
     .paymentFrameWrap[hidden]{display:none}
@@ -1969,7 +2011,6 @@
       }
       .checkoutGrid{grid-template-columns:1fr}
       .deliveryFields{grid-template-columns:1fr}
-      .paymentShell{grid-template-columns:1fr}
       .paymentFrameWrap{min-height:68vh}
       .paymentFrame{min-height:68vh}
       .footerInner{
@@ -2464,9 +2505,17 @@
       </div>
 
       <div class="paymentShell">
-        <form class="checkoutFormCard" id="checkoutForm">
-          <h3>לפני תשלום – פרטי הזמנה</h3>
-          <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
+        <section class="paymentStep active" id="checkoutStep" aria-label="שלב פרטי משלוח">
+          <div class="paymentStepBanner">
+            <div>
+              <strong>שלב 1: פרטי משלוח ולקוח</strong>
+              <span>ממלאים כאן את פרטי ההזמנה והמשלוח בלבד. רק אחרי לחיצה על "המשך לתשלום" ייפתח השלב הבא של הסליקה.</span>
+            </div>
+            <div class="paymentFrameBadge">🧾 מילוי פרטים לפני מעבר לסליקה</div>
+          </div>
+          <form class="checkoutFormCard" id="checkoutForm">
+            <h3>לפני תשלום – פרטי הזמנה</h3>
+            <p>האימייל ישמש לשליחת קבלה ועדכוני הזמנה.</p>
 
           <div class="checkoutGrid">
             <div>
@@ -2520,18 +2569,33 @@
           </div>
 
           <div class="summaryLine" id="checkoutSummary">סה״כ לתשלום: 0 ₪</div>
-          <button class="btn" type="submit">המשך לרכישה</button>
-        </form>
+            <div class="paymentActions">
+              <span class="deliveryDateNotice">לאחר האישור תעברו למסך תשלום מאובטח ונפרד.</span>
+              <button class="btn" type="submit">המשך לתשלום</button>
+            </div>
+          </form>
+        </section>
 
-        <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
-          <div class="paymentFrameBadge">🔒 תשלום מאובטח בהתאמה אוטומטית למסך</div>
+        <section class="paymentStep" id="paymentStep" aria-label="שלב תשלום">
+          <div class="paymentStepBanner">
+            <div>
+              <strong>שלב 2: תשלום מאובטח</strong>
+              <span>הפרטים נשמרו. עכשיו אפשר להשלים את התשלום במסך הבא. אם צריך, אפשר לחזור ולתקן את פרטי המשלוח.</span>
+            </div>
+            <div class="paymentFrameBadge">🔒 תשלום מאובטח בהתאמה אוטומטית למסך</div>
+          </div>
+          <div class="paymentActions">
+            <button class="btn alt" type="button" id="backToCheckout">חזרה לפרטי המשלוח</button>
+          </div>
+          <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
           <iframe
             class="paymentFrame"
             id="paymentFrame"
             title="מערכת סליקה"
             src="about:blank">
           </iframe>
-        </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
@@ -2858,6 +2922,8 @@
     const paymentModal = document.getElementById('paymentModal');
     const paymentFrame = document.getElementById('paymentFrame');
     const paymentFrameWrap = document.getElementById('paymentFrameWrap');
+    const checkoutStep = document.getElementById('checkoutStep');
+    const paymentStep = document.getElementById('paymentStep');
     const checkoutForm = document.getElementById('checkoutForm');
     const checkoutSummary = document.getElementById('checkoutSummary');
     const deliveryFields = document.getElementById('deliveryFields');
@@ -2876,6 +2942,7 @@
     let videoVisibleCount = 0;
     let cityRecords = [];
     let cityLookup = new Map();
+    let paymentFrameLoadTimer = null;
 
     // חיבור טרנזילה: טרמינל e4979.
     const TRANZILA_SUPPLIER = 'e4979';
@@ -3320,22 +3387,39 @@
       return `<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><style>body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f8f4ea,#f2e7d4);padding:20px;color:#3b2d1c}section{background:#fff;border:1px solid #d9c4a8;border-radius:16px;padding:20px;max-width:760px;margin:0 auto;box-shadow:0 14px 30px rgba(0,0,0,.12)}h2{margin:0 0 10px}p{margin:8px 0;line-height:1.6}ul{margin:8px 0 0;padding-inline-start:20px}li{margin:6px 0}code{background:#f3ecdf;padding:2px 6px;border-radius:6px}</style></head><body><section><h2>חיבור טרנזילה מוכן להגדרה</h2><p>האייפריים משמש כאן רק כגיבוי למקרה שקישור הסליקה לא זמין.</p><p><strong>סכום לתשלום:</strong> ${payload.total} ₪ (מוצרים: ${payload.productsTotal} ₪, משלוח: ${payload.shippingCost} ₪)</p><p><strong>לקוח:</strong> ${payload.fullName} | ${payload.email}</p><p><strong>כתובת/אופן קבלה:</strong> ${addressLine}</p><p><strong>טלפון למשלוח:</strong> ${payload.phone || 'לא רלוונטי'}</p><p><strong>פריטים:</strong> ${payload.orderSummary || 'לא נבחרו מוצרים'}</p><hr><p style="margin-bottom:0"><strong>שדות שמוכנים להעברה לטרנזילה (בעברית):</strong></p><ul><li>סכום כולל לתשלום + פירוט עלות משלוח.</li><li>שם מלא ומייל לקוח.</li><li>בסוג משלוח: עיר, רחוב, מספר בית וטלפון.</li><li>פירוט פריטים להזמנה כדי שיופיע בקבלה.</li></ul></section></body></html>`;
     }
 
+    function setPaymentStep(step){
+      const showPayment = step === 'payment';
+      checkoutStep.classList.toggle('active',!showPayment);
+      paymentStep.classList.toggle('active',showPayment);
+    }
+
+    function showPaymentFallback(payload){
+      paymentFrame.src = 'about:blank';
+      paymentFrame.srcdoc = buildPaymentFallbackSrcdoc(payload);
+    }
+
     function renderPaymentFrame(){
       const payload = buildOrderPayload();
       const tranzilaUrl = buildTranzilaIframeUrl(payload);
 
+      paymentFrameWrap.hidden = false;
+      setPaymentStep('payment');
+
+      if(paymentFrameLoadTimer){
+        clearTimeout(paymentFrameLoadTimer);
+        paymentFrameLoadTimer = null;
+      }
+
       if(tranzilaUrl){
         paymentFrame.srcdoc = '';
         paymentFrame.src = tranzilaUrl;
-        paymentFrameWrap.hidden = false;
-        checkoutForm.hidden = false;
+        paymentFrameLoadTimer = setTimeout(()=>{
+          showPaymentFallback(payload);
+        },7000);
         return true;
       }
 
-      paymentFrame.src = 'about:blank';
-      paymentFrame.srcdoc = buildPaymentFallbackSrcdoc(payload);
-      paymentFrameWrap.hidden = false;
-      checkoutForm.hidden = false;
+      showPaymentFallback(payload);
       return false;
     }
 
@@ -3691,31 +3775,53 @@
     overlay.addEventListener('click',closeCart);
 
     function resetPaymentModal(){
+      if(paymentFrameLoadTimer){
+        clearTimeout(paymentFrameLoadTimer);
+        paymentFrameLoadTimer = null;
+      }
       paymentFrame.src = 'about:blank';
       paymentFrame.srcdoc = '';
       paymentFrameWrap.hidden = true;
-      checkoutForm.hidden = false;
+      setPaymentStep('checkout');
     }
 
-    document.getElementById('openPaymentInCart').addEventListener('click',()=>{
+    function openPaymentModal(){
       paymentModal.classList.add('open');
+      paymentModal.setAttribute('aria-hidden','false');
       resetPaymentModal();
       updateCheckoutSummary();
       closeCart();
       syncBodyScrollLock();
-    });
+    }
 
-    document.getElementById('closePayment').addEventListener('click',()=>{
+    document.getElementById('openPaymentInCart').addEventListener('click',openPaymentModal);
+
+    function closePaymentModal(){
       paymentModal.classList.remove('open');
+      paymentModal.setAttribute('aria-hidden','true');
       resetPaymentModal();
       syncBodyScrollLock();
-    });
+    }
+
+    document.getElementById('closePayment').addEventListener('click',closePaymentModal);
 
     paymentModal.addEventListener('click',e=>{
       if(e.target === paymentModal){
-        paymentModal.classList.remove('open');
-        resetPaymentModal();
-        syncBodyScrollLock();
+        closePaymentModal();
+      }
+    });
+
+    document.getElementById('backToCheckout').addEventListener('click',()=>{
+      setPaymentStep('checkout');
+      if(window.innerWidth <= 900){
+        checkoutStep.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    });
+
+    paymentFrame.addEventListener('load',()=>{
+      if(paymentFrameLoadTimer){
+        clearTimeout(paymentFrameLoadTimer);
+        paymentFrameLoadTimer = null;
       }
     });
 
