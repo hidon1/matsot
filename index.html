@@ -2570,16 +2570,6 @@
         img:'מוצרים/מצות מבית אבא רכות ואיכותיות מכירה - 90.jpg'
       },
       {
-        id:15,
-        displayBrand:'מצות ברכת אליהו',
-        name:'מארז 1 קילו',
-        tagline:'● ע"פ פסקי מרן הגר"מ אליהו זצ"ל',
-        packageLine:'מצות רכות עבודת יד מהדורת בד"צ ברכת אליהו',
-        flourLine:'100% קמח מלא, עבודת יד',
-        price:127,
-        img:'מוצרים/ברכת אליהו.png'
-      },
-      {
         id:5,
         displayBrand:'מצות כוסמין לאפה',
         name:'מצות אבהתנא - כוסמין',
@@ -3184,29 +3174,15 @@
       return `${amount} ש"ח`;
     }
 
-    function getProductReceiptDescription(product){
-      return [product.tagline, product.packageLine, product.flourLine]
-        .map(value=>normalizeText(value))
-        .filter(Boolean)
-        .join(', ');
-    }
-
-    function getCartLineItemsSummary(options = {}){
-      const { multiline = false, includeDescription = false, numbered = false } = options;
-
-      return [...cart.entries()].map(([id,qty],index)=>{
+    function getCartLineItemsSummary(){
+      return [...cart.entries()].map(([id,qty])=>{
         const product = products.find(p=>p.id === id);
         if(!product){
           return null;
         }
-
         const lineTotal = product.price * qty;
-        const lineNumber = numbered ? `${index + 1}. ` : '';
-        const description = includeDescription ? getProductReceiptDescription(product) : '';
-        const descriptionSuffix = description ? ` | תיאור: ${description}` : '';
-
-        return `${lineNumber}${product.displayBrand}, ${product.name} × ${qty} (${formatShekelAmount(product.price)} ליחידה, סה"כ ${formatShekelAmount(lineTotal)})${descriptionSuffix}`;
-      }).filter(Boolean).join(multiline ? '\n' : ', ');
+        return `${product.displayBrand}, ${product.name} × ${qty} (${formatShekelAmount(product.price)} ליחידה, סה"כ ${formatShekelAmount(lineTotal)})`;
+      }).filter(Boolean).join(', ');
     }
 
     function buildOrderPayload(){
@@ -3226,8 +3202,7 @@
         shippingCost: shipping,
         productsTotal,
         total,
-        orderSummary: getCartLineItemsSummary(),
-        receiptOrderSummary: getCartLineItemsSummary({ multiline:true, includeDescription:true, numbered:true })
+        orderSummary: getCartLineItemsSummary()
       };
     }
 
@@ -3279,8 +3254,7 @@
         delivery_full_address_he: `${payload.deliveryCity} ${deliveryAddress}`.trim(),
         delivery_phone: payload.phone,
         shipping_cost: String(payload.shippingCost),
-        order_items_he: payload.receiptOrderSummary,
-        receipt_items_he: payload.receiptOrderSummary,
+        order_items_he: payload.orderSummary,
         products_total: String(payload.productsTotal)
       });
 
