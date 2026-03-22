@@ -2482,7 +2482,8 @@
       </form>
 
       <div class="paymentFrameWrap" id="paymentFrameWrap" hidden>
-        <iframe class="paymentFrame" id="paymentFrame" title="עמוד תשלום מאובטח"></iframe>
+        <iframe class="paymentFrame" id="paymentFrame" name="paymentFrame" title="עמוד תשלום מאובטח"></iframe>
+        <form id="paymentGatewayForm" method="POST" target="paymentFrame" action="https://directng.tranzila.com/e4979/iframenew.php" hidden></form>
       </div>
     </div>
   </div>
@@ -3195,6 +3196,52 @@
       }).filter(Boolean).join(', ');
     }
 
+    function buildOrderReference(){
+      return `ABH-${Date.now()}`;
+    }
+
+    function persistOrderDetails(payload){
+      try{
+        localStorage.setItem('pendingTranzilaOrder', JSON.stringify({
+          orderRef: payload.orderRef,
+          createdAt: new Date().toISOString(),
+          customer: {
+            fullName: payload.fullName,
+            email: payload.email,
+            phone: payload.phone
+          },
+          delivery: {
+            type: payload.deliveryType,
+            city: payload.deliveryCity,
+            street: payload.deliveryStreet,
+            houseNumber: payload.deliveryHouseNumber,
+            shippingCost: payload.shippingCost
+          },
+          totals: {
+            productsTotal: payload.productsTotal,
+            total: payload.total
+          },
+          orderSummary: payload.orderSummary,
+          items: [...cart.entries()].map(([id,qty])=>{
+            const product = products.find(p=>p.id === id);
+            if(!product){
+              return null;
+            }
+            return {
+              id,
+              qty,
+              name: product.name,
+              brand: product.displayBrand,
+              unitPrice: product.price,
+              lineTotal: product.price * qty
+            };
+          }).filter(Boolean)
+        }));
+      }catch(error){
+        console.warn('Could not persist pending order details locally.', error);
+      }
+    }
+
     function buildOrderPayload(){
       const productsTotal = getCartTotal();
       const shipping = getDeliveryFee();
@@ -3202,6 +3249,7 @@
       const deliverySelected = isDeliverySelected();
 
       return {
+        orderRef: buildOrderReference(),
         fullName: normalizeText(checkoutForm.elements.fullName.value),
         email: normalizeText(checkoutForm.elements.customerEmail.value),
         phone: deliverySelected ? normalizeText(checkoutForm.elements.deliveryPhone.value) : '',
@@ -3216,25 +3264,14 @@
       };
     }
 
-    function buildTranzilaIframeUrl(payload){
-      if(!TRANZILA_IFRAME_URL){
-        return '';
-      }
-
+    function buildTranzilaFormFields(payload){
       const [firstName = payload.fullName] = payload.fullName.split(' ').filter(Boolean);
       const deliveryAddress = payload.deliveryType === 'משלוח'
         ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
         : 'איסוף עצמי';
-      const orderDescription = [
-        `סוג הזמנה: ${payload.deliveryType}`,
-        `פריטים: ${payload.orderSummary || 'לא צוינו פריטים'}`,
-        `עלות מוצרים: ${formatShekelAmount(payload.productsTotal)}`,
-        `עלות משלוח: ${formatShekelAmount(payload.shippingCost)}`,
-        `כתובת: ${payload.deliveryCity || '-'} ${deliveryAddress}`
-      ].join(' | ');
+      const shortDescription = payload.orderRef;
 
-      const params = new URLSearchParams({
-        // שדות לפי הנחיות Tranzila ל-iframenew.
+      return {
         supplier: TRANZILA_SUPPLIER,
         sum: String(payload.total),
         currency: '1',
@@ -3245,48 +3282,45 @@
         first_name: firstName,
         email: payload.email,
         phone: payload.phone,
-        country: 'ישראל',
-        zip: '0000000',
         city: payload.deliveryCity,
         address: deliveryAddress,
-        house: payload.deliveryHouseNumber,
-        shipping: String(payload.shippingCost),
-        pdesc: orderDescription,
-        comments: orderDescription,
-        // שדות עזר לקידוד ברור בעברית בקבלה/מערכות צד-שרת:
-        customer_name_he: payload.fullName,
-        customer_first_name_he: firstName,
-        customer_email: payload.email,
-        order_currency_he: 'ש"ח',
-        delivery_city_he: payload.deliveryCity,
-        delivery_street_he: payload.deliveryStreet,
-        delivery_house_number: payload.deliveryHouseNumber,
-        delivery_full_address_he: `${payload.deliveryCity} ${deliveryAddress}`.trim(),
-        delivery_phone: payload.phone,
-        shipping_cost: String(payload.shippingCost),
-        order_items_he: payload.orderSummary,
-        products_total: String(payload.productsTotal)
-      });
-
-      const separator = TRANZILA_IFRAME_URL.includes('?') ? '&' : '?';
-      return `${TRANZILA_IFRAME_URL}${separator}${params.toString()}`;
+        pdesc: shortDescription,
+        remarks: shortDescription
+      };
     }
 
+    function populatePaymentForm(fields){
+      paymentGatewayForm.innerHTML = '';
 
+      Object.entries(fields).forEach(([name,value])=>{
+        if(value === '' || value == null){
+          return;
+        }
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = String(value);
+        paymentGatewayForm.appendChild(input);
+      });
+    }
 
     function openPaymentIframe(){
-      const payload = buildOrderPayload();
-      const tranzilaUrl = buildTranzilaIframeUrl(payload);
-
-      if(!tranzilaUrl){
+      if(!TRANZILA_IFRAME_URL || !TRANZILA_SUPPLIER){
         return false;
       }
 
-      paymentFrame.src = tranzilaUrl;
+      const payload = buildOrderPayload();
+      const tranzilaFields = buildTranzilaFormFields(payload);
+      persistOrderDetails(payload);
+      populatePaymentForm(tranzilaFields);
+      paymentGatewayForm.action = TRANZILA_IFRAME_URL;
+
       checkoutForm.hidden = true;
       paymentFrameWrap.hidden = false;
       paymentCard.classList.add('paymentFrameMode');
       syncBodyScrollLock();
+      paymentGatewayForm.submit();
       return true;
     }
 
@@ -3294,6 +3328,7 @@
       checkoutForm.hidden = false;
       paymentFrameWrap.hidden = true;
       paymentFrame.removeAttribute('src');
+      paymentGatewayForm.innerHTML = '';
       paymentCard.classList.remove('paymentFrameMode');
     }
 
@@ -3650,6 +3685,7 @@
 
     const paymentFrameWrap = document.getElementById('paymentFrameWrap');
     const paymentFrame = document.getElementById('paymentFrame');
+    const paymentGatewayForm = document.getElementById('paymentGatewayForm');
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
