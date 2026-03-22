@@ -3203,6 +3203,62 @@
       }).filter(Boolean).join(', ');
     }
 
+    function getCartProductSummary(){
+      return [...cart.entries()].map(([id,qty])=>{
+        const product = products.find(p=>p.id === id);
+        if(!product){
+          return null;
+        }
+        return `${buildProductReceiptLabel(product)} x${qty}`;
+      }).filter(Boolean).join(', ');
+    }
+
+    function getReadableOrderSummary(payload){
+      const normalizedSummary = normalizeText(payload.orderSummary);
+      const productSummary = normalizeText(getCartProductSummary());
+      const looksLikeCompactProductSummary = normalizedSummary && !/[()]/.test(normalizedSummary) && !normalizedSummary.includes('ליחידה');
+      return looksLikeCompactProductSummary ? normalizedSummary : productSummary || normalizedSummary;
+    }
+
+    function buildTranzilaDescription(payload, maxLength = 120){
+      const orderLabel = `הזמנה ${payload.orderRef}`;
+      const summary = getReadableOrderSummary(payload);
+
+      if(!summary){
+        return orderLabel;
+      }
+
+      const fullDescription = `${orderLabel} | ${summary}`;
+      if(fullDescription.length <= maxLength){
+        return fullDescription;
+      }
+
+      const availableLength = maxLength - `${orderLabel} | `.length;
+      if(availableLength <= 0){
+        return orderLabel.slice(0, maxLength);
+      }
+
+      const items = summary.split(',').map(item=>normalizeText(item)).filter(Boolean);
+      const visibleItems = [];
+
+      for(const item of items){
+        const candidate = [...visibleItems, item].join(', ');
+        const suffix = visibleItems.length + 1 < items.length ? ' ועוד...' : '';
+        if((candidate + suffix).length > availableLength){
+          break;
+        }
+        visibleItems.push(item);
+      }
+
+      if(!visibleItems.length){
+        const shortenedSummary = summary.slice(0, Math.max(availableLength - 4, 0)).trim();
+        return `${orderLabel} | ${shortenedSummary}${shortenedSummary.length < summary.length ? '...' : ''}`;
+      }
+
+      const hasHiddenItems = visibleItems.length < items.length;
+      return `${orderLabel} | ${visibleItems.join(', ')}${hasHiddenItems ? ' ועוד...' : ''}`;
+    }
+
     function buildOrderReference(){
       return `ABH-${Date.now()}`;
     }
@@ -3254,6 +3310,7 @@
       const shipping = getDeliveryFee();
       const total = productsTotal + shipping;
       const deliverySelected = isDeliverySelected();
+      const orderSummary = getCartLineItemsSummary();
 
       return {
         orderRef: buildOrderReference(),
@@ -3267,7 +3324,7 @@
         shippingCost: shipping,
         productsTotal,
         total,
-        orderSummary: getCartLineItemsSummary()
+        orderSummary
       };
     }
 
@@ -3276,8 +3333,8 @@
       const deliveryAddress = payload.deliveryType === 'משלוח'
         ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
         : 'איסוף עצמי';
-      const shortDescription = `${payload.orderRef} | ${payload.orderSummary}`;
-      const receiptDescription = `הזמנה ${payload.orderRef}: ${payload.orderSummary}`;
+      const receiptDescription = buildTranzilaDescription(payload, 255);
+      const shortDescription = buildTranzilaDescription(payload, 120);
 
       return {
         supplier: TRANZILA_SUPPLIER,
