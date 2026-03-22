@@ -3185,6 +3185,13 @@
       return `${amount} ש"ח`;
     }
 
+    function buildProductReceiptLabel(product){
+      return [product.displayBrand, product.name, product.tagline]
+        .map(value=>normalizeText(value))
+        .filter(Boolean)
+        .join(' | ');
+    }
+
     function getCartLineItemsSummary(){
       return [...cart.entries()].map(([id,qty])=>{
         const product = products.find(p=>p.id === id);
@@ -3192,7 +3199,7 @@
           return null;
         }
         const lineTotal = product.price * qty;
-        return `${product.displayBrand}, ${product.name} × ${qty} (${formatShekelAmount(product.price)} ליחידה, סה"כ ${formatShekelAmount(lineTotal)})`;
+        return `${buildProductReceiptLabel(product)} × ${qty} (${formatShekelAmount(product.price)} ליחידה, סה"כ ${formatShekelAmount(lineTotal)})`;
       }).filter(Boolean).join(', ');
     }
 
@@ -3269,7 +3276,8 @@
       const deliveryAddress = payload.deliveryType === 'משלוח'
         ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
         : 'איסוף עצמי';
-      const shortDescription = payload.orderRef;
+      const shortDescription = `${payload.orderRef} | ${payload.orderSummary}`;
+      const receiptDescription = `הזמנה ${payload.orderRef}: ${payload.orderSummary}`;
 
       return {
         supplier: TRANZILA_SUPPLIER,
@@ -3285,7 +3293,7 @@
         city: payload.deliveryCity,
         address: deliveryAddress,
         pdesc: shortDescription,
-        remarks: shortDescription
+        remarks: receiptDescription
       };
     }
 
