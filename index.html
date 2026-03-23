@@ -2464,6 +2464,10 @@
               <input id="deliveryHouseNumber" name="deliveryHouseNumber" inputmode="numeric">
             </div>
             <div>
+              <label for="deliveryApartmentNumber">מספר דירה</label>
+              <input id="deliveryApartmentNumber" name="deliveryApartmentNumber" inputmode="numeric" placeholder="לדוגמה: 3">
+            </div>
+            <div>
               <label for="deliveryPhone">טלפון למשלוח</label>
               <input id="deliveryPhone" name="deliveryPhone" type="tel">
             </div>
@@ -3210,6 +3214,14 @@
       }).filter(Boolean).join('\n');
     }
 
+    function formatDeliveryAddress(street, houseNumber, apartmentNumber){
+      const streetLine = [street, houseNumber].filter(Boolean).join(' ').trim();
+      if(!apartmentNumber){
+        return streetLine;
+      }
+      return [streetLine, `דירה ${apartmentNumber}`].filter(Boolean).join(', ');
+    }
+
     function buildOrderPayload(){
       const productsTotal = getCartTotal();
       const shipping = getDeliveryFee();
@@ -3224,6 +3236,7 @@
         deliveryCity: deliverySelected ? normalizeText(checkoutForm.elements.deliveryCity.value) : '',
         deliveryStreet: deliverySelected ? normalizeText(checkoutForm.elements.deliveryStreet.value) : '',
         deliveryHouseNumber: deliverySelected ? normalizeText(checkoutForm.elements.deliveryHouseNumber.value) : '',
+        deliveryApartmentNumber: deliverySelected ? normalizeText(checkoutForm.elements.deliveryApartmentNumber.value) : '',
         shippingCost: shipping,
         productsTotal,
         total,
@@ -3238,7 +3251,7 @@
 
       const [firstName = payload.fullName] = payload.fullName.split(' ').filter(Boolean);
       const deliveryAddress = payload.deliveryType === 'משלוח'
-        ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
+        ? formatDeliveryAddress(payload.deliveryStreet, payload.deliveryHouseNumber, payload.deliveryApartmentNumber)
         : 'איסוף עצמי';
       const orderDescription = [
         'מוצרים:',
@@ -3263,6 +3276,7 @@
         city: payload.deliveryCity,
         address: deliveryAddress,
         house: payload.deliveryHouseNumber,
+        apartment: payload.deliveryApartmentNumber,
         shipping: String(payload.shippingCost),
         pdesc: orderDescription,
         comments: orderDescription,
@@ -3274,6 +3288,7 @@
         delivery_city_he: payload.deliveryCity,
         delivery_street_he: payload.deliveryStreet,
         delivery_house_number: payload.deliveryHouseNumber,
+        delivery_apartment_number: payload.deliveryApartmentNumber,
         delivery_full_address_he: `${payload.deliveryCity} ${deliveryAddress}`.trim(),
         delivery_phone: payload.phone,
         shipping_cost: String(payload.shippingCost),
@@ -3357,6 +3372,7 @@
         const field = document.getElementById(id);
         field.required = deliverySelected;
       });
+      document.getElementById('deliveryApartmentNumber').required = false;
 
       updateDeliveryCityHint();
     }
