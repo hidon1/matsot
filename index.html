@@ -3205,9 +3205,8 @@
         if(!product){
           return null;
         }
-        const lineTotal = product.price * qty;
         const receiptName = product.receiptName || product.name;
-        return `${receiptName} × ${qty} = ${formatShekelAmount(lineTotal)}`;
+        return `${receiptName} × ${qty}`;
       }).filter(Boolean).join('\n');
     }
 
@@ -3242,12 +3241,10 @@
         ? `${payload.deliveryStreet} ${payload.deliveryHouseNumber}`.trim()
         : 'איסוף עצמי';
       const orderDescription = [
-        `סוג הזמנה: ${payload.deliveryType}`,
-        `פריטים: ${payload.orderSummary || 'לא צוינו פריטים'}`,
-        `עלות מוצרים: ${formatShekelAmount(payload.productsTotal)}`,
-        `עלות משלוח: ${formatShekelAmount(payload.shippingCost)}`,
-        `כתובת: ${payload.deliveryCity || '-'} ${deliveryAddress}`
-      ].join(' | ');
+        'מוצרים:',
+        payload.orderSummary || 'לא צוינו פריטים',
+        `סה"כ לתשלום: ${formatShekelAmount(payload.total)}`
+      ].join('\n');
 
       const params = new URLSearchParams({
         // שדות לפי הנחיות Tranzila ל-iframenew.
