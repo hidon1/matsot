@@ -2442,6 +2442,7 @@
             <div class="radioRow">
               <label><input type="radio" name="deliveryType" value="pickup" checked> איסוף מהמקום (פתח תקוה, רחוב סמטת התבור 3, ללא עלות)</label>
               <label><input type="radio" name="deliveryType" value="delivery"> משלוח (40/65 ₪ תלוי מרחק)</label>
+              <p class="deliveryDateNotice">המשלוחים עד 28/3 בלבד.</p>
               <p id="deliveryDateNotice" class="deliveryDateNotice" hidden>המצות יסופקו בין התאריכים 25/3 לשלישי ל-30/3</p>
             </div>
             <p class="deliveryDateNotice">באיסוף מהמקום מומלץ לתאם מראש בוואטסאפ או בטלפון <a href="tel:0537777207">0537777207</a>.</p>
@@ -2844,6 +2845,8 @@
     const deliveryCityOptions = document.getElementById('deliveryCityOptions');
     const deliveryCityHint = document.getElementById('deliveryCityHint');
     const deliveryDateNotice = document.getElementById('deliveryDateNotice');
+    const deliveryOptionRadio = checkoutForm.querySelector('input[name="deliveryType"][value="delivery"]');
+    const pickupOptionRadio = checkoutForm.querySelector('input[name="deliveryType"][value="pickup"]');
     const termsApprove = document.getElementById('termsApprove');
     const lightbox = document.getElementById('lightbox');
     const lightboxMedia = document.getElementById('lightboxMedia');
@@ -2859,9 +2862,23 @@
     // חיבור טרנזילה: טרמינל e4979.
     const TRANZILA_SUPPLIER = 'e4979';
     const TRANZILA_IFRAME_URL = 'https://directng.tranzila.com/e4979/iframenew.php';
+    const DELIVERY_DISABLED_FROM_DATE = '2026-03-28';
 
     function normalizeText(value){
       return String(value || '').trim().replace(/\s+/g,' ');
+    }
+
+    function getIsraelDateYmd(){
+      return new Intl.DateTimeFormat('en-CA',{
+        timeZone:'Asia/Jerusalem',
+        year:'numeric',
+        month:'2-digit',
+        day:'2-digit'
+      }).format(new Date());
+    }
+
+    function isDeliveryClosedByDate(){
+      return getIsraelDateYmd() >= DELIVERY_DISABLED_FROM_DATE;
     }
 
     function getRecordCityName(record){
@@ -3354,7 +3371,15 @@
     }
 
     function isDeliverySelected(){
-      return checkoutForm.elements.deliveryType.value === 'delivery';
+      return !isDeliveryClosedByDate() && checkoutForm.elements.deliveryType.value === 'delivery';
+    }
+
+    function enforceDeliveryAvailability(){
+      const deliveryClosed = isDeliveryClosedByDate();
+      deliveryOptionRadio.disabled = deliveryClosed;
+      if(deliveryClosed){
+        pickupOptionRadio.checked = true;
+      }
     }
 
     function updateCheckoutSummary(){
@@ -3683,6 +3708,7 @@
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
       paymentModal.classList.add('open');
       resetPaymentModalView();
+      enforceDeliveryAvailability();
       updateCheckoutSummary();
       closeCart();
       syncBodyScrollLock();
@@ -3712,6 +3738,7 @@
     });
 
     loadCities();
+    enforceDeliveryAvailability();
 
     function updateCheckoutSubmitState(){
       const btn = checkoutForm.querySelector('button[type="submit"]');
