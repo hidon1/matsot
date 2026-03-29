@@ -2051,7 +2051,7 @@
     </div>
     <div id="cartItems"></div>
     <p><strong>סה״כ:</strong> <span id="cartTotal">0</span> ₪</p>
-    <button class="btn cartCheckout" type="button" id="openPaymentInCart">מעבר לרכישה עכשיו</button>
+    <button class="btn cartCheckout" type="button" id="openPaymentInCart" disabled aria-disabled="true" title="ההזמנות דרך האתר אינן זמינות כרגע">מעבר לרכישה עכשיו (לא זמין כרגע)</button>
   </aside>
   <div class="overlay" id="overlay"></div>
 
@@ -3706,6 +3706,9 @@
     const paymentFrame = document.getElementById('paymentFrame');
 
     document.getElementById('openPaymentInCart').addEventListener('click',()=>{
+      if(document.getElementById('openPaymentInCart').disabled){
+        return;
+      }
       paymentModal.classList.add('open');
       resetPaymentModalView();
       enforceDeliveryAvailability();
